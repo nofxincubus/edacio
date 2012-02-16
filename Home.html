@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Edacio</title>
+<link rel="stylesheet" href="game.css">
+<script type="text/javascript" src="initialize.js"> </script>
+<script type="text/javascript" src="messagebox.js"></script>
+<script type="text/javascript" src="textAlert.js"></script>
+<script type="text/javascript" src="Frame.js"></script>
+<script type="text/javascript" src="http://platform.linkedin.com/in.js">
+  api_key: kd55r8vt584t
+  onLoad: onLinkedInLoad
+  authorize: true
+</script>
+<script type="text/javascript">
+function onLinkedInLoad() {
+			  IN.Event.on(IN, "auth", function() {onLinkedInLogin();});
+			  IN.Event.on(IN, "logout", function() {onLinkedInLogout();});
+			}
+			function onLinkedInLogin(){
+			IN.API.Connections("me")
+					.fields("id", "firstName", "lastName", "pictureUrl", "publicProfileUrl")
+					.result(function(result, metadata) {
+					   setConnections(result.values, metadata);
+					});
+			}
+			function setConnections(connections) {
+			  i = 0;
+			  pics =[];
+			  for (id in connections) {
+				if (connections[id].hasOwnProperty('pictureUrl')) {
+				 pics.push(connections[id].pictureUrl);
+				}  else {
+				 pics.push("http://static02.linkedin.com/scds/common/u/img/icon/icon_no_photo_80x80.png");
+				}
+				i++;
+			  }
+			  onLoadPics(pics);
+			  onlogin();
+			}
+
+</script>
+
+<!--[if lt IE 9]>
+<script type="text/javascript">
+    runFancy = false;
+    //any other IE specific stuff here
+</script>
+
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+
+
+<body onLoad="onLoad()">
+
+<div class="container">
+ <div align="right" id="trueheader" style="background: #CCF">
+ <script type="IN/Login" data-onAuth="onLinkedInLoad"></script>
+    </div>
+  <header>
+    <a href="http://www.edacio.com/GameV1.html"><img src="logo.png" alt="Insert Logo Here" width="180" height="60" id="Insert_logo" style="background: #CCF; display:block;" /></a>
+  </header>
+  
+<article class="content">
+<svg id="svgc" style="width:inherit; height:inherit;" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink">
+</svg>
+</article>
+  
+  <footer>
+    <p>This is a demo of our Edacio - Social Engineering Game. Holla at <a href="mailto:nofxincubus@gmail.com">Calvin</a> if you got comments or just talk to us.</p>
+    <address>
+      <h5>Address : Galactic Sector ZZ9 Plural Z Alpha</h5>
+    </address>
+  </footer>
+</div>
+</body>
+</html>
