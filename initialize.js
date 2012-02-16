@@ -4,6 +4,7 @@
 
 // JavaScript Document
 
+//Might do something useful, unknown function.. -Z
 requestAnimFrame = (
 	function() {
 		return window.requestAnimationFrame ||
@@ -16,12 +17,12 @@ requestAnimFrame = (
 		};
 	})();
 
-//easy getelement function	
+//Calls function getElementById
 function el(s)
 {
 	return document.getElementById(s);
 }
-//defulat onLoad
+//Default onLoad, if internet explorer, it will not run animations (runFancy)
 function onLoad(){
 	var runFancy;
 	if (getInternetExplorerVersion() == -1)
@@ -29,17 +30,16 @@ function onLoad(){
 	else
 		runFancy = false;
 	svg = document.getElementById('svgc');
-	//Event Listener for mouse and touchscreen (tablet) clicks
-
 	
+	//Event Listener for mouse and touchscreen (tablet) clicks
 	svg.addEventListener("mousedown",	onMD, false);
 	svg.addEventListener("mouseup",		onMU, false);
 	svg.addEventListener("touchstart",	onMD, false);
 	svg.addEventListener("touchend",	onMU, false);
 	
 	//if not logged on to linked in:
+	//TODO: Make it so the messageboxes dont come on if the user is already logged in.
 	messagebox1 = new textAlert(960*0.5-10,500*0.5-100,'Login with LinkedIn by clicking on top button','linkedin');
-	fr = new Frame(100,100,600,400);
 	
 	//messagebox1.setOnClick('onlogin()');
 	//set colors to whatever
@@ -67,12 +67,14 @@ function onlogin(){
 	messagebox2.hide(svg);
 	firstDraw()
 }
+//TODO: Add functionality to onCreateContact()
 function oncreatecontact(){//g.StopDragging();
 	messagebox1.hide(svg);
 	messagebox2.hide(svg);
 	
 }
-
+//TODO: Add functionality to onMD, onMU
+//used for mouse events for game aspects unrelated to button clicking (dragging, multiple selection, etc.)
 function onMD(e){
 	//g.SetDragged	(mouseX(e)-hw, mouseY(e)-hh, 30);
 }
@@ -83,15 +85,15 @@ function getInternetExplorerVersion()
 // Returns the version of Internet Explorer or a -1
 // (indicating the use of another browser).
 {
-  var rv = -1; // Return value assumes failure.
+  var browserIEVersion = -1; // Return value assumes failure.
   if (navigator.appName == 'Microsoft Internet Explorer')
   {
     var ua = navigator.userAgent;
     var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
     if (re.exec(ua) != null)
-      rv = parseFloat( RegExp.$1 );
+      browserIEVersion = parseFloat( RegExp.$1 );
   }
-  return rv;
+  return browserIEVersion;
 }
 function checkVersion()
 {
@@ -113,7 +115,7 @@ function firstDraw(){
 	fr.resetGrid();
 	fr.drawAll(svg);
 }
-
+//Not used
 function reDraw(){
 	fr.hideExcept(svg);
 	fr.resetGrid();

@@ -8,39 +8,15 @@
 <script type="text/javascript" src="messagebox.js"></script>
 <script type="text/javascript" src="textAlert.js"></script>
 <script type="text/javascript" src="Frame.js"></script>
+<script type="text/javascript" src="User.js"></script>
+<script type="text/javascript" src="LinkedinHandler.js"></script>
 <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+
   api_key: kd55r8vt584t
   onLoad: onLinkedInLoad
   authorize: true
 </script>
-<script type="text/javascript">
-function onLinkedInLoad() {
-			  IN.Event.on(IN, "auth", function() {onLinkedInLogin();});
-			  IN.Event.on(IN, "logout", function() {onLinkedInLogout();});
-			}
-			function onLinkedInLogin(){
-			IN.API.Connections("me")
-					.fields("id", "firstName", "lastName", "pictureUrl", "publicProfileUrl")
-					.result(function(result, metadata) {
-					   setConnections(result.values, metadata);
-					});
-			}
-			function setConnections(connections) {
-			  i = 0;
-			  pics =[];
-			  for (id in connections) {
-				if (connections[id].hasOwnProperty('pictureUrl')) {
-				 pics.push(connections[id].pictureUrl);
-				}  else {
-				 pics.push("http://static02.linkedin.com/scds/common/u/img/icon/icon_no_photo_80x80.png");
-				}
-				i++;
-			  }
-			  onLoadPics(pics);
-			  onlogin();
-			}
 
-</script>
 
 <!--[if lt IE 9]>
 <script type="text/javascript">
