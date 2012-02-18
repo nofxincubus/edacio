@@ -8,8 +8,8 @@ function Badges(){
 }
 
 // List of all existing badges
-function BadgeList{
-	var BadgeList= ("GetStarted","Builder","HelloWorld","Updater","HunterGatherer");
+function BadgeList(){
+	var BadgeList= ["GetStarted","Builder","HelloWorld","Updater","HunterGatherer"];
 }
 
 //Function to add a rewarded badge to the acquired badges
