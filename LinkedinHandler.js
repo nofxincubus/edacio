@@ -22,7 +22,7 @@ function setConnections(connections) {
 	for (id in connections) {
 		if(connections[id].hasOwnProperty('pictureUrl')){
 			pics.push(connections[id].pictureUrl);
-		}  
+		}
 		else{
 			pics.push("http://static02.linkedin.com/scds/common/u/img/icon/icon_no_photo_80x80.png");
 		}
