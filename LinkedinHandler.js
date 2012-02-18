@@ -1,5 +1,6 @@
 // LinkedinHandler Class
 // LinkedinHandler handles all the information collection and managemnet between the Linkedin API and Edacio's services.
+// better wash your hands after
 // Created by Zahid Hasan
 // 2/16/2012
 
