@@ -1,7 +1,7 @@
 // User Class
 // This function is responsible for keeping track of user information and managing the user resource dynamics.
-// Created by Zahid Hasan
-// 2/15/2012
+// I<3u
+// Created by Zahid Hasan 2/15/2012
 
 function User(){
 	// User Identification Information
