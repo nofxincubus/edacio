@@ -8,7 +8,7 @@ function Badges(){
 }
 
 // List of all existing badges
-function BadgeList(){
+Badges.prototype.BadgeList  = function(){
 	var BadgeList= ["GetStarted","Builder","HelloWorld","Updater","HunterGatherer"];
 }
 
