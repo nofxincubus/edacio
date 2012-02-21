@@ -7,19 +7,20 @@ function Badges(){
 	this.acquiredBadges = ("");
 }
 
+
 // List of all existing badges
 Badges.prototype.BadgeList  = function(){
 	var BadgeList= ["GetStarted","Builder","HelloWorld","Updater","HunterGatherer"];
 }
 
 //Function to add a rewarded badge to the acquired badges
-function addAcquiredBadges(BadgeName){
+Badges.prototype.addAcquiredBadges = function(BadgeName){
 	var badgeIndex = this.acquiredBadges.indexOf(BadgeName); //find badge index
 	if(badgeIndex =-1) this.acquiredBadges.push(BadgeName); //add if not found
 }
 
 //Function to remove an rewarded badge to the acquired badges
-function removeAcquiredBadges(BadgeName){
+Badges.prototype.removeAcquiredBadges = function(BadgeName){
 	var badgeIndex = this.acquiredBadges.indexOf(BadgeName); //find badge index
 	if(badgeIndex !=-1) this.acquiredBadges.splice(badgeIndex,BadgeName); //remove if found
 }

@@ -11,15 +11,13 @@ this.greetsCompleted = 0;
 this.updatesCompleted = 0;
 this.comparesCompleted =0;
 }
-
 // ChallengeList organizing the tasks needed to complete a challenge, the rewards reeped for completing a challenge, and any flags that need to be triggered within the game.
 // challenges(view, organize, greet, update info, compare)
 // rewards (xps, skill, karma, credits, levels)
 // flag(badge list, lockouts, new skill sets)
 
 // Temporary initalizing challenge 
-function ChallengeList()
-{
+Challenges.prototype.ChallengeList = function(){
 //Upload to Server// will be on server
 
 //List of +1 challenges to test all challenge types
@@ -37,15 +35,16 @@ var HunterGathererChallenge = {name: "Hunter Gatherer!", viewsRequired: 0, ogani
 //Clear all challenges in a given category
 //Server Database for keeeping traking of challenge that are already completed
 //c
-function ClearCompletedChallenges(challengesCompleted){
+Challenges.prototype.ClearCompletedChallenges = function(challengesCompleted){
 // TODO : When server works : update the user challenge completed database with erhte challenge.
 }
+
 //Delta challeneges changes the completed challenges by delta
-function DeltaCompletedChallenges(challengesCompleted, delta){S
+Challenges.prototype.DeltaCompletedChallenges = function(challengesCompleted, delta){
 this.challengesCompleted += delta;
 }
 
 //import from server
-function importData(json){
+Challenges.prototype.importData = function(json){
 	//TODO : Server data import
 }
