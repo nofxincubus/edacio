@@ -20,16 +20,25 @@ function initialize(){
 
 	svg.addEventListener("mousedown",	onMD, false);
 	svg.addEventListener("mousemove",	onMM, false);
+	svg.addEventListener("mousewheel",	onSC, false);
 	svg.addEventListener("mouseup",		onMU, false);
 		
 	svg.addEventListener("touchstart",	onMD, false);
 	svg.addEventListener("touchend",	onMU, false);
 	svg.addEventListener("touchmove",	onMM, false);
-	
-	svg.setAttribute("width",3000);
+	w = window.innerWidth-20;
+	svg.setAttribute("width",w);
 	svg.setAttribute("height",600);
-	mapui = new MapUI(3000,600);
+	mapui = new MapUI(w,600);
 	//mapui.addNode();
+	mapui.drawAll(svg);
+}
+
+function onSC(e){
+	if (e.wheelDelta > 0)
+		mapui.circleRadius -= 5;
+	else if (e.wheelDelta < 0)
+		mapui.circleRadius += 5;
 	mapui.drawAll(svg);
 }
 

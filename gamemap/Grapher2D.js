@@ -2,7 +2,7 @@ function Grapher2D(){
 	this.vertices=[];
 	this.repulsion=200;
 	this.attraction=0.06;
-	this.damping=0.99;
+	this.damping=0.5;
 	this.stable=false;
 	this.physics=true;
 	this.is3D=false;

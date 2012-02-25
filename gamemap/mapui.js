@@ -5,22 +5,36 @@
 function MapUI(w, h){
 	this.width = w;
 	this.height = h;
+	this.centerx = w/2;
+	this.centery = h/2;
 	this.updown = 1;
+	this.zoomlevel = 1;
 	//this.width = (window.innerWidth-20)*0.5;	
 	//this.height = 300;
 	this.topNodes = [];
 	this.lines = [];
+	this.initialize();
 	
+}
+MapUI.prototype.initialize = function(){
+	this.circleRadius = this.zoomlevel*200;
+	this.mainCircle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+	this.mainCircle.setAttribute("stroke", "#9966FF");
+	this.mainCircle.setAttribute("fill", "#FFF");
+	this.mainCircle.setAttribute("stroke-width", "3");
+	this.mainCircle.setAttribute('opacity',"1");
+	this.mainCircle.setAttribute('r', this.circleRadius);
+	this.mainCircle.setAttribute('cx', this.width*0.5);
+	this.mainCircle.setAttribute('cy', this.height*0.5);
 }
 
 //Draw the MAP UI
 MapUI.prototype.drawAll = function(svg) {
 	this.removeAll(svg);
-	i = 0;
-	while (i < this.lines.length){
-		svg.appendChild(this.lines[i]);
-		i++;
-	}
+	
+	this.reposition();
+	//Add the circle
+	svg.appendChild(this.mainCircle);
 	i = 0;
 	while (i < this.topNodes.length){
 		svg.appendChild(this.topNodes[i].getPoint());
@@ -38,25 +52,8 @@ MapUI.prototype.removeAll = function(svg) {
 
 
 MapUI.prototype.addNode = function(name) {
-	if (this.topNodes.length == 0){
-		focc = new Focus("tempme.png", 100, this.height*0.5 + 50*this.updown);
-		focc.setName(name);
-		this.updown = this.updown* (-1);
-	} else {
-		focc = new Focus("tempme.png", this.topNodes[this.topNodes.length-1].x + 150, this.topNodes[this.topNodes.length-1].y + 50*this.updown);
-		focc.setName(name);
-		this.updown = this.updown* (-1);
-		templine = document.createElementNS("http://www.w3.org/2000/svg", 'line');
-		templine.setAttribute("style", "stroke:#777;stroke-width:3");
-		templine.setAttribute('x1', this.topNodes[this.topNodes.length-1].x);
-		templine.setAttribute('y1', this.topNodes[this.topNodes.length-1].y);
-		templine.setAttribute('x2', focc.x);
-		templine.setAttribute('y2', focc.y);
-		templine.setAttribute('z-index',-1);
-		this.lines.push(templine);
-	}
+	var focc = new Focus("tempme.png", name);
 	this.topNodes.push(focc);
-	window.scrollTo(this.topNodes[this.topNodes.length-1].getPoint().x,0);
 }
 
 MapUI.prototype.importNodes = function(json) {
@@ -72,4 +69,32 @@ MapUI.prototype.getMousePos = function(x,y){
 	}
 }
 
+MapUI.prototype.reposition = function() {
+	/*
+	var templine = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+	templine.setAttribute("style", "stroke:#777;stroke-width:3");
+	templine.setAttribute('x1', this.topNodes[this.topNodes.length-1].x);
+	templine.setAttribute('y1', this.topNodes[this.topNodes.length-1].y);
+	templine.setAttribute('x2', focc.x);
+	templine.setAttribute('y2', focc.y);
+	templine.setAttribute('z-index',-1);
+	*/
+	this.mainCircle.setAttribute('r', this.circleRadius);
+	var i;
+	var mpi = Math.PI/180;
+	var startRadians = 0;
+	//fill the circle
+	var incrementAngle = 360/this.topNodes.length;
+	var incrementRadians = incrementAngle * mpi;
+	
+	for (i = 0; i < this.topNodes.length;i ++){
+		var xp = this.centerx + Math.sin(startRadians) * this.circleRadius;
+		var yp = this.centery + Math.cos(startRadians) * this.circleRadius;
+
+		this.topNodes[i].setXY(xp,yp);
+
+		startRadians += incrementRadians;
+
+	}
+}
 

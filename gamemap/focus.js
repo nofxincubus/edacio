@@ -3,11 +3,9 @@
 // Email nofxincubus@gmail.com for questions
 // Use it all you want just put on your site that you are using my stuff :)
 
-function Focus (imagelink, x, y){
-	this.x = x;
-	this.y = y;
+function Focus (imagelink, name){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
-	this.focusName = "";
+	this.focusName = name;
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.point.setAttributeNS(this.xlinkns, 'xlink:href', imagelink);
@@ -15,8 +13,6 @@ function Focus (imagelink, x, y){
 	this.point.setAttribute("width", "70");
 	this.point.setAttribute("height", "70");
 	this.point.setAttribute("z-index",2);
-	this.point.setAttribute('x', x-35);
-	this.point.setAttribute('y', y-35);
 	this.point.setAttribute('onclick','expand()');
     this.circ = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circ.setAttribute("stroke", "#9966FF");
@@ -24,13 +20,19 @@ function Focus (imagelink, x, y){
 	this.circ.setAttribute("stroke-width", "3");
 	this.circ.setAttribute('opacity',"0");
 	this.circ.setAttribute('r', "70");
-	this.circ.setAttribute('cx', x);
-	this.circ.setAttribute('cy', y);
 	this.circAnimate = false;
 	this.group.appendChild(this.point);
 	this.group.appendChild(this.circ);
 	this.children = [];
+}
 
+Focus.prototype.setXY = function(x,y){
+	this.x = x;
+	this.y = y;
+	this.point.setAttribute('x', x-35);
+	this.point.setAttribute('y', y-35);
+	this.circ.setAttribute('cx', x);
+	this.circ.setAttribute('cy', y);
 }
 
 Focus.prototype.setName = function(name){
