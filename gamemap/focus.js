@@ -3,9 +3,10 @@
 // Email nofxincubus@gmail.com for questions
 // Use it all you want just put on your site that you are using my stuff :)
 
-function Focus (imagelink, name){
+function Focus (imagelink, name, layer){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
 	this.focusName = name;
+	this.layerlevel = layer;
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.point.setAttributeNS(this.xlinkns, 'xlink:href', imagelink);
@@ -100,6 +101,10 @@ Focus.prototype.removeAnimate = function(x){
 //return point for drawing on svgcanvas
 Focus.prototype.getPoint = function(){
 	return this.group;
+}
+
+Focus.prototype.getLayer = function(){
+	return this.layerlevel;
 }
 
 

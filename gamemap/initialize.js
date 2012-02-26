@@ -20,7 +20,18 @@ function initialize(){
 
 	svg.addEventListener("mousedown",	onMD, false);
 	svg.addEventListener("mousemove",	onMM, false);
-	svg.addEventListener("mousewheel",	onSC, false);
+	
+	var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
+ 
+	
+	//Firefox's stupidest compatibility test
+	if (/Firefox/i.test(navigator.userAgent))
+		document.addEventListener(mousewheelevt, onSC, false);
+	else if (svg.attachEvent) //if IE (and Opera depending on user setting)
+		svg.attachEvent("on"+mousewheelevt, onSC);
+	else if (svg.addEventListener) //WC3 browsers
+		svg.addEventListener(mousewheelevt, onSC, false);
+	
 	svg.addEventListener("mouseup",		onMU, false);
 		
 	svg.addEventListener("touchstart",	onMD, false);
@@ -32,14 +43,24 @@ function initialize(){
 	mapui = new MapUI(w,600);
 	//mapui.addNode();
 	mapui.drawAll(svg);
+	onEF();
 }
 
 function onSC(e){
-	if (e.wheelDelta > 0)
-		mapui.circleRadius -= 5;
-	else if (e.wheelDelta < 0)
-		mapui.circleRadius += 5;
-	mapui.drawAll(svg);
+	//for stupid firefox compatibility check.
+	var evt=window.event || e //equalize event object
+    var delta=evt.detail? evt.detail*(-120) : evt.wheelDelta //delta returns +120 when wheel is scrolled up, -120 when scrolled down
+
+	if (delta > 0)
+	{
+		mapui.dv -= 1;
+		mapui.stable = false;
+	}
+	else if (delta < 0) {
+		mapui.dv += 1;
+		mapui.stable = false;
+	}
+	
 }
 
 function onMD(e){
@@ -57,6 +78,14 @@ function myProfile(){
 function addNode(){
 	var name=prompt("Please enter the name","GlaDos");
 	mapui.addNode(name);
+	mapui.drawAll(svg);
+}
+
+function onEF()
+{
+	window.requestAnimFrame(onEF, svg);
+	var stable = mapui.Iterate();
+	if(stable) return;
 	mapui.drawAll(svg);
 }
 
