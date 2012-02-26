@@ -66,7 +66,7 @@ function onSC(e){
 function onMD(e){
 	
 }
-function onMM(e){mapui.getMousePos(e.clientX,e.clientY);
+function onMM(e){
 }
 function onMU(e){//g.StopDragging();
 }

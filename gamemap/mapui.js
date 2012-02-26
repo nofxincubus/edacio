@@ -10,15 +10,16 @@ function MapUI(w, h){
 	this.dv = 0;
 	this.damping = 0.95;
 	this.updown = 1;
-	this.layerlevel = 1;
+	this.layerlevel = 0;
 	this.circleRadius = 200;
 	this.innerRadius = 0;
 	this.outerRadius = 400;
 	this.stable = true;
 	//this.width = (window.innerWidth-20)*0.5;	
 	//this.height = 300;
+	this.menu = new LinkMenu(150, 400);
 	this.topNodes = [];
-	this.lines = [];
+	this.circleNames = [];
 	this.initialize();
 	
 }
@@ -51,9 +52,12 @@ MapUI.prototype.drawAll = function(svg) {
 	//Add the circle
 	svg.appendChild(this.mainCircle);
 	svg.appendChild(this.outerCircle);
+	svg.appendChild(this.menu.getMenu());
 	i = 0;
 	while (i < this.topNodes.length){
 		if (this.topNodes[i].getLayer() == this.layerlevel)
+			svg.appendChild(this.topNodes[i].getPoint());
+		else if (this.topNodes[i].getLayer() == this.layerlevel + 1)
 			svg.appendChild(this.topNodes[i].getPoint());
 		i++;
 	}
@@ -107,60 +111,82 @@ MapUI.prototype.reposition = function() {
 	this.mainCircle.setAttribute('opacity',ciropac);
 	this.outerCircle.setAttribute('opacity',ouopac);
 	
-	i = 0;
+	var i = 0;
+	var innercount = 0;
+	var outercount = 0;
+	var layer;
+
 	while (i < this.topNodes.length){
-		if (this.topNodes[i].getLayer() == this.layerlevel)
-			this.topNodes[i].getPoint().setAttribute('opacity',ouopac);
-		else
+		if (this.topNodes[i].getLayer() == this.layerlevel) {
 			this.topNodes[i].getPoint().setAttribute('opacity',ciropac);
+			innercount++;
+		}
+		if (this.topNodes[i].getLayer() == this.layerlevel + 1) {
+			this.topNodes[i].getPoint().setAttribute('opacity',ouopac);
+			outercount++;
+		}
 		i++;
+		
 	}
-	
-	var i;
+
 	var mpi = Math.PI/180;
-	var startRadians = 0;
+	var innerStart = 0;
+	var outerStart = 0;
 	//fill the circle
-	var incrementAngle = 360/this.topNodes.length;
-	var incrementRadians = incrementAngle * mpi;
 	
+	var innerAngle = 360/innercount;
+	var outerAngle = 360/outercount;
+	var innerIncrement = innerAngle * mpi;
+	var outerIncrement = outerAngle * mpi;
 	for (i = 0; i < this.topNodes.length;i ++){
 		var cr;
-		if (this.topNodes[i].getLayer == this.layerlevel)
+		if (this.topNodes[i].getLayer() == this.layerlevel){
 			cr = this.circleRadius;
-		else
+			innerStart += innerIncrement;
+			var xp = this.centerx + Math.sin(innerStart) * cr;
+			var yp = this.centery + Math.cos(innerStart) * cr;
+			this.topNodes[i].setXY(xp,yp);
+		}
+		if  (this.topNodes[i].getLayer() == this.layerlevel + 1){
 			cr = this.outerRadius;
-		var xp = this.centerx + Math.sin(startRadians) * cr;
-		var yp = this.centery + Math.cos(startRadians) * cr;
-
-		this.topNodes[i].setXY(xp,yp);
-
-		startRadians += incrementRadians;
-
+			outerStart += outerIncrement;
+			var xp = this.centerx + Math.sin(outerStart) * cr;
+			var yp = this.centery + Math.cos(outerStart) * cr;
+			this.topNodes[i].setXY(xp,yp)
+		}
 	}
 }
 
 MapUI.prototype.Iterate=function(){
 	if(this.stable)
 		return this.stable;
-	if (this.layerlevel == 1 && this.dv > 0){
-		this.stable = true;
-		this.dv = 0;
-		return this.stable;
-	}
+	
+	else {
 	this.dv = this.dv * this.damping;
+	
+	var cirR = this.circleRadius;
+	var outR = this.circleRadius + 200;
+	cirR +=  this.dv;
+	outR = cirR + 200;
 
-	this.circleRadius +=  this.dv;
-	this.outerRadius = this.circleRadius + 200;
-
-	if (this.circleRadius <= 0){
-		this.circleRadius = this.outerRadius;
+	if (cirR <= 0){
+		this.circleRadius = outR;
 		this.outerRadius = 400;
 		this.layerlevel++;
 	}
-	else if (this.circleRadius >= 200) {
-		this.outerRadius = this.circleRadius;
-		this.circleRadius = 0;
-		this.layerlevel--;
+	else if (cirR >= 200) {
+		if (this.layerlevel == 0){
+			this.stable == true;
+			return this.stable;
+		} else {
+			this.outerRadius = cirR;
+			this.circleRadius = 0;
+			this.layerlevel--;
+		}
+	}
+	else {
+		this.circleRadius = cirR;
+		this.outerRadius = outR;
 	}
 	
 		
@@ -169,4 +195,5 @@ MapUI.prototype.Iterate=function(){
 	else 
 		this.stable = false;
 	return this.stable;
+	}
 };
