@@ -1,0 +1,19 @@
+body 
+{
+	background-color:skyblue;
+} 
+.miniChallenges
+{
+	float:right;
+	width:300px;
+	height:420px;
+	background-color:lightgrey;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+.awardPicture
+{
+	width:60px;
+	height:60px;
+}
