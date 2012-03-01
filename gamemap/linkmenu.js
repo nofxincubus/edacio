@@ -20,10 +20,13 @@ function LinkMenu(w, h) {
 	this.blanknode = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.group.appendChild(this.frame);
 	this.group.appendChild(this.blanknode);
+	this.selected = -1;
+	this.selectedX = 0;
+	this.selectedY = 0;
 	this.pics = [];
 	this.nodes = [];
-	this.initialize();
 	
+	this.initialize();
 }
 
 LinkMenu.prototype.initialize = function() {
@@ -52,10 +55,68 @@ LinkMenu.prototype.initialize = function() {
 }
 
 LinkMenu.prototype.getMenu = function(){
+	
+	this.resetGrid();
 	return this.group;
 }
 
+LinkMenu.prototype.clickTest = function(a,b){
+	
+	var wid = this.nodeSize * this.width/this.nodex;
+	var hei = this.nodeSize * this.height/this.nodey;
+	if (a > this.x && a < this.width+this.x && b > this.y && b < this.height+this.y){
+		for (var i = 0;i < this.nodes.length;i++){
+			var x1 = Math.abs(this.nodes[i].getAttribute("x")) + wid*0.5;
+			var y1 = Math.abs(this.nodes[i].getAttribute("y")) + hei*0.5;
+			var distance = Math.sqrt((x1-a)*(x1-a) + (y1-b)*(y1-b));
+			if (distance < hei*0.25) {
+				this.selected = i;
+				this.selectedX = this.nodes[i].getAttribute("x");
+				this.selectedY = this.nodes[i].getAttribute("y");
+				return true;
+			}
+		}
+	}
+	this.selected = -1;
+	return false;
+}
+
+LinkMenu.prototype.nodeTest = function(a,b){
+	if (this.selected != -1){
+		var wid = this.nodeSize * this.width/this.nodex;
+		var hei = this.nodeSize * this.height/this.nodey;
+		this.nodes[this.selected].setAttribute('x', (a - wid*0.5));
+		this.nodes[this.selected].setAttribute('y', (b - hei*0.5));
+		return true;
+	}
+	return false;
+}
+LinkMenu.prototype.nodeEnd = function(a,b){
+	if (this.selected != -1){
+		var wid = this.nodeSize * this.width/this.nodex;
+		var hei = this.nodeSize * this.height/this.nodey;
+		this.nodes[this.selected].setAttribute('x', (a - wid*0.5));
+		this.nodes[this.selected].setAttribute('y', (b - hei*0.5));
+		this.nodes.splice(this.selected,1);
+		this.selected = -1;
+	}
+}
+LinkMenu.prototype.nodeReset = function(){
+	if (this.selected != -1){
+	this.nodes[this.selected].setAttribute('x', this.selectedX);
+	this.nodes[this.selected].setAttribute('y', this.selectedY);
+	this.selected = -1;
+	}
+}
+
+
+
 LinkMenu.prototype.resetGrid=function(){
+	this.nodes = [];
+	while (this.group.childNodes.length > 0)
+		this.group.removeChild(this.group.firstChild);
+	this.group.appendChild(this.frame);
+	this.group.appendChild(this.blanknode);
 	//Need to modify for 
 	if (this.width > 500)
 		this.nodex = 9;
@@ -168,3 +229,5 @@ LinkMenu.prototype.resetGrid=function(){
 		}
 	}
 }
+
+

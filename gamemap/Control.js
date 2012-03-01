@@ -84,7 +84,6 @@ function onLoad()
 	
 	g = new Grapher2D();
 	
-	
 	rebuildGraph();
 	onEF();
 }

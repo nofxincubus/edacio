@@ -3,27 +3,30 @@
 // Email nofxincubus@gmail.com for questions
 // Use it all you want just put on your site that you are using my stuff :)
 
-function Focus (imagelink, name, layer){
+function Focus (imagelink, name, parent){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
 	this.focusName = name;
-	this.layerlevel = layer;
+	this.width = 70;
+	this.height = 70;
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.point.setAttributeNS(this.xlinkns, 'xlink:href', imagelink);
-	this.point.setAttribute("style", "cursor:pointer;");
-	this.point.setAttribute("width", "70");
-	this.point.setAttribute("height", "70");
+	this.group.setAttribute("style", "cursor:pointer;");
+	this.point.setAttribute("width", this.width);
+	this.point.setAttribute("height", this.height);
 	this.point.setAttribute("z-index",2);
-	this.point.setAttribute('onclick','expand()');
     this.circ = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circ.setAttribute("stroke", "#9966FF");
 	this.circ.setAttribute("fill", "#9966FF");
 	this.circ.setAttribute("stroke-width", "3");
 	this.circ.setAttribute('opacity',"0");
 	this.circ.setAttribute('r', "70");
+	//this.circ.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.5');");
+	//this.circ.setAttribute('onmouseout',"evt.target.setAttribute('opacity','0');");
 	this.circAnimate = false;
-	this.group.appendChild(this.point);
 	this.group.appendChild(this.circ);
+	this.group.appendChild(this.point);
+	this.parent = parent;
 	this.children = [];
 }
 
@@ -73,16 +76,14 @@ Focus.prototype.addGlowAnimate = function(x){
 	x.appendChild(this.glonimate);
 }
 
-//If near Glow
-Focus.prototype.dropBoxTest = function(x, y){
-	dx = x - this.x;
-	dy = y - this.y;
-	if (Math.sqrt(dx*dx + dy*dy) < 70 && !this.circAnimate){
+Focus.prototype.dropBoxTest = function(x,y){
+
+	if (!this.circAnimate){
 		//this.addGlowAnimate(this.circ);
 		this.circ.setAttribute('opacity',"0.2");
 		this.circAnimate = true;
 	}
-	else if (Math.sqrt(dx*dx + dy*dy) > 70 && this.circAnimate){
+	else if (this.circAnimate){
 		this.circ.setAttribute('opacity',"0");
 		this.circAnimate = false;
 	}
@@ -105,6 +106,26 @@ Focus.prototype.getPoint = function(){
 
 Focus.prototype.getLayer = function(){
 	return this.layerlevel;
+}
+
+Focus.prototype.distance = function(a,b){
+	return Math.sqrt((this.x-a)*(this.x-a) + (this.y-b)*(this.y-b));
+}
+
+Focus.prototype.isSelected = function(){
+	if (runFancy){
+		this.addJiggleAnimate(this.point);
+	} else {
+		this.circ.setAttribute('opacity',"0.3");
+	}
+}
+
+Focus.prototype.deSelect = function(){
+	if (runFancy){
+		this.removeAnimate(this.point);
+	} else {
+		this.circ.setAttribute('opacity',"0");
+	}
 }
 
 

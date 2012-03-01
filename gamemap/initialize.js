@@ -15,11 +15,22 @@ requestAnimFrame = (
 			};
 		})();
 
-function initialize(){
-	svg = document.getElementById('svgc');
+function el(s)
+{
+	return document.getElementById(s);
+}
 
+function initialize(){
+	
+	if (getInternetExplorerVersion() == -1)
+		runFancy = true;
+	else
+		runFancy = false;
+	svg = el('svgc');
+	runFancy = false;
 	svg.addEventListener("mousedown",	onMD, false);
 	svg.addEventListener("mousemove",	onMM, false);
+	
 	
 	var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
  
@@ -37,10 +48,13 @@ function initialize(){
 	svg.addEventListener("touchstart",	onMD, false);
 	svg.addEventListener("touchend",	onMU, false);
 	svg.addEventListener("touchmove",	onMM, false);
+	h = 500;
 	w = window.innerWidth-20;
+	hw=w/2;
+	hh=h/2;
 	svg.setAttribute("width",w);
-	svg.setAttribute("height",600);
-	mapui = new MapUI(w,600);
+	svg.setAttribute("height",h);
+	mapui = new MapUI(w,h,svg);
 	//mapui.addNode();
 	mapui.drawAll(svg);
 	onEF();
@@ -53,22 +67,35 @@ function onSC(e){
 
 	if (delta > 0)
 	{
-		mapui.dv -= 1;
+		mapui.dv -= 1*Math.PI/360;
 		mapui.stable = false;
 	}
 	else if (delta < 0) {
-		mapui.dv += 1;
+		mapui.dv += 1*Math.PI/360;
 		mapui.stable = false;
 	}
-	
 }
 
-function onMD(e){
-	
+function onMD(e){mapui.SetDragged	(mouseX(e), mouseY(e));}
+function onMM(e){mapui.MoveDragged	(mouseX(e), mouseY(e));}
+function onMU(e){
+	mapui.StopDragging (mouseX(e), mouseY(e));
+	mapui.drawAll(svg);
 }
-function onMM(e){
+
+function mouseX(e)
+{
+	var cx;
+	if(e.type == "touchstart" || e.type == "touchmove") cx = e.touches.item(0).clientX;
+	else cx = e.clientX;
+	return (cx);
 }
-function onMU(e){//g.StopDragging();
+function mouseY(e)
+{	
+	var cy;
+	if(e.type == "touchstart" || e.type == "touchmove")	cy = e.touches.item(0).clientY;
+	else cy = e.clientY;
+	return (cy); 
 }
 
 function myProfile(){
@@ -84,8 +111,37 @@ function addNode(){
 function onEF()
 {
 	window.requestAnimFrame(onEF, svg);
-	var stable = mapui.Iterate();
+	var stable = mapui.spinIterate();
 	if(stable) return;
 	mapui.drawAll(svg);
 }
 
+//Checking for IE
+function getInternetExplorerVersion()
+// Returns the version of Internet Explorer or a -1
+// (indicating the use of another browser).
+{
+  var browserIEVersion = -1; // Return value assumes failure.
+  if (navigator.appName == 'Microsoft Internet Explorer')
+  {
+    var ua = navigator.userAgent;
+    var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if (re.exec(ua) != null)
+      browserIEVersion = parseFloat( RegExp.$1 );
+  }
+  return browserIEVersion;
+}
+function checkVersion()
+{
+  var msg = "You're not using Internet Explorer.";
+  var ver = getInternetExplorerVersion();
+
+  if ( ver > -1 )
+  {
+    if ( ver >= 8.0 ) 
+      msg = "You're using a recent copy of Internet Explorer."
+    else
+      msg = "You should upgrade your copy of Internet Explorer.";
+  }
+  alert( msg );
+}
