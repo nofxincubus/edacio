@@ -12,7 +12,13 @@
 		<script type="text/javascript" src="mapui.js"></script>
         <script type="text/javascript" src="initialize.js"></script>
         <script type="text/javascript" src="focus.js"></script>
+        <script type="text/javascript" src="LinkedinHandler.js"></script>
         <script type="text/javascript" src="linkmenu.js"></script>
+        <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+		  api_key: kd55r8vt584t
+		  onLoad: onLinkedInLoad
+		  authorize: true
+		</script>
         <link rel="stylesheet" type="text/css" href="style.css" />
 		<!--[if lt IE 9]>
         <script type="text/javascript">
@@ -24,23 +30,21 @@
 </head>
 
 <body onLoad="initialize()">
+<!--
 <div style="position:absolute; z-index:1; margin:15px; right:0px; width:230px;">
 			<h3>Controls</h3>
 			<div style="text-align:left; width:120px;">
-				<div class="cb">
-					<input value="Add Node" type="submit" onclick="addNode(this);" class="btn control" style="font-size:15;"></input>
-				</div>
 				
 				<div class="cb">
-					<input value="Remove Node" type="submit" onclick="removeNode(this);" class="btn control" style="font-size:15;"></input>
+					<button type="button"  onclick="removeNode();" class="btn control">Remove Node</button>
 				</div>
                 <div class="cb">
-					<input value="Priority" type="submit" onclick="minColoring(this);" class="btn control" style="font-size:15;"></input>
-				</div>
+                 <script type="IN/Login" data-onAuth="onLinkedInLoad"></script>
+                 </div>
 			</div>
 		</div>
-
-		<svg id="svgc" style="width:100%; height:500px;"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+-->
+		<svg id="svgc" style="width:100%; height:600px;"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		</svg>
 
         
