@@ -32,9 +32,9 @@ function Focus (imagelink, name, parent){
 	this.circOver.setAttribute('onmouseout',"evt.target.setAttribute('opacity','0');");
 	
 	this.nameText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-	this.nameText.setAttribute('fill', '#93abb3');
+	this.nameText.setAttribute('fill', '#6c4c81');
 	this.nameText.setAttribute('text-anchor', 'middle');
-	this.nameText.setAttribute('font-size', '20');
+	this.nameText.setAttribute('font-size', '15');
 	this.nameText.textContent = this.focusName;
 	
 

@@ -107,11 +107,11 @@ LinkMenu.prototype.initialize = function() {
 	this.picNames.push("New Category");
 	this.picNames.push("New Contact");
 	
-	
+	/*
 	for (var xx = 0;xx < 30;xx++){
 		this.pics.push("blankcontact.png");
 		this.picNames.push("New Contact" + xx);
-	}
+	}*/
 	
 	this.resetGrid();
 }
@@ -164,10 +164,7 @@ LinkMenu.prototype.nodeTest = function(a,b){
 LinkMenu.prototype.nodeEndName = function(a, name){
 	if (this.selected != -1){
 		var thisindex = this.selected + this.firstindex;
-		if (thisindex > 5)
-			return new Focus(this.pics.splice(thisindex,1),name,a);
-		else
-			return new Focus(this.pics[thisindex],name,a);
+		return new Focus(this.pics[thisindex],name,a);
 	}
 	return 0;
 }

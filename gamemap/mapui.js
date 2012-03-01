@@ -289,12 +289,12 @@ MapUI.prototype.StopDragging=function(b,a){
 				if (menuIconIndex < 6){
 					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[this.menu.selected + this.menu.firstindex]);
 					if (nodeName!=null && nodeName!="")	{
-						foci = this.menu.nodeEnd(this.currentFocus.children[i],nodeName);
+						foci = this.menu.nodeEndName(this.currentFocus.children[i],nodeName);
 					}
 					else 
 						foci = 0;
 				} else
-					var foci = this.menu.nodeEnd(this.currentFocus.children[i]);
+					foci = this.menu.nodeEnd(this.currentFocus.children[i]);
 				if (foci != 0){
 					this.currentFocus.children[i].children.push(foci);
 					inserted = true;
@@ -308,12 +308,12 @@ MapUI.prototype.StopDragging=function(b,a){
 				if (menuIconIndex < 6){
 					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[this.menu.selected + this.menu.firstindex]);
 					if (nodeName!=null && nodeName!="")	{
-						foci = this.menu.nodeEndName(this.currentFocus.children[i],nodeName);
+						foci = this.menu.nodeEndName(this.currentFocus,nodeName);
 					}
 					else 
 						foci = 0;
 				} else
-					var foci = this.menu.nodeEnd(this.currentFocus.children[i]);
+					var foci = this.menu.nodeEnd(this.currentFocus);
 			if (foci != 0){
 				this.currentFocus.children.push(foci);
 				inserted = true;
