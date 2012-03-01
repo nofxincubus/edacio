@@ -7,6 +7,7 @@ function Focus (imagelink, name, parent){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
 	this.focusName = name;
 	this.width = 70;
+	this.imageLink = imagelink;
 	this.height = 70;
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
@@ -21,11 +22,29 @@ function Focus (imagelink, name, parent){
 	this.circ.setAttribute("stroke-width", "3");
 	this.circ.setAttribute('opacity',"0");
 	this.circ.setAttribute('r', "70");
-	//this.circ.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.5');");
-	//this.circ.setAttribute('onmouseout',"evt.target.setAttribute('opacity','0');");
+	this.circOver = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+	this.circOver.setAttribute("stroke", "#3333FF");
+	this.circOver.setAttribute("fill", "#3333FF");
+	this.circOver.setAttribute("stroke-width", "3");
+	this.circOver.setAttribute('opacity',"0");
+	this.circOver.setAttribute('r', "70");
+	this.circOver.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.5');");
+	this.circOver.setAttribute('onmouseout',"evt.target.setAttribute('opacity','0');");
+	
+	this.nameText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+	this.nameText.setAttribute('fill', '#93abb3');
+	this.nameText.setAttribute('text-anchor', 'middle');
+	this.nameText.setAttribute('font-size', '20');
+	this.nameText.textContent = this.focusName;
+	
+
 	this.circAnimate = false;
 	this.group.appendChild(this.circ);
 	this.group.appendChild(this.point);
+	this.group.appendChild(this.nameText);
+	this.group.appendChild(this.circOver);
+	
+	
 	this.parent = parent;
 	this.children = [];
 }
@@ -35,8 +54,12 @@ Focus.prototype.setXY = function(x,y){
 	this.y = y;
 	this.point.setAttribute('x', x-35);
 	this.point.setAttribute('y', y-35);
+	this.nameText.setAttribute('x', x);
+	this.nameText.setAttribute('y', y + 35 + 20);
 	this.circ.setAttribute('cx', x);
 	this.circ.setAttribute('cy', y);
+	this.circOver.setAttribute('cx', x);
+	this.circOver.setAttribute('cy', y);
 }
 
 Focus.prototype.setName = function(name){

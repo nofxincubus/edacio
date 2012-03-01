@@ -4,11 +4,11 @@
 // Use it all you want just put on your site that you are using my stuff :)
 
 function LinkMenu(w, h) {
-	this.x = 20;
-	this.y = 20;
+	this.x = 30;
+	this.y = 30;
 	this.width = w;
 	this.height = h;
-	this.nodeSize = 0.75;
+	this.nodeSize = 0.85;
 	this.firstindex = 0;
 	this.nodeType = "image";
 	//initialization of variables
@@ -16,16 +16,32 @@ function LinkMenu(w, h) {
 	//group
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
 	this.frame = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+	this.remove = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+	this.remove.setAttribute("onmousedown", "removeNode()");
+	this.removeText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+	this.removeText.setAttribute("onmousedown", "removeNode()");
 	this.up = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.down = document.createElementNS("http://www.w3.org/2000/svg", 'image');
+	this.up.setAttributeNS(this.xlinkns, 'xlink:href', 'up.png');
+	this.down.setAttributeNS(this.xlinkns, 'xlink:href', 'down.png');
+	this.down.setAttribute("onmousedown","addMenuIndex()");
+	this.up.setAttribute("onmousedown","subMenuIndex()");
+	this.up.setAttribute("width", 50);
+	this.up.setAttribute("height", 30);
+	this.down.setAttribute("width", 50);
+	this.down.setAttribute("height", 30);
 	
 	//blank node
 	this.group.appendChild(this.frame);
+	this.group.appendChild(this.remove);
+	this.group.appendChild(this.up);
+	this.group.appendChild(this.down);
 	this.selected = -1;
 	this.selectedX = 0;
 	this.selectedY = 0;
 	this.pics = [];
 	this.picNames = [];
+	
 	this.nodes = [];
 
 	this.initialize();
@@ -34,19 +50,41 @@ function LinkMenu(w, h) {
 LinkMenu.prototype.initialize = function() {
 	
 	//Setting basic attributes of the frame
-	this.frame.setAttribute('fill',"beige");
+	this.frame.setAttribute('fill',"#f9fcaf");
 	this.frame.setAttribute('opacity',"1");
-	this.frame.setAttribute('stroke',"9bff8a");
+	this.frame.setAttribute('stroke',"#f9fcaf");
 	this.frame.setAttribute('stroke-width',"3");
-	this.frame.setAttribute('x', 20);
-	this.frame.setAttribute('y', 20);
+	this.frame.setAttribute('x', this.x);
+	this.frame.setAttribute('y', this.y);
+	this.up.setAttribute("x", this.width*0.5 + 5);
+	this.up.setAttribute("y", this.x-30);
+	this.down.setAttribute("x",  this.width*0.5  + 5);
+	this.down.setAttribute("y", this.y+this.height+50);
 
 	//Default radius of round corner = 30
-	this.frame.setAttribute('rx', 30);
-	this.frame.setAttribute('ry', 30);
-
+	this.frame.setAttribute('rx', 10);
+	this.frame.setAttribute('ry', 10);
 	this.frame.setAttribute('width', this.width);
-	this.frame.setAttribute('height', this.height);
+	this.frame.setAttribute('height', this.height +50);
+	
+	this.remove.setAttribute('fill',"#ffafaf");
+	this.remove.setAttribute('opacity',"1");
+	this.remove.setAttribute('stroke',"#ffafaf");
+	this.remove.setAttribute('stroke-width',"3");
+	this.remove.setAttribute('x', this.x+15);
+	this.remove.setAttribute('y', this.height+this.y+5);
+	this.remove.setAttribute('rx', 10);
+	this.remove.setAttribute('ry', 10);
+	this.remove.setAttribute('width', this.width-30);
+	this.remove.setAttribute('height', 40);
+	this.removeText.setAttribute('fill', '#6d5e76');
+	this.removeText.setAttribute('text-anchor', 'middle');
+	this.removeText.setAttribute('font-size', '15');
+	this.removeText.textContent = "Remove Node";
+	this.removeText.setAttribute('x', this.x+15+(this.width-30)*0.5);
+	this.removeText.setAttribute('y', this.height+this.y+5+23);
+	this.remove.setAttribute("style", "cursor:pointer;");
+	this.removeText.setAttribute("style", "cursor:pointer;");
 	
 	//Standard Nodes
 	/*
@@ -68,7 +106,9 @@ LinkMenu.prototype.initialize = function() {
 	this.picNames.push("Programmer");
 	this.picNames.push("New Category");
 	this.picNames.push("New Contact");
-	for (var xx = 0;xx < 15;xx++){
+	
+	
+	for (var xx = 0;xx < 30;xx++){
 		this.pics.push("blankcontact.png");
 		this.picNames.push("New Contact" + xx);
 	}
@@ -76,9 +116,13 @@ LinkMenu.prototype.initialize = function() {
 	this.resetGrid();
 }
 
-LinkMenu.prototype.initializeSN = function(){
-	
+LinkMenu.prototype.addIndex = function(){
+	this.firstindex += this.nodex*this.nodey;
 }
+LinkMenu.prototype.subIndex = function(){
+	this.firstindex -= this.nodex*this.nodey;
+}
+
 
 LinkMenu.prototype.getMenu = function(){
 	this.resetGrid();
@@ -94,7 +138,7 @@ LinkMenu.prototype.clickTest = function(a,b){
 			var x1 = Math.abs(this.nodes[i].getAttribute("x")) + wid*0.5;
 			var y1 = Math.abs(this.nodes[i].getAttribute("y")) + hei*0.5;
 			var distance = Math.sqrt((x1-a)*(x1-a) + (y1-b)*(y1-b));
-			if (distance < hei*0.25) {
+			if (distance < hei*0.5) {
 				this.selected = i;
 				this.selectedX = this.nodes[i].getAttribute("x");
 				this.selectedY = this.nodes[i].getAttribute("y");
@@ -116,10 +160,27 @@ LinkMenu.prototype.nodeTest = function(a,b){
 	}
 	return false;
 }
+
+LinkMenu.prototype.nodeEndName = function(a, name){
+	if (this.selected != -1){
+		var thisindex = this.selected + this.firstindex;
+		if (thisindex > 5)
+			return new Focus(this.pics.splice(thisindex,1),name,a);
+		else
+			return new Focus(this.pics[thisindex],name,a);
+	}
+	return 0;
+}
+
 LinkMenu.prototype.nodeEnd = function(a){
 	if (this.selected != -1){
-		return new Focus(this.pics[this.selected-1],this.picNames[this.selected-1],a);
+		var thisindex = this.selected + this.firstindex;
+		if (thisindex > 5)
+			return new Focus(this.pics.splice(thisindex,1),this.picNames.splice(thisindex,1),a);
+		else
+			return new Focus(this.pics[thisindex],this.picNames[thisindex],a);
 	}
+	return 0;
 }
 LinkMenu.prototype.nodeReset = function(){
 	if (this.selected != -1){
@@ -129,13 +190,29 @@ LinkMenu.prototype.nodeReset = function(){
 	}
 }
 
+LinkMenu.prototype.addLinked = function(pics,names){
+	for (var i = 0;i < pics.length;i++){
+		this.pics.push(pics[i]);
+		this.picNames.push(names[i]);
+	}
+	this.resetGrid();
+}
+LinkMenu.prototype.restore = function(pic,name){
+	this.pics.push(pic);
+	this.picNames.push(name);
+	this.resetGrid();
+}
+
 
 
 LinkMenu.prototype.resetGrid=function(){
 	this.nodes = [];
 	while (this.group.childNodes.length > 0)
 		this.group.removeChild(this.group.firstChild);
+	
 	this.group.appendChild(this.frame);
+	this.group.appendChild(this.remove);
+	this.group.appendChild(this.removeText);
 	//Need to modify for 
 	if (this.width > 500)
 		this.nodex = 9;
@@ -150,7 +227,10 @@ LinkMenu.prototype.resetGrid=function(){
 		this.nodey = 7;
 	else
 		this.nodey = 2;
-
+	if (this.firstindex > 0)
+		this.group.appendChild(this.up);
+	if (this.firstindex + this.nodex*this.nodey < this.pics.length)
+		this.group.appendChild(this.down);
 	
 	var wid = this.nodeSize * this.width/this.nodex;
 	var wborder = (1 - this.nodeSize) * 0.5 * this.width/this.nodex
@@ -158,9 +238,7 @@ LinkMenu.prototype.resetGrid=function(){
 	var hborder = (1 - this.nodeSize) * 0.5 * this.height/this.nodey;
 	var wc = this.width/this.nodex;
 	var hc = this.height/this.nodey;
-	var k = 0;
-	var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-	this.nodes.push(defs);
+	var k = this.firstindex;
 	for (j = 0;j < this.nodey;j++) {
 	for (i = 0; i < this.nodex;i++){
 			var pl = this.pics.length;
@@ -170,36 +248,10 @@ LinkMenu.prototype.resetGrid=function(){
 				var c = document.createElementNS("http://www.w3.org/2000/svg", "image");
 				var xlinkns = "http://www.w3.org/1999/xlink";
 				if (this.nodeType == 'image') {
-					var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-					rect.setAttribute('id','rect' + k);
-					if (0.8*wid < 0.8*hei) {
-						rect.setAttribute('width', wid);
-						rect.setAttribute('height', wid);
-						rect.setAttribute('x', (wc)*i + this.x + wborder);
-						rect.setAttribute('y', (hc)*j + this.y + hc*0.5 - 0.5*wid);
-					} else {
-						rect.setAttribute('width', hei);
-						rect.setAttribute('height',hei);
-						rect.setAttribute('x', (this.width/this.nodex)*i + this.x + 0.5*wc - 0.5*hei);
-						rect.setAttribute('y', (this.height/this.nodey)*j + this.y + hborder);
-					}
-					rect.setAttribute('rx', 10);
-					rect.setAttribute('ry', 10);
-					rect.setAttribute('fill',"white");
-					rect.setAttribute('opacity',"1");
-					rect.setAttribute('stroke',"green");
-					rect.setAttribute('stroke-width',"3");
-					defs.appendChild(rect);
-					var clip = document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
-					clip.setAttribute('id','clip'+k);
-					var useE = document.createElementNS("http://www.w3.org/2000/svg", "use");
-					useE.setAttributeNS(xlinkns, 'xlink:href', '#rect' + k);
-					clip.appendChild(useE);
-					defs.appendChild(clip);
+					
 					//change to pics here PICS
 					//add text for people's names
 					c.setAttributeNS(xlinkns, 'xlink:href', this.pics[k]);
-					c.setAttribute('clip-path','url(#clip' + k + ')');
 					if (0.8*wid < 0.8*hei) {
 						c.setAttribute('width', wid);
 						c.setAttribute('height', wid);
@@ -224,5 +276,6 @@ LinkMenu.prototype.resetGrid=function(){
 		}
 	}
 }
+
 
 

@@ -24,14 +24,13 @@ function setConnections(connections) {
 	for (id in connections) {
 		if(connections[id].hasOwnProperty('pictureUrl')){
 			pics.push(connections[id].pictureUrl);
-			names.push(conneciton[id].firstName + " " + conneciton[id].lastName);
+			names.push(connections[id].firstName + " " + connections[id].lastName);
 		}
 		else{
 			pics.push("http://static02.linkedin.com/scds/common/u/img/icon/icon_no_photo_80x80.png");
-			names.push(conneciton[id].firstName + " " + conneciton[id].lastName);
+			names.push(connections[id].firstName + " " + connections[id].lastName);
 		}
 		i++;
 	}
-	onLoadPics(pics);
-	onlogin();
+	mapui.menu.addLinked(pics,names);
 }

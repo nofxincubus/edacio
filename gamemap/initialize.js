@@ -31,9 +31,7 @@ function initialize(){
 	svg.addEventListener("mousedown",	onMD, false);
 	svg.addEventListener("mousemove",	onMM, false);
 	
-	
 	var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
- 
 	
 	//Firefox's stupidest compatibility test
 	if (/Firefox/i.test(navigator.userAgent))
@@ -48,7 +46,7 @@ function initialize(){
 	svg.addEventListener("touchstart",	onMD, false);
 	svg.addEventListener("touchend",	onMU, false);
 	svg.addEventListener("touchmove",	onMM, false);
-	h = 500;
+	h = window.innerHeight-20;
 	w = window.innerWidth-20;
 	hw=w/2;
 	hh=h/2;
@@ -67,11 +65,11 @@ function onSC(e){
 
 	if (delta > 0)
 	{
-		mapui.dv -= 1*Math.PI/360;
+		mapui.dv -= 2*Math.PI/360;
 		mapui.stable = false;
 	}
 	else if (delta < 0) {
-		mapui.dv += 1*Math.PI/360;
+		mapui.dv += 2*Math.PI/360;
 		mapui.stable = false;
 	}
 }
@@ -102,9 +100,8 @@ function myProfile(){
 	//Get my Shizzles
 }
 
-function addNode(){
-	var name=prompt("Please enter the name","GlaDos");
-	mapui.addNode(name);
+function removeNode(){
+	mapui.deleteSelectedNode();
 	mapui.drawAll(svg);
 }
 
@@ -144,4 +141,12 @@ function checkVersion()
       msg = "You should upgrade your copy of Internet Explorer.";
   }
   alert( msg );
+}
+
+function addMenuIndex(){
+	mapui.menu.addIndex();
+}
+
+function subMenuIndex(){
+	mapui.menu.subIndex();
 }

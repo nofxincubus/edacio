@@ -7,7 +7,7 @@ function MapUI(w, h, csvg){
 	this.width = w;
 	this.height = h;
 	this.centerx = w/2;
-	this.centery = h/2;
+	this.centery = h/2-50;
 	this.dv = 0;
 	this.damping = 0.95;
 	this.updown = 1;
@@ -16,7 +16,7 @@ function MapUI(w, h, csvg){
 	this.stable = true;
 	//this.width = (window.innerWidth-20)*0.5;	
 	//this.height = 300;
-	this.menu = new LinkMenu(150, 400);
+	this.menu = new LinkMenu(150, 300);
 	this.selectedNode = 0;
 	this.innerName = "Your O";
 	this.innerStart = 0;
@@ -82,11 +82,6 @@ MapUI.prototype.removeAll = function(svg) {
 	}
 };
 
-
-MapUI.prototype.addNode = function(name) {
-	var focc = new Focus("tempme.png", name, this.currentFocus);
-	this.currentFocus.children.push(focc);
-};
 
 MapUI.prototype.importNodes = function(json) {
 	//Get Data but for now simulate
@@ -238,6 +233,8 @@ MapUI.prototype.moveAll = function(b,a){
 
 MapUI.prototype.SetDragged=function(b,a){
 	var ba;
+	if (this.menudragged)
+		this.StopDragging(b,a);
 	if (this.menu.clickTest(b,a)) {	
 		if (this.menu.nodeTest(b,a))
 			this.menudragged = true;
@@ -287,15 +284,41 @@ MapUI.prototype.StopDragging=function(b,a){
 		var inserted = false;
 		for (var i = 0;i < this.currentFocus.children.length;i++){
 			if (this.currentFocus.children[i].distance(b,a) < 70){
-				var foci = this.menu.nodeEnd(this.currentFocus.children[i]);;
-				this.currentFocus.children[i].children.push(foci);
-				inserted = true;
+				var menuIconIndex = this.menu.selected + this.menu.firstindex;
+				var foci = 0;
+				if (menuIconIndex < 6){
+					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[this.menu.selected + this.menu.firstindex]);
+					if (nodeName!=null && nodeName!="")	{
+						foci = this.menu.nodeEnd(this.currentFocus.children[i],nodeName);
+					}
+					else 
+						foci = 0;
+				} else
+					var foci = this.menu.nodeEnd(this.currentFocus.children[i]);
+				if (foci != 0){
+					this.currentFocus.children[i].children.push(foci);
+					inserted = true;
+				}
+				
 			}
 		}
 		if (this.currentFocus.distance(b,a) < 70) {
-			var foci = this.menu.nodeEnd(this.currentFocus);
-			this.currentFocus.children.push(foci);
-			inserted = true;
+			var menuIconIndex = this.menu.selected + this.menu.firstindex;
+				var foci = 0;
+				if (menuIconIndex < 6){
+					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[this.menu.selected + this.menu.firstindex]);
+					if (nodeName!=null && nodeName!="")	{
+						foci = this.menu.nodeEndName(this.currentFocus.children[i],nodeName);
+					}
+					else 
+						foci = 0;
+				} else
+					var foci = this.menu.nodeEnd(this.currentFocus.children[i]);
+			if (foci != 0){
+				this.currentFocus.children.push(foci);
+				inserted = true;
+			}
+			
 		}
 		if (!inserted) {
 			this.menu.nodeReset();
@@ -310,5 +333,18 @@ MapUI.prototype.StopDragging=function(b,a){
 		this.dv = 0.1*(b - this.startDragX)/this.width;
 	this.stable=false;
 	}
+	this.dragged = false;
+	this.menudragged = false;
 };
 
+MapUI.prototype.deleteSelectedNode = function(){
+	if (this.selectedNode != this.topFocus && this.selectedNode != 0)
+		for (var i = 0; i < this.currentFocus.children.length;i++){
+			if (this.selectedNode == this.currentFocus.children[i]){
+				var deletedFocus = this.currentFocus.children.splice(i,1);
+				if (this.menu.picNames.indexOf(deletedFocus[0].focusName) == -1)
+					this.menu.restore(deletedFocus[0].imageLink, deletedFocus[0].focusName);
+				break;
+			}
+		}
+};
