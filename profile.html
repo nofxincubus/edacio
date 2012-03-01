@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="profileStyle.css" />
+		<script type="text/javascript" src="profile.js">
+        </script>
+        <script type="text/javascript">
+		myProfile = new profile();
+        </script>
+    </head>
+    <body>
+    	<div class="miniProfile">
+            <div class="pictureContainer">
+            	<img class="pictureProfile" src="zahid.jpg" alt="Your pretty face"> 
+   			 </div>
+			<div class="userName">
+            	<h1 class="userName">Zahid Hasan</h1>
+            </div>
+            <div class="alertCounter">
+            	<h1 class="alertCounterText"><b id="alerts">10</b><h1>
+            </div>
+            <div class="otherPoints">
+           	  <h3><img class="otherPointsPicture" src="credits.png" alt="Credits"/><b class="otherPointsValue" id="credits">1430</b></h3> <!-- TODO pull initial from server-->	
+           	  <h3><img class="otherPointsPicture" src="awards.png" alt="Awards"/><b class = "otherPointsValue" id="awards">10</b></h3> <!-- TODO pull initial from server-->
+     		</div>
+            <div class="score">
+            	<h1 id="score" >345039</h1> <!-- TODO pull initial from server-->
+            </div>
+ 			
+        </div> <!-- End miniprofile div -->
+        
+        
+		<button type="button" onclick="myProfile.addScore(765)">Score: +1000</button>
+        <button type="button" onclick="myProfile.clearScore()">Clear Score</button><br />
+        <button type="button" onclick="myProfile.addCredits(1000)">Credits: +1000</button>
+        <button type="button" onclick="myProfile.clearCredits()">Clear Credits</button><br />
+        <button type="button" onclick="myProfile.addAwards(1)">Awards: +1</button>
+        <button type="button" onclick="myProfile.clearAwards()">Clear Awards</button>
+    </body>
+</html>
