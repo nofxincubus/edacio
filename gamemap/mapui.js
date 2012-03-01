@@ -287,15 +287,14 @@ MapUI.prototype.StopDragging=function(b,a){
 		var inserted = false;
 		for (var i = 0;i < this.currentFocus.children.length;i++){
 			if (this.currentFocus.children[i].distance(b,a) < 70){
-				this.menu.nodeEnd(b,a);
-				var foci = new Focus("tempme.png", "whatever", this.currentFocus.children[i]);
+				var foci = this.menu.nodeEnd(this.currentFocus.children[i]);;
 				this.currentFocus.children[i].children.push(foci);
 				inserted = true;
 			}
 		}
 		if (this.currentFocus.distance(b,a) < 70) {
-			this.menu.nodeEnd(b,a);
-			this.addNode("Name");
+			var foci = this.menu.nodeEnd(this.currentFocus);
+			this.currentFocus.children.push(foci);
 			inserted = true;
 		}
 		if (!inserted) {
