@@ -1,0 +1,90 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.miniProfile
+{
+	float: right;
+	width:300px;
+	height:210px;
+	position:absolute;
+	right:10px;
+	top:10px;
+	background-color:lightgrey;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+
+}
+
+.pictureContainer
+{
+	float:left;
+	width:60px;
+	height:60px;
+	padding:5px;
+}
+.pictureProfile
+{
+	float:left;
+	width:60px;
+	height:60px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+.userName
+{
+	text-align:center;
+
+}
+.alertCounter
+{
+	display:inline-block;
+	margin-left:5px;
+	float:left;
+	width:60px;
+	height:60px;
+	text-align:center;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	background-image:url("earth.png");
+	vertical-align:center;
+	text-color:red;
+}
+.alertCounterText
+{
+	position:relative;
+	top:-12px;
+	color:red;
+}
+.otherPoints
+{
+	display:inline-block;
+	text-align:left;
+	padding-left:65px;	
+}
+.otherPointsPicture
+{
+	position:relative;
+	top:-20px;
+	left:-35px;
+	vertical-align:middle;
+	width:20px;
+}
+.otherPointsValue
+{
+	position:relative;
+	top:-20px;
+	left:00px;
+	vertical-align:middle;
+	width:20px;
+	text-align:right;
+}
+.score
+{
+	position:relative;
+	top:-40px;
+	
+	vertical-align:center;
+	padding-right:27px;
+	text-align:right;
+}

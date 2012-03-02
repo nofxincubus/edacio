@@ -14,12 +14,14 @@
         <script type="text/javascript" src="focus.js"></script>
         <script type="text/javascript" src="LinkedinHandler.js"></script>
         <script type="text/javascript" src="linkmenu.js"></script>
+		<script type="text/javascript" src="profile.js"></script>
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">
 		  api_key: kd55r8vt584t
 		  onLoad: onLinkedInLoad
 		  authorize: true
 		</script>
         <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="profileStyle.css" />
 		<!--[if lt IE 9]>
         <script type="text/javascript">
             runFancy = false;
@@ -30,7 +32,25 @@
 </head>
 
 <body onLoad="initialize()">
-
+<div class="miniProfile">
+            <div class="pictureContainer">
+            	<img class="pictureProfile" src="zahid.jpg" alt="Your pretty face"> 
+   			 </div>
+			<div class="userName">
+            	<h1 class="userName">Zahid Hasan</h1>
+            </div>
+            <div class="alertCounter">
+            	<h1 class="alertCounterText"><b id="alerts">10</b><h1>
+            </div>
+            <div class="otherPoints">
+           	  <h3><img class="otherPointsPicture" src="credits.png" alt="Credits"/><b class="otherPointsValue" id="credits">1430</b></h3> <!-- TODO pull initial from server-->	
+           	  <h3><img class="otherPointsPicture" src="awards.png" alt="Awards"/><b class = "otherPointsValue" id="awards">10</b></h3> <!-- TODO pull initial from server-->
+     		</div>
+            <div class="score">
+            	<h1 id="score" >345039</h1> <!-- TODO pull initial from server-->
+            </div>
+ 			
+        </div> <!-- End miniprofile div -->
 <div style="position:absolute; z-index:1;  top:30px; left:580px; width:230px;">
 			<div style="text-align:left; width:120px;">
 				

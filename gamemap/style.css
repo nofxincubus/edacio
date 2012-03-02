@@ -24,22 +24,6 @@ strong a{
 }
 
 
-h1, h2, h3
-{
-	color: #E30613;
-	margin:14px 0;
-}
-h1{
-	margin:15px;
-	font-size:35px;
-}
-h2{
-	margin-top:45px;
-}
-h3{
-	font-size:20px;
-	margin: 10px 0 5px 0;
-}
 p, ul{
 	margin:8px;
 	line-height:1.4em;

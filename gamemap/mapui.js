@@ -61,7 +61,7 @@ MapUI.prototype.changeCircle = function(){
 }
 
 MapUI.prototype.loadTopNodes = function(){
-	this.topFocus = new Focus("test2.png","CalvinPark",0);
+	this.topFocus = new Focus("zahid.jpg","Zahid Hasan",0);
 	this.currentFocus = this.topFocus;
 	this.selectedNode = this.currentFocus;
 	this.selectedNode.isSelected();

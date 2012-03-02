@@ -21,6 +21,7 @@ function el(s)
 }
 
 function initialize(){
+	myProfile = new profile();
 	
 	if (getInternetExplorerVersion() == -1)
 		runFancy = true;
@@ -55,6 +56,7 @@ function initialize(){
 	mapui = new MapUI(w,h,svg);
 	//mapui.addNode();
 	mapui.drawAll(svg);
+	
 	onEF();
 }
 
