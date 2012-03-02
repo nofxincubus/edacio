@@ -2,16 +2,15 @@
 /* CSS Document */
 
 body { 
-	margin: 0; padding: 0; height: 100%; font-size:13px;
+	margin: 0; padding: 0; height: 100%; width:100%; font-size:13px;
 	color: #656565;
-	text-align:center;
+	
 	font-family:Arial, sans-serif;
 	
 }
 
 body div {
-	margin-left:auto;
-	margin-right:auto;
+	
 }
 
 a {

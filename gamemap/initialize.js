@@ -46,8 +46,8 @@ function initialize(){
 	svg.addEventListener("touchstart",	onMD, false);
 	svg.addEventListener("touchend",	onMU, false);
 	svg.addEventListener("touchmove",	onMM, false);
-	h = window.innerHeight-20;
-	w = window.innerWidth-20;
+	h = 500;
+	w = 850;
 	hw=w/2;
 	hh=h/2;
 	svg.setAttribute("width",w);
@@ -84,8 +84,8 @@ function onMU(e){
 function mouseX(e)
 {
 	var cx;
-	if(e.type == "touchstart" || e.type == "touchmove") cx = e.touches.item(0).clientX;
-	else cx = e.clientX;
+	if(e.type == "touchstart" || e.type == "touchmove") cx = e.touches.item(0).clientX + 5;
+	else cx = e.clientX + 5;
 	return (cx);
 }
 function mouseY(e)
@@ -149,4 +149,14 @@ function addMenuIndex(){
 
 function subMenuIndex(){
 	mapui.menu.subIndex();
+}
+
+function changeMode(){
+	mapui.changeCircle();
+}
+function increaseSize(){
+	mapui.increaseSize();
+}
+function decreaseSize(){
+	mapui.decreaseSize();
 }

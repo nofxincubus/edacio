@@ -6,9 +6,16 @@
 function Focus (imagelink, name, parent){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
 	this.focusName = name;
-	this.width = 70;
+	if (parent != 0) {
+		this.width = parent.width;
+		this.height = parent.height;
+	} else{
+		this.width = 50;
+		this.height = 50;
+	}
+	
 	this.imageLink = imagelink;
-	this.height = 70;
+	
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.point.setAttributeNS(this.xlinkns, 'xlink:href', imagelink);
@@ -21,20 +28,20 @@ function Focus (imagelink, name, parent){
 	this.circ.setAttribute("fill", "#9966FF");
 	this.circ.setAttribute("stroke-width", "3");
 	this.circ.setAttribute('opacity',"0");
-	this.circ.setAttribute('r', "70");
+	this.circ.setAttribute('r', this.width*1.5);
 	this.circOver = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circOver.setAttribute("stroke", "#3333FF");
 	this.circOver.setAttribute("fill", "#3333FF");
 	this.circOver.setAttribute("stroke-width", "3");
 	this.circOver.setAttribute('opacity',"0");
-	this.circOver.setAttribute('r', "70");
+	this.circOver.setAttribute('r', this.width*1.5);
 	this.circOver.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.5');");
 	this.circOver.setAttribute('onmouseout',"evt.target.setAttribute('opacity','0');");
 	
 	this.nameText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
 	this.nameText.setAttribute('fill', '#6c4c81');
 	this.nameText.setAttribute('text-anchor', 'middle');
-	this.nameText.setAttribute('font-size', '15');
+	this.nameText.setAttribute('font-size', '13');
 	this.nameText.textContent = this.focusName;
 	
 
@@ -49,13 +56,36 @@ function Focus (imagelink, name, parent){
 	this.children = [];
 }
 
+Focus.prototype.increaseSize = function(){
+	this.width += 1;
+	this.height += 1;
+	this.point.setAttribute("width", this.width);
+	this.point.setAttribute("height", this.height);
+	this.circOver.setAttribute('r', this.width*1.5);
+	this.circ.setAttribute('r', this.width*1.5);
+	for (var i = 0; i < this.children.length;i++){
+		this.children[i].increaseSize();
+	}
+}
+Focus.prototype.decreaseSize = function(){
+	this.width -= 1;
+	this.height -= 1;
+	this.point.setAttribute("width", this.width);
+	this.point.setAttribute("height", this.height);
+	this.circOver.setAttribute('r', this.width*1.5);
+	this.circ.setAttribute('r', this.width*1.5);
+	for (var i = 0; i < this.children.length;i++){
+		this.children[i].decreaseSize();
+	}
+}
+
 Focus.prototype.setXY = function(x,y){
 	this.x = x;
 	this.y = y;
-	this.point.setAttribute('x', x-35);
-	this.point.setAttribute('y', y-35);
+	this.point.setAttribute('x', x-this.width*0.5);
+	this.point.setAttribute('y', y-this.height*0.5);
 	this.nameText.setAttribute('x', x);
-	this.nameText.setAttribute('y', y + 35 + 20);
+	this.nameText.setAttribute('y', y + this.height*0.5 + 15);
 	this.circ.setAttribute('cx', x);
 	this.circ.setAttribute('cy', y);
 	this.circOver.setAttribute('cx', x);
@@ -99,18 +129,6 @@ Focus.prototype.addGlowAnimate = function(x){
 	x.appendChild(this.glonimate);
 }
 
-Focus.prototype.dropBoxTest = function(x,y){
-
-	if (!this.circAnimate){
-		//this.addGlowAnimate(this.circ);
-		this.circ.setAttribute('opacity',"0.2");
-		this.circAnimate = true;
-	}
-	else if (this.circAnimate){
-		this.circ.setAttribute('opacity',"0");
-		this.circAnimate = false;
-	}
-}
 
 
 

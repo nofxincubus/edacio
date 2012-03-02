@@ -6,27 +6,59 @@ function MapUI(w, h, csvg){
 	this.svg = csvg;
 	this.width = w;
 	this.height = h;
-	this.centerx = w/2;
-	this.centery = h/2-50;
+	
 	this.dv = 0;
 	this.damping = 0.95;
 	this.updown = 1;
 	this.layerlevel = 0;
-	this.circleRadius = 180;
+	this.sizeConstraint = 0.20;
+	this.circleRadius = w*this.sizeConstraint;
+	this.centerx = w/2 - 10;
+	this.centery = this.circleRadius + 50;
 	this.stable = true;
 	//this.width = (window.innerWidth-20)*0.5;	
 	//this.height = 300;
-	this.menu = new LinkMenu(150, 300);
+	this.menu = new LinkMenu(150, this.circleRadius*2, this.centerx - this.circleRadius - 220, this.centery-this.circleRadius - 20);
 	this.selectedNode = 0;
-	this.innerName = "Your O";
 	this.innerStart = 0;
 	this.loadTopNodes();
 	this.initialize();
 	this.menudragged = false;
 	this.dragged = false;
 	this.lines =[];
-	
+	this.doCircle = false;
 };
+
+MapUI.prototype.increaseSize = function(){
+	this.sizeConstraint +=0.005;
+	this.width += 5;
+	this.circleRadius = this.width*this.sizeConstraint;
+	this.centerx = this.width*0.5 - 10;
+	this.centery = this.circleRadius + 50;
+	this.topFocus.increaseSize();
+	this.menu.positionAll(150, this.circleRadius*2, this.centerx-this.circleRadius - 220, this.centery-this.circleRadius - 20);
+	//this.topFocus.increaseSize();
+	this.drawAll();
+}
+MapUI.prototype.decreaseSize = function(){
+	this.sizeConstraint -=0.005;
+	this.width -= 5;
+	this.circleRadius = this.width*this.sizeConstraint;
+	this.centerx = this.width*0.5 - 10;
+	this.centery = this.circleRadius + 50;
+	this.topFocus.decreaseSize();
+	this.menu.positionAll(150, this.circleRadius*2, this.centerx-this.circleRadius - 220, this.centery-this.circleRadius - 20);
+	//this.topFocus.decreaseSize();
+	this.drawAll();
+}
+
+MapUI.prototype.changeCircle = function(){
+	if (this.doCircle)
+		this.doCircle = false;
+	else
+		this.doCircle = true;
+	this.drawAll();
+}
 
 MapUI.prototype.loadTopNodes = function(){
 	this.topFocus = new Focus("test2.png","CalvinPark",0);
@@ -54,19 +86,23 @@ MapUI.prototype.drawAll = function(svg) {
 	this.removeAll(this.svg);
 	
 	this.reposition();
-	//Add the circle
-	
-//	this.svg.appendChild(this.mainCircle);
-	this.svg.appendChild(this.menu.getMenu());
-	for (i = 0;i < this.lines.length;i ++){
-		this.svg.appendChild(this.lines[i]);
+
+	//Add the circle or lines
+	if (this.doCircle)
+		this.svg.appendChild(this.mainCircle);
+	else {
+		for (var i = 0;i < this.lines.length;i ++)
+			this.svg.appendChild(this.lines[i]);
 	}
+	
+	this.svg.appendChild(this.menu.getMenu());
+
 	if (this.currentFocus.parent != 0)
 	{
 		this.svg.appendChild(this.parentLine);
 		this.svg.appendChild(this.currentFocus.parent.getPoint());
 	}
-	i = 0;
+	var i = 0;
 	this.svg.appendChild(this.currentFocus.getPoint());
 	while (i < this.currentFocus.children.length){
 		this.svg.appendChild(this.currentFocus.children[i].getPoint());
@@ -101,6 +137,7 @@ MapUI.prototype.reposition = function() {
 	//set Radius
 	this.mainCircle.setAttribute('cx', this.centerx);
 	this.mainCircle.setAttribute('cy', this.centery);
+	this.mainCircle.setAttribute('r', this.circleRadius);
 	//set transparency shizzle
 
 	var ciropac = 1-Math.abs(this.circleRadius - 200)/200;
@@ -109,7 +146,7 @@ MapUI.prototype.reposition = function() {
 	
 	if (this.currentFocus.parent != 0)
 	{
-		this.currentFocus.parent.setXY(this.centerx + 300, this.centery);
+		this.currentFocus.parent.setXY(this.centerx + this.circleRadius+100, this.centery);
 		var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
 		line.setAttribute("stroke", "#9966FF");
 		line.setAttribute("fill", "none");
@@ -118,7 +155,7 @@ MapUI.prototype.reposition = function() {
 		line.setAttribute("z-index",-1);
 		line.setAttribute('x1',this.centerx);
 		line.setAttribute('y1',this.centery);
-		line.setAttribute('x2',this.centerx + 300);
+		line.setAttribute('x2',this.centerx + this.circleRadius+100);
 		line.setAttribute('y2',this.centery);
 		this.parentLine = line;
 	}
@@ -213,14 +250,14 @@ MapUI.prototype.spinIterate=function(){
 
 MapUI.prototype.topNodeTest = function(a,b) {
 	for (var i = 0;i < this.currentFocus.children.length;i++)
-		if (this.currentFocus.children[i].distance(a,b) < 35)
+		if (this.currentFocus.children[i].distance(a,b) < this.currentFocus.width*1.5)
 			return i;
 	return -1;
 }
 
 MapUI.prototype.parentTest = function(a,b) {
 	if (this.currentFocus.parent != 0){
-		if (this.currentFocus.parent.distance(a,b) < 35) {
+		if (this.currentFocus.parent.distance(a,b) < this.currentFocus.width*1.5) {
 			return true;
 		}
 	}
@@ -233,6 +270,7 @@ MapUI.prototype.moveAll = function(b,a){
 
 MapUI.prototype.SetDragged=function(b,a){
 	var ba;
+	//Stupid Firefox Drag fix
 	if (this.menudragged)
 		this.StopDragging(b,a);
 	if (this.menu.clickTest(b,a)) {	
@@ -283,7 +321,7 @@ MapUI.prototype.StopDragging=function(b,a){
 		//while for each component
 		var inserted = false;
 		for (var i = 0;i < this.currentFocus.children.length;i++){
-			if (this.currentFocus.children[i].distance(b,a) < 70){
+			if (this.currentFocus.children[i].distance(b,a) < this.currentFocus.width*1.5){
 				var menuIconIndex = this.menu.selected + this.menu.firstindex;
 				var foci = 0;
 				if (menuIconIndex < 6){
@@ -302,7 +340,7 @@ MapUI.prototype.StopDragging=function(b,a){
 				
 			}
 		}
-		if (this.currentFocus.distance(b,a) < 70) {
+		if (this.currentFocus.distance(b,a) < this.currentFocus.width*1.5) {
 			var menuIconIndex = this.menu.selected + this.menu.firstindex;
 				var foci = 0;
 				if (menuIconIndex < 6){

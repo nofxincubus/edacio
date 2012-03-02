@@ -30,21 +30,26 @@
 </head>
 
 <body onLoad="initialize()">
-<!--
-<div style="position:absolute; z-index:1; margin:15px; right:0px; width:230px;">
-			<h3>Controls</h3>
+
+<div style="position:absolute; z-index:1;  top:30px; left:580px; width:230px;">
 			<div style="text-align:left; width:120px;">
 				
 				<div class="cb">
-					<button type="button"  onclick="removeNode();" class="btn control">Remove Node</button>
+					<button type="button"  onclick="changeMode();" class="btn control">Change Mode</button>
+				</div>
+                <div class="cb">
+					<button type="button"  onclick="increaseSize();" class="btn control">Zoom In</button>
+				</div>
+                <div class="cb">
+					<button type="button"  onclick="decreaseSize();" class="btn control">Zoom Out</button>
 				</div>
                 <div class="cb">
                  <script type="IN/Login" data-onAuth="onLinkedInLoad"></script>
                  </div>
 			</div>
 		</div>
--->
-		<svg id="svgc" style="width:100%; height:600px;"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+		<svg id="svgc" style="width:100%; height:600px; "  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		</svg>
 
         

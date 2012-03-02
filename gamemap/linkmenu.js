@@ -3,12 +3,12 @@
 // Email nofxincubus@gmail.com for questions
 // Use it all you want just put on your site that you are using my stuff :)
 
-function LinkMenu(w, h) {
-	this.x = 30;
-	this.y = 30;
+function LinkMenu(w, h, x, y ) {
+	this.x = x;
+	this.y = y;
 	this.width = w;
 	this.height = h;
-	this.nodeSize = 0.85;
+	this.nodeSize = 0.88;
 	this.firstindex = 0;
 	this.nodeType = "image";
 	//initialization of variables
@@ -45,6 +45,29 @@ function LinkMenu(w, h) {
 	this.nodes = [];
 
 	this.initialize();
+	this.positionAll(w,h,x,y);
+}
+
+LinkMenu.prototype.positionAll = function (w,h,x,y){
+	this.width = w;
+	this.height = h;
+	this.x = x;
+	this.y = y;
+	//Default radius of round corner = 30
+	this.frame.setAttribute('x', this.x);
+	this.frame.setAttribute('y', this.y);
+	this.frame.setAttribute('rx', 10);
+	this.frame.setAttribute('ry', 10);
+	this.frame.setAttribute('width', this.width);
+	this.frame.setAttribute('height', this.height +50);
+	this.remove.setAttribute('x', this.x+15);
+	this.remove.setAttribute('y', this.height+this.y+5);
+	this.remove.setAttribute('rx', 10);
+	this.remove.setAttribute('ry', 10);
+	this.remove.setAttribute('width', this.width-30);
+	this.remove.setAttribute('height', 40);
+	this.removeText.setAttribute('x', this.x+15+(this.width-30)*0.5);
+	this.removeText.setAttribute('y', this.height+this.y+5+23);
 }
 
 LinkMenu.prototype.initialize = function() {
@@ -54,35 +77,20 @@ LinkMenu.prototype.initialize = function() {
 	this.frame.setAttribute('opacity',"1");
 	this.frame.setAttribute('stroke',"#f9fcaf");
 	this.frame.setAttribute('stroke-width',"3");
-	this.frame.setAttribute('x', this.x);
-	this.frame.setAttribute('y', this.y);
-	this.up.setAttribute("x", this.width*0.5 + 5);
-	this.up.setAttribute("y", this.x-30);
-	this.down.setAttribute("x",  this.width*0.5  + 5);
-	this.down.setAttribute("y", this.y+this.height+50);
+	
 
-	//Default radius of round corner = 30
-	this.frame.setAttribute('rx', 10);
-	this.frame.setAttribute('ry', 10);
-	this.frame.setAttribute('width', this.width);
-	this.frame.setAttribute('height', this.height +50);
+	
 	
 	this.remove.setAttribute('fill',"#ffafaf");
 	this.remove.setAttribute('opacity',"1");
 	this.remove.setAttribute('stroke',"#ffafaf");
 	this.remove.setAttribute('stroke-width',"3");
-	this.remove.setAttribute('x', this.x+15);
-	this.remove.setAttribute('y', this.height+this.y+5);
-	this.remove.setAttribute('rx', 10);
-	this.remove.setAttribute('ry', 10);
-	this.remove.setAttribute('width', this.width-30);
-	this.remove.setAttribute('height', 40);
+	
 	this.removeText.setAttribute('fill', '#6d5e76');
 	this.removeText.setAttribute('text-anchor', 'middle');
 	this.removeText.setAttribute('font-size', '15');
 	this.removeText.textContent = "Remove Node";
-	this.removeText.setAttribute('x', this.x+15+(this.width-30)*0.5);
-	this.removeText.setAttribute('y', this.height+this.y+5+23);
+	
 	this.remove.setAttribute("style", "cursor:pointer;");
 	this.removeText.setAttribute("style", "cursor:pointer;");
 	
@@ -216,14 +224,14 @@ LinkMenu.prototype.resetGrid=function(){
 	else if (this.width > 200)
 		this.nodex = 4;
 	else
-		this.nodex = 2;
+		this.nodex = 3;
 		
 	if (this.height > 500)
 		this.nodey = 9;
 	else if (this.height > 200)
 		this.nodey = 7;
 	else
-		this.nodey = 2;
+		this.nodey = 4;
 	if (this.firstindex > 0)
 		this.group.appendChild(this.up);
 	if (this.firstindex + this.nodex*this.nodey < this.pics.length)
