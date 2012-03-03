@@ -22,6 +22,7 @@ function Focus (imagelink, name, parent){
 	this.group.setAttribute("style", "cursor:pointer;");
 	this.point.setAttribute("width", this.width);
 	this.point.setAttribute("height", this.height);
+	this.point.setAttribute("z-index",2);
     this.circ = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circ.setAttribute("stroke", "#9966FF");
 	this.circ.setAttribute("fill", "#9966FF");
@@ -49,9 +50,7 @@ function Focus (imagelink, name, parent){
 	this.group.appendChild(this.point);
 	this.group.appendChild(this.nameText);
 	this.group.appendChild(this.circOver);
-	this.group.setAttribute('style','z-index:0');
-	this.circOver.setAttribute('style','z-index:0');
-	this.circ.setAttribute('style','z-index:0');
+	
 	
 	this.parent = parent;
 	this.children = [];
@@ -155,19 +154,11 @@ Focus.prototype.distance = function(a,b){
 }
 
 Focus.prototype.isSelected = function(){
-	if (runFancy){
-		this.addJiggleAnimate(this.point);
-	} else {
 		this.circ.setAttribute('opacity',"0.3");
-	}
 }
 
 Focus.prototype.deSelect = function(){
-	if (runFancy){
-		this.removeAnimate(this.point);
-	} else {
 		this.circ.setAttribute('opacity',"0");
-	}
 }
 
 

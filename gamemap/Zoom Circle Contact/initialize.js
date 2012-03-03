@@ -21,21 +21,15 @@ function el(s)
 }
 
 function initialize(){
-	//site Initialization
-	document.body.setAttribute("height",window.innerHeight);
-	//el('footer1').setAttribute("style",'background:#6CF; height:' + window.innerHeight*0.25);
-	mouseIncrease = window.innerHeight*0.05;
-	myProfile = new profile();
-	
-	if (getInternetExplorerVersion() === -1)
-		runFancy = true;
-	else
-		runFancy = false;
 	svg = el('svgc');
-	runFancy = false;
-	svg.addEventListener("mousedown",	onMD, false);
-	svg.addEventListener("mousemove",	onMM, false);
+//	var canv = el('mapcanvs');
+	//canvasContext = canv.getContext("2d");
 	
+	h = window.innerHeight;
+	w = window.innerWidth;
+	hw=w/2;
+	hh=h/2;
+	var mouseHandler = el('catcher');
 	var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 	
 	//Firefox's stupidest compatibility test
@@ -46,21 +40,10 @@ function initialize(){
 	else if (document.addEventListener) //WC3 browsers
 		document.addEventListener(mousewheelevt, onSC, false);
 	
-	svg.addEventListener("mouseup",		onMU, false);
-		
-	svg.addEventListener("touchstart",	onMD, false);
-	svg.addEventListener("touchend",	onMU, false);
-	svg.addEventListener("touchmove",	onMM, false);
 	
-	h = window.innerHeight*0.7;
-	w = window.innerWidth - 20;
-	hw=w/2;
-	hh=h/2;
-	svg.setAttribute("style","width:100%; height:" + h + "px ; background:#C9F");
 	mapui = new MapUI(w,h,svg);
-	//mapui.addNode();
-	mapui.drawAll(svg);
 	
+	mapui.drawAll(svg);
 	onEF();
 }
 
@@ -80,26 +63,7 @@ function onSC(e){
 	}
 }
 
-function onMD(e){
-	var x = mapui.SetDragged	(mouseX(e), mouseY(e));
-	if (x != 0){
-		var wrapdiv = el('recommendcontact');
-		var textTitle = document.getElementById('contacttitle');
-		var textArea = el('contacttextarea');
-		wrapdiv.setAttribute('style','position:absolute; top:40px; left:180px; opacity:0.8; z-index = 10;');
-		textArea.setAttribute('style','max-height:100px; max-width:200px; z-index:10');
-		textArea.focus();
-		textTitle.textContent = "Notes about " + x;
-	} else {
-		var wrapdiv = el('recommendcontact');
-		var textTitle = document.getElementById('contacttitle');
-		var textArea = el('contacttextarea');
-		wrapdiv.setAttribute('style','position:absolute; top:40px; left:180px; opacity:0; z-index = 1;');
-		textArea.setAttribute('style','max-height:100px; max-width:200px; z-index:1');
-		textArea.focus();
-		textTitle.textContent = "";
-	}
-}
+function onMD(e){mapui.SetDragged	(mouseX(e), mouseY(e));}
 function onMM(e){mapui.MoveDragged	(mouseX(e), mouseY(e));}
 function onMU(e){
 	mapui.StopDragging (mouseX(e), mouseY(e));
@@ -109,14 +73,14 @@ function onMU(e){
 function mouseX(e)
 {
 	var cx;
-	if(e.type === "touchstart" || e.type === "touchmove") cx = e.touches.item(0).clientX;
+	if(e.type == "touchstart" || e.type == "touchmove") cx = e.touches.item(0).clientX;
 	else cx = e.clientX;
 	return (cx);
 }
 function mouseY(e)
 {	
 	var cy;
-	if(e.type === "touchstart" || e.type === "touchmove")	cy = e.touches.item(0).clientY - 25;
+	if(e.type == "touchstart" || e.type == "touchmove")	cy = e.touches.item(0).clientY - 25;
 	else cy = e.clientY - 25;
 	return (cy); 
 }
@@ -144,7 +108,7 @@ function getInternetExplorerVersion()
 // (indicating the use of another browser).
 {
   var browserIEVersion = -1; // Return value assumes failure.
-  if (navigator.appName === 'Microsoft Internet Explorer')
+  if (navigator.appName == 'Microsoft Internet Explorer')
   {
     var ua = navigator.userAgent;
     var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
@@ -177,7 +141,7 @@ function subMenuIndex(){
 }
 
 function changeMode(){
-	mapui.changeCircle();
+	mapui.mapui.changeCircle();
 }
 function increaseSize(){
 	mapui.increaseSize();
@@ -185,7 +149,6 @@ function increaseSize(){
 function decreaseSize(){
 	mapui.decreaseSize();
 }
-
 function drop(event){
 	var findex = mapui.menu.firstindex;
 	var index = parseInt(event.dataTransfer.getData("Text"));
@@ -202,7 +165,7 @@ event.preventDefault();
 function onDragEvent(event){
 	var x = -1;
 	for (var i = 0;i < mapui.menu.frameDiv.childNodes.length;i++)
-		if (mapui.menu.frameDiv.childNodes[i] === event.target){
+		if (mapui.menu.frameDiv.childNodes[i] == event.target){
 			x = i;
 			event.dataTransfer.setData("Text",x);
 			break;

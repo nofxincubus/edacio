@@ -2,7 +2,7 @@
 //Questions email me
 //use it all you want just be nice and mention me in your website
 
-function MapUI(w, h, csvg){
+function MapUI(w, h,csvg){
 	this.svg = csvg;
 	this.width = w;
 	this.height = h;
@@ -18,15 +18,14 @@ function MapUI(w, h, csvg){
 	this.stable = true;
 	//this.width = (window.innerWidth-20)*0.5;	
 	//this.height = 300;
-	this.menu = new LinkMenu(150, this.circleRadius*2+30, 20, 30);
 	this.selectedNode = 0;
 	this.innerStart = 0;
 	this.loadTopNodes();
 	this.initialize();
-	this.menudragged = false;
 	this.dragged = false;
 	this.lines =[];
 	this.doCircle = false;
+	this.menu = new DivMenu(150,400,30,40);
 };
 
 MapUI.prototype.increaseSize = function(){
@@ -36,7 +35,6 @@ MapUI.prototype.increaseSize = function(){
 	this.centerx = this.width*0.5 - 10;
 	this.centery = this.circleRadius + 50;
 	this.topFocus.increaseSize();
-	this.menu.positionAll(150, this.circleRadius*2, this.centerx-this.circleRadius - 220, this.centery-this.circleRadius - 20);
 	//this.topFocus.increaseSize();
 	this.drawAll();
 }
@@ -47,7 +45,6 @@ MapUI.prototype.decreaseSize = function(){
 	this.centerx = this.width*0.5 - 10;
 	this.centery = this.circleRadius + 50;
 	this.topFocus.decreaseSize();
-	this.menu.positionAll(150, this.circleRadius*2, this.centerx-this.circleRadius - 220, this.centery-this.circleRadius - 20);
 	//this.topFocus.decreaseSize();
 	this.drawAll();
 }
@@ -94,8 +91,6 @@ MapUI.prototype.drawAll = function(svg) {
 		for (var i = 0;i < this.lines.length;i ++)
 			this.svg.appendChild(this.lines[i]);
 	}
-	
-	this.svg.appendChild(this.menu.getMenu());
 
 	if (this.currentFocus.parent != 0)
 	{
@@ -108,7 +103,7 @@ MapUI.prototype.drawAll = function(svg) {
 		this.svg.appendChild(this.currentFocus.children[i].getPoint());
 		i++;
 	}
-	
+	this.menu.resetGrid();
 };
 
 //Reve the MAP UI
@@ -152,7 +147,6 @@ MapUI.prototype.reposition = function() {
 		line.setAttribute("fill", "none");
 		line.setAttribute("stroke-width", "3");
 		line.setAttribute('opacity',"1");
-		line.setAttribute("z-index",-1);
 		line.setAttribute('x1',this.centerx);
 		line.setAttribute('y1',this.centery);
 		line.setAttribute('x2',this.centerx + this.circleRadius+100);
@@ -270,13 +264,7 @@ MapUI.prototype.moveAll = function(b,a){
 
 MapUI.prototype.SetDragged=function(b,a){
 	var ba;
-	//Stupid Firefox Drag fix
-	if (this.menudragged)
-		this.StopDragging(b,a);
-	if (this.menu.clickTest(b,a)) {	
-		if (this.menu.nodeTest(b,a))
-			this.menudragged = true;
-	} else if (this.topNodeTest(b,a) != -1) {
+	if (this.topNodeTest(b,a) != -1) {
 		if ( this.currentFocus.children[this.topNodeTest(b,a)].children.length > 0){
 			this.currentFocus = this.currentFocus.children[this.topNodeTest(b,a)];
 			this.selectedNode.deSelect();
@@ -303,37 +291,32 @@ MapUI.prototype.SetDragged=function(b,a){
 	this.selectedNode = this.currentFocus;
 	this.selectedNode.isSelected();
 	}
+	this.drawAll(this.svg);
 };
 
 MapUI.prototype.MoveDragged=function(b,a){
-	if (this.menudragged) {
-		this.menu.nodeTest(b,a);
-		this.stable = false;
-	} else if(this.dragged) {
+	if(this.dragged) {
 		
 	}
 	
 	
 };
 
-MapUI.prototype.StopDragging=function(b,a){
-	if (this.menudragged) {
-		this.menudragged = false;
-		//while for each component
-		var inserted = false;
+MapUI.prototype.dropNode = function(b,a, selected, firstindex){
+	var inserted = false;
 		for (var i = 0;i < this.currentFocus.children.length;i++){
 			if (this.currentFocus.children[i].distance(b,a) < this.currentFocus.width*1.5){
-				var menuIconIndex = this.menu.selected + this.menu.firstindex;
+				var menuIconIndex = Math.abs(selected) + Math.abs(firstindex);
 				var foci = 0;
 				if (menuIconIndex < 6){
-					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[this.menu.selected + this.menu.firstindex]);
+					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[menuIconIndex]);
 					if (nodeName!=null && nodeName!="")	{
-						foci = this.menu.nodeEndName(this.currentFocus.children[i],nodeName);
+						foci = new Focus(this.menu.pics[menuIconIndex],nodeName,this.currentFocus.children[i]);
 					}
 					else 
 						foci = 0;
 				} else
-					foci = this.menu.nodeEnd(this.currentFocus.children[i]);
+					foci = new Focus(this.menu.pics[menuIconIndex],this.menu.picNames[menuIconIndex],this.currentFocus.children[i]);
 				if (foci != 0){
 					this.currentFocus.children[i].children.push(foci);
 					inserted = true;
@@ -342,27 +325,33 @@ MapUI.prototype.StopDragging=function(b,a){
 			}
 		}
 		if (this.currentFocus.distance(b,a) < this.currentFocus.width*1.5) {
-			var menuIconIndex = this.menu.selected + this.menu.firstindex;
+			var menuIconIndex = Math.abs(selected) + Math.abs(firstindex);
 				var foci = 0;
 				if (menuIconIndex < 6){
-					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[this.menu.selected + this.menu.firstindex]);
+					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[menuIconIndex]);
 					if (nodeName!=null && nodeName!="")	{
-						foci = this.menu.nodeEndName(this.currentFocus,nodeName);
+						foci = new Focus(this.menu.pics[menuIconIndex],nodeName,this.currentFocus);
 					}
 					else 
 						foci = 0;
 				} else
-					var foci = this.menu.nodeEnd(this.currentFocus);
+					foci = new Focus(this.menu.pics[menuIconIndex],this.menu.picNames[menuIconIndex],this.currentFocus);
 			if (foci != 0){
 				this.currentFocus.children.push(foci);
-				inserted = true;
+				this.inserted = true;
+				this.drawAll(this.svg);
 			}
-			
 		}
-		if (!inserted) {
-			this.menu.nodeReset();
-		}
-	} else if(this.dragged) {
+}
+
+MapUI.prototype.StopDragging=function(b,a){
+	/*
+	if (this.menudragged) {
+		this.menudragged = false;
+		//while for each component
+		
+	} else */
+	if(this.dragged) {
 	this.dragged = false;
 	if (Math.abs(b - this.startDragX) < 50 && Math.abs(a - this.startDragY) < 50)
 		return;
@@ -381,8 +370,8 @@ MapUI.prototype.deleteSelectedNode = function(){
 		for (var i = 0; i < this.currentFocus.children.length;i++){
 			if (this.selectedNode == this.currentFocus.children[i]){
 				var deletedFocus = this.currentFocus.children.splice(i,1);
-				if (this.menu.picNames.indexOf(deletedFocus[0].focusName) == -1)
-					this.menu.restore(deletedFocus[0].imageLink, deletedFocus[0].focusName);
+				if (this.this.menu.picNames.indexOf(deletedFocus[0].focusName) == -1)
+					this.this.menu.restore(deletedFocus[0].imageLink, deletedFocus[0].focusName);
 				break;
 			}
 		}

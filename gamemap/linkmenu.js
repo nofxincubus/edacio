@@ -68,6 +68,12 @@ LinkMenu.prototype.positionAll = function (w,h,x,y){
 	this.remove.setAttribute('height', 40);
 	this.removeText.setAttribute('x', this.x+15+(this.width-30)*0.5);
 	this.removeText.setAttribute('y', this.height+this.y+5+23);
+	
+	this.up.setAttribute('x', this.x+this.width*0.5-20);
+	this.up.setAttribute('y', this.y-30);
+	
+	this.down.setAttribute('x', this.x+this.width*0.5-25);
+	this.down.setAttribute('y', this.y+this.height+50);
 }
 
 LinkMenu.prototype.initialize = function() {
