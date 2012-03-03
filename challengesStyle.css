@@ -11,7 +11,9 @@ body
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 }
-
+.challengeList
+{
+}
 .awardPicture
 {
 	width:60px;
