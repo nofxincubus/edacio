@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Edacio</title>
+<script type="text/javascript" src="connectionprofile.js"> </script>
+<script type="text/javascript" src="http://platform.linkedin.com/in.js">
+  api_key: kd55r8vt584t
+  onLoad: onLinkedInLoad
+  authorize: true
+</script>
+
+<!-- NOTE: be sure to set onLoad: onLinkedInLoad -->
+
+<!--[if lt IE 9]>
+<script type="text/javascript">
+    runFancy = false;
+    //any other IE specific stuff here
+</script>
+
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+
+
+<body onLoad="onLinkedInLoad()">
+<script type="IN/Login">
+<div id="connectionstest">
+  <p>Current User's Connections:</p>
+  <div id="connectionsdata"></div>
+</div>
+</script>
+
+</body>
+</html>
+
