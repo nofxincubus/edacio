@@ -25,7 +25,8 @@ function MapUI(w, h,csvg){
 	this.dragged = false;
 	this.lines =[];
 	this.doCircle = false;
-	this.menu = new DivMenu(150,360,60,20);
+	var xx = 70;
+	this.menu = new DivMenu(150,this.circleRadius*2.1,xx,30);
 };
 
 MapUI.prototype.increaseSize = function(){

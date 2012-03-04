@@ -17,14 +17,14 @@ function DivMenu(w, h, x, y ) {
 	
 	this.up = document.createElement('img');
 	this.up.setAttribute('src','up.png');
-	var xup = w*0.5 -3;
+	var xup = w*0.5 +4;
 	var yup = x -25;
 	this.up.setAttribute('style','position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:3;');
 	this.up.setAttribute('onclick','subMenuIndex()');
 	
 	this.down = document.createElement('img');
 	this.down.setAttribute('src','down.png');
-	xup = w*0.5 - 3;
+	xup = w*0.5+4;
 	yup = x + h -3;
 	this.down.setAttribute('style','position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:3;');
 	this.down.setAttribute('onclick','addMenuIndex()');
@@ -183,8 +183,8 @@ DivMenu.prototype.resetGrid=function(){
 					} else {
 						newImg.setAttribute('WIDTH',hei);
 						newImg.setAttribute('HEIGHT',hei);
-						var xup = (this.width/this.nodex)*i + this.x + 0.5*wc - 0.5*hei;
-						var yup = (this.height/this.nodey)*j + this.y + hborder;
+						var xup = (this.width/this.nodex)*i +  0.5*wc - 0.5*hei;
+						var yup = (this.height/this.nodey)*j +  hborder;
 						var styleText = 'position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:2';
 						newImg.setAttribute('style',styleText);
 					}
