@@ -60,7 +60,7 @@ function initialize(){
 	mapui = new MapUI(w,h,svg);
 	//mapui.addNode();
 	mapui.drawAll(svg);
-	
+	liprof = new LIProfile();
 	onEF();
 }
 
@@ -89,7 +89,9 @@ function onMD(e){
 		wrapdiv.setAttribute('style','position:absolute; top:40px; left:180px; opacity:0.8; z-index = 10;');
 		textArea.setAttribute('style','max-height:100px; max-width:200px; z-index:10');
 		textArea.focus();
-		textTitle.textContent = "Notes about " + x;
+		textTitle.textContent = "Notes about " + x.profile.name;
+		liprof.setConnections(x.profile);
+		liprof.drawAll();
 	} else {
 		var wrapdiv = el('recommendcontact');
 		var textTitle = document.getElementById('contacttitle');
@@ -98,7 +100,10 @@ function onMD(e){
 		textArea.setAttribute('style','max-height:100px; max-width:200px; z-index:1');
 		textArea.focus();
 		textTitle.textContent = "";
+		liprof.removeAll();
 	}
+	
+	
 }
 function onMM(e){mapui.MoveDragged	(mouseX(e), mouseY(e));}
 function onMU(e){

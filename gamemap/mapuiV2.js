@@ -58,10 +58,20 @@ MapUI.prototype.changeCircle = function(){
 }
 
 MapUI.prototype.loadTopNodes = function(){
-	this.topFocus = new Focus("zahid.jpg","Zahid Hasan",0);
+	//Linkedin Load for your own shit but temporarily
+	var x = new connectionProfile(0,"tempme","Zahid Hasan","Mr. Incredible","Ann Arbor, MI", "Working like Crazy","");
+	this.topFocus = new Focus(x,0);
 	this.currentFocus = this.topFocus;
 	this.selectedNode = this.currentFocus;
 	this.selectedNode.isSelected();
+}
+MapUI.prototype.resetTopNodes = function(profile){
+	//Linkedin Load for your own shit but temporarily
+	this.topFocus = new Focus(profile,0);
+	this.currentFocus = this.topFocus;
+	this.selectedNode = this.currentFocus;
+	this.selectedNode.isSelected();
+	this.drawAll(this.svg);
 }
 
 MapUI.prototype.initialize = function(){
@@ -103,7 +113,6 @@ MapUI.prototype.drawAll = function(svg) {
 		this.svg.appendChild(this.currentFocus.children[i].getPoint());
 		i++;
 	}
-	this.menu.resetGrid();
 };
 
 //Reve the MAP UI
@@ -300,7 +309,7 @@ MapUI.prototype.SetDragged=function(b,a){
 	return 0;
 	}
 	this.drawAll(this.svg);
-	return this.selectedNode.focusName;
+	return this.selectedNode;
 };
 
 MapUI.prototype.MoveDragged=function(b,a){
@@ -318,14 +327,15 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 				var menuIconIndex = Math.abs(selected) + Math.abs(firstindex);
 				var foci = 0;
 				if (menuIconIndex < 6){
-					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[menuIconIndex]);
+					var nodeName = prompt("Please type in the name of the node", this.menu.profileList[menuIconIndex].name);
 					if (nodeName!=null && nodeName!="")	{
-						foci = new Focus(this.menu.pics[menuIconIndex],nodeName,this.currentFocus.children[i]);
+						foci = new Focus(this.menu.profileList[menuIconIndex],this.currentFocus.children[i]);
 					}
 					else 
 						foci = 0;
-				} else
-					foci = new Focus(this.menu.pics[menuIconIndex],this.menu.picNames[menuIconIndex],this.currentFocus.children[i]);
+				} else {
+					foci = new Focus(this.menu.profileList[menuIconIndex],this.currentFocus.children[i]);
+				}
 				if (foci != 0){
 					this.currentFocus.children[i].children.push(foci);
 					inserted = true;
@@ -333,18 +343,20 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 				
 			}
 		}
-		if (this.currentFocus.distance(b,a) < this.currentFocus.width*1.5) {
+		var dis = this.currentFocus.distance(b,a);
+		if (dis < this.currentFocus.width*1.5) {
 			var menuIconIndex = Math.abs(selected) + Math.abs(firstindex);
 				var foci = 0;
 				if (menuIconIndex < 6){
-					var nodeName = prompt("Please type in the name of the node", this.menu.picNames[menuIconIndex]);
+					var nodeName = prompt("Please type in the name of the node", this.menu.profileList[menuIconIndex].name);
 					if (nodeName!=null && nodeName!="")	{
-						foci = new Focus(this.menu.pics[menuIconIndex],nodeName,this.currentFocus);
+						foci = new Focus(this.menu.profileList[menuIconIndex],this.currentFocus);
 					}
 					else 
 						foci = 0;
-				} else
-					foci = new Focus(this.menu.pics[menuIconIndex],this.menu.picNames[menuIconIndex],this.currentFocus);
+				} else {
+					foci = new Focus(this.menu.profileList[menuIconIndex],this.currentFocus);
+				}
 			if (foci != 0){
 				this.currentFocus.children.push(foci);
 				this.inserted = true;

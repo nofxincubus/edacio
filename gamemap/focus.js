@@ -3,9 +3,9 @@
 // Email nofxincubus@gmail.com for questions
 // Use it all you want just put on your site that you are using my stuff :)
 
-function Focus (imagelink, name, parent){
+function Focus (profile, parent){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
-	this.focusName = name;
+	this.profile = profile;
 	if (parent != 0) {
 		this.width = parent.width;
 		this.height = parent.height;
@@ -14,11 +14,11 @@ function Focus (imagelink, name, parent){
 		this.height = 50;
 	}
 	
-	this.imageLink = imagelink;
-	
+	this.x = 0;
+	this.y = 0;
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
-	this.point.setAttributeNS(this.xlinkns, 'xlink:href', imagelink);
+	this.point.setAttributeNS(this.xlinkns, 'xlink:href', this.profile.picURL);
 	this.group.setAttribute("style", "cursor:pointer;");
 	this.point.setAttribute("width", this.width);
 	this.point.setAttribute("height", this.height);
@@ -41,7 +41,7 @@ function Focus (imagelink, name, parent){
 	this.nameText.setAttribute('fill', '#6c4c81');
 	this.nameText.setAttribute('text-anchor', 'middle');
 	this.nameText.setAttribute('font-size', '13');
-	this.nameText.textContent = this.focusName;
+	this.nameText.textContent = this.profile.name;
 	
 
 	this.circAnimate = false;
@@ -55,6 +55,10 @@ function Focus (imagelink, name, parent){
 	
 	this.parent = parent;
 	this.children = [];
+}
+
+Focus.prototype.setID = function(id){
+	this.profile.id = id;
 }
 
 Focus.prototype.increaseSize = function(){
@@ -83,18 +87,18 @@ Focus.prototype.decreaseSize = function(){
 Focus.prototype.setXY = function(x,y){
 	this.x = x;
 	this.y = y;
-	this.point.setAttribute('x', x-this.width*0.5);
-	this.point.setAttribute('y', y-this.height*0.5);
-	this.nameText.setAttribute('x', x);
-	this.nameText.setAttribute('y', y + this.height*0.5 + 15);
-	this.circ.setAttribute('cx', x);
-	this.circ.setAttribute('cy', y);
-	this.circOver.setAttribute('cx', x);
-	this.circOver.setAttribute('cy', y);
+	this.point.setAttribute('x', this.x-this.width*0.5);
+	this.point.setAttribute('y', this.y-this.height*0.5);
+	this.nameText.setAttribute('x', this.x);
+	this.nameText.setAttribute('y', this.y + this.height*0.5 + 15);
+	this.circ.setAttribute('cx', this.x);
+	this.circ.setAttribute('cy', this.y);
+	this.circOver.setAttribute('cx', this.x);
+	this.circOver.setAttribute('cy', this.y);
 }
 
 Focus.prototype.setName = function(name){
-	this.focusName = name;
+	this.profile.name = name;
 }
 //Add children
 Focus.prototype.addChildren = function(newFoc){
