@@ -17,14 +17,14 @@ function DivMenu(w, h, x, y ) {
 	
 	this.up = document.createElement('img');
 	this.up.setAttribute('src','up.png');
-	var xup = w*0.5 -3;
+	var xup = w*0.5 +4;
 	var yup = x -25;
 	this.up.setAttribute('style','position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:3;');
 	this.up.setAttribute('onclick','subMenuIndex()');
 	
 	this.down = document.createElement('img');
 	this.down.setAttribute('src','down.png');
-	xup = w*0.5 - 3;
+	xup = w*0.5+4;
 	yup = x + h -3;
 	this.down.setAttribute('style','position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:3;');
 	this.down.setAttribute('onclick','addMenuIndex()');
@@ -33,8 +33,7 @@ function DivMenu(w, h, x, y ) {
 	document.body.appendChild(this.up);
 	document.body.appendChild(this.down);
 	
-	this.pics = [];
-	this.picNames = [];
+	this.profileList = [];
 	this.nodes = [];
 	this.initialize();
 	//this.positionAll(w,h,x,y);
@@ -63,31 +62,19 @@ DivMenu.prototype.initialize = function() {
 	Developers
 	Designers
 	*/
-	this.pics.push("company.png");
-	this.pics.push("investor.png");
-	this.pics.push("artist.png");
-	this.pics.push("programmer.png");
-	this.pics.push("blankcategory.png");
-	this.pics.push("blankcontact.png");
 	
-	this.picNames.push("Institution");
-	this.picNames.push("Investor");
-	this.picNames.push("Designer");
-	this.picNames.push("Programmer");
-	this.picNames.push("New Category");
-	this.picNames.push("New Contact");
-	
-	
-	for (var xx = 0;xx < 30;xx++){
-		this.pics.push("blankcontact.png");
-		this.picNames.push("New Contact" + xx);
-	}
+	this.profileList.push(new connectionProfile(0,"company.png","Institution","","","",""));
+	this.profileList.push(new connectionProfile(0,"investor.png","Investor","","","",""));
+	this.profileList.push(new connectionProfile(0,"artist.png","Designer","","","",""));
+	this.profileList.push(new connectionProfile(0,"programmer.png","Programmer","","","",""));
+	this.profileList.push(new connectionProfile(0,"blankcategory.png","New Category","","","",""));
+	this.profileList.push(new connectionProfile(0,"blankcontact.png","New Contact","","","",""));
 	
 	this.resetGrid();
 }
 
 DivMenu.prototype.addIndex = function(){
-	if (this.firstindex + this.nodex*this.nodey < this.pics.length)
+	if (this.firstindex + this.nodex*this.nodey < this.profileList.length)
 		this.firstindex += this.nodex*this.nodey;
 	this.resetGrid();
 }
@@ -134,20 +121,11 @@ DivMenu.prototype.nodeTest = function(a,b){
 	return false;
 }
 
-DivMenu.prototype.nodeEndName = function(a, name){
-	if (this.selected != -1){
-		var thisindex = this.selected + this.firstindex;
-		return new Focus(this.pics[thisindex],name,a);
-	}
-	return 0;
-}
 
 
-
-DivMenu.prototype.addLinked = function(pics,names){
-	for (var i = 0;i < pics.length;i++){
-		this.pics.push(pics[i]);
-		this.picNames.push(names[i]);
+DivMenu.prototype.addLinked = function(pl){
+	for (var i = 0;i < pl.length;i++){
+		this.profileList.push(pl[i]);
 	}
 	this.resetGrid();
 }
@@ -186,12 +164,12 @@ DivMenu.prototype.resetGrid=function(){
 	var k = this.firstindex;
 	for (j = 0;j < this.nodey;j++) {
 	for (i = 0; i < this.nodex;i++){
-			var pl = this.pics.length;
+			var pl = this.profileList.length;
 			if (pl === 0)
 				pl = this.nodex*this.nodey;
 			if (k < pl){
 				var newImg = document.createElement('img');
-				newImg.setAttribute('src',this.pics[k]);
+				newImg.setAttribute('src',this.profileList[k].picURL);
 				newImg.setAttribute('draggable','true');
 					//change to pics here PICS
 					//add text for people's names
@@ -205,8 +183,8 @@ DivMenu.prototype.resetGrid=function(){
 					} else {
 						newImg.setAttribute('WIDTH',hei);
 						newImg.setAttribute('HEIGHT',hei);
-						var xup = (this.width/this.nodex)*i + this.x + 0.5*wc - 0.5*hei;
-						var yup = (this.height/this.nodey)*j + this.y + hborder;
+						var xup = (this.width/this.nodex)*i +  0.5*wc - 0.5*hei;
+						var yup = (this.height/this.nodey)*j +  hborder;
 						var styleText = 'position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:2';
 						newImg.setAttribute('style',styleText);
 					}
