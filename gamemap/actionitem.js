@@ -20,7 +20,10 @@ function ActionItem(height) {
 	this.div.style.left = "180px";
 	this.div.style.zIndex = "3";
 	this.div.style.opacity = "0";
-	this.div.style.background = "#CFE";
+	this.div.style.background = "#36C";
+	this.div.style.mozBoxShadow = "3px 3px 4px #808080"
+	this.div.style.boxShadow = "3px 3px 4px #808080"
+	this.div.style.webkitBoxShadow = "3px 3px 4px #808080"
 	
 	var leftoffset = (this.width - this.iconSize*3)*0.25;
 	var topoffset = (this.height - this.iconSize*2)/3;

@@ -62,10 +62,26 @@ function initialize(){
 	mapui.drawAll(svg);
 	
 	actionitem = new ActionItem(((h - 123)*0.5 - 5));
+	
+	//Div style declaration for writing notes
 	var writenotes = el("recommendcontact");
-	writenotes.setAttribute('style',"position:absolute; width:210px; height:" + (hw)  + "px; top:"+(hw + 30)+"px; left:180px; opacity:0; z-index:4;");
+	writenotes.style.position = "absolute";
+	writenotes.style.width = "210px";
+	writenotes.style.height = hw + "px";
+	writenotes.style.top = hw+30 + "px";
+	writenotes.style.left = "180px";
+	writenotes.style.opacity= 0;
+	writenotes.style.zIndex = 4;
+	
 	var notelists = el("notelist");
-	notelists.setAttribute('style','height:' + (hw)  + 'px;width:210px;overflow:hidden;position:absolute;top:35px;left:180px; z-index:3;opacity:0');
+	notelists.style.position = "absolute";
+	notelists.style.overflow = "hidden";
+	notelists.style.width = "210px";
+	notelists.style.height = hw + "px";
+	notelists.style.top = "35px";
+	notelists.style.left = "180px";
+	notelists.style.opacity= 0;
+	notelists.style.zIndex = 3;
 	liprof = new LIProfile();
 	selectedNode =0;
 	onEF();
@@ -91,6 +107,7 @@ function onSC(e){
 function onMD(e){
 	selectedNode = mapui.SetDragged	(mouseX(e), mouseY(e));
 	if (selectedNode != 0){
+		
 		//show list of past notes
 		addNoteList();
 	
@@ -98,12 +115,25 @@ function onMD(e){
 		var wrapdiv = el('recommendcontact');
 		var textTitle = document.getElementById('contacttitle');
 		var textArea = el('contacttextarea');
-		wrapdiv.setAttribute('style','position:absolute; width:210px; height:115px; top:'+(mapui.height-87)+'px;left:180px; opacity:1; z-index:4;');
+		wrapdiv.setAttribute('style','background:#36C;position:absolute; width:210px; height:115px; top:'+(mapui.height-87)+'px;left:180px; opacity:1; z-index:4;');
+		wrapdiv.style.background = "#36C";
+		wrapdiv.style.position = "absolute";
+		wrapdiv.style.width = "210px";
+		wrapdiv.style.height = "115px";
+		wrapdiv.style.top = (mapui.height-87)+'px';
+		wrapdiv.style.left = "180px"
+		wrapdiv.style.opacity = 1;
+		wrapdiv.style.zIndex = 4;
+		wrapdiv.style.mozBoxShadow = "3px 3px 4px #808080"
+		wrapdiv.style.boxShadow = "3px 3px 4px #808080"
+		wrapdiv.style.webkitBoxShadow = "3px 3px 4px #808080"
+		textArea.value = "";
 		textArea.focus();
 		textTitle.textContent = "Notes about " + selectedNode.profile.name;
 		//display the linkedin info
 		liprof.setConnections(selectedNode.profile);
 		liprof.drawAll();
+		actionitem.remove();
 		if (selectedNode !== mapui.topFocus)
 			actionitem.draw();
 	} else {
@@ -114,6 +144,7 @@ function onMD(e){
 		var wrapdiv = el('recommendcontact');
 		var textTitle = document.getElementById('contacttitle');
 		var textArea = el('contacttextarea');
+		textArea.value = "";
 		wrapdiv.setAttribute('style','position:absolute; width:210px; height:190px; top:230px; left:180px; opacity:0; z-index:4; background:#3CF');
 		textArea.focus();
 		textTitle.textContent = "";
@@ -235,8 +266,11 @@ function onDragEvent(event){
 function addNotes(){
 	if (selectedNode !== 0){
 		var textArea = document.getElementById('contacttextarea');
-		selectedNode.profile.appendNotes(textArea.value);
-		addNoteList();
+		if (textArea.value.length > 1 || textArea.value != " " || textArea.value != "  "){
+			selectedNode.profile.appendNotes(textArea.value);
+			addNoteList();
+		}
+		textArea.value = "";
 	}
 }
 
@@ -244,7 +278,17 @@ function addNoteList(){
 	var listdiv = el('pastnotemenu');
 		while (listdiv.childNodes.length > 0)
 			listdiv.removeChild(listdiv.childNodes[0]);
-	el('notelist').setAttribute('style','height:' + ((mapui.height - 123)*0.5 - 5)  + 'px;width:210px;overflow:hidden;position:absolute;top:' + ((mapui.height - 123)*0.5 + 35)  + 'px;left:180px; z-index:3;opacity:1;background:#c3c7ff');
+	var notelists = el('notelist');
+	notelists.style.height =  ((mapui.height - 123)*0.5 - 5) + "px";
+	notelists.style.top = ((mapui.height - 123)*0.5 + 35) + "px";
+	notelists.style.opacity= 1;
+
+	//Shadow is ugly with this one
+	/*notelists.style.mozBoxShadow = "3px 3px 4px #808080"
+	notelists.style.boxShadow = "3px 3px 4px #808080"
+	notelists.style.webkitBoxShadow = "3px 3px 4px #808080"*/
+
+	notelists.style.background = "#36C";
 	for (var i = 0;i < selectedNode.profile.notes.length;i++){
 		var listele = document.createElement('li');
 		var paraele = document.createElement('p');
@@ -290,7 +334,7 @@ function addNoteList(){
 		var s_top = parseInt($('#notelist').offset().top);		
 		
 		//Sidebar Offset, Bottom value
-		var s_bottom = parseInt($('#notelist').height() + s_top);
+		var s_bottom = parseInt($('#notelist').height());
 	
 		//Roughly calculate the height of the menu by multiply height of a single LI with the total of LIs
 		var lengthofList = $('#pastnotemenu li').length;
@@ -299,8 +343,8 @@ function addNoteList(){
 			
 		//Calculate the top value
 		//This equation is not the perfect, but it 's very close
-		var mouseY = e.pageY - s_top;	
-		var top_value = Math.round(( (s_top - mouseY) /100) * mheight *0.5);
+		var mouseY = e.pageY;	
+		var top_value = Math.round(( (s_top - mouseY) /(100)) * mheight *0.5);
 		
 		//Animate the #menu by chaging the top value
 		$('#pastnotemenu').animate({top: top_value}, { queue:false, duration:500});

@@ -12,40 +12,37 @@ h3 {
 	font-size:14px;
 }
 
+header {
+	width:100%;
+	height:30px;
+	background-color:#c3c7ff;
+	z-index:6;"
+}
 
 footer {
 	width:100%;
 	height:150px;
-	background-color:#FC9;
+	background-color:#c3c7ff;
 }
 
 
-.control {
+.btn {
 	border-radius: 3px;
 	border-width:1px;
 	cursor: pointer;
 	border-style:solid;
+	margin:5px 5px 3px 5px;
 	color: #FFF;
+	background:#664;
 	text-align: center;
 }
 
-.control:active{
-	box-shadow:inset .8px 1.2px 2px #333;
-}
-
-.btn {
-	font-size:14px;
-	padding:4px 10px;
-	margin:5px 5px 3px 5px;
-	border-color:#3079ED;
-	background-color:#4D90FE;
-	display:inline-block;
-}
-
 .btn:hover{
-	background-color:#3079ED;
-	border-color: #1562D5;
+	box-shadow:inset .8px 1.2px 2px #333;
+	background:#36C;
 }
+
+
 
 
 #pastnotemenu{width:100%;list-style:none;padding:0;margin:0;top:0;position:absolute;height:100%;width:300px;z-index:inherit;}

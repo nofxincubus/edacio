@@ -13,8 +13,10 @@ function DivMenu(w, h, x, y ) {
 	this.nodeType = "image";
 	
 	this.frameDiv = document.createElement('div');
-	this.frameDiv.setAttribute('style','position:absolute; top:' + this.x + "px; left:" + this.y + 'px; background:beige; width:' + w + 'px; height:' + (h) + 'px;' );
-
+	this.frameDiv.setAttribute('style','position:absolute; top:' + this.x + "px; left:" + this.y + 'px; background:#36C; width:' + w + 'px; height:' + (h) + 'px;' );
+	this.frameDiv.style.mozBoxShadow = "3px 3px 4px #808080"
+	this.frameDiv.style.boxShadow = "3px 3px 4px #808080"
+	this.frameDiv.style.webkitBoxShadow = "3px 3px 4px #808080"
 	this.up = document.createElement('img');
 	this.up.setAttribute('src','up.png');
 	var xup = w*0.5 - y + 5;
