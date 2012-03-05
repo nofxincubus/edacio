@@ -56,12 +56,20 @@ function initialize(){
 	w = window.innerWidth - 20;
 	hw=w/2;
 	hh=h/2;
-	svg.setAttribute("style","width:100%; height:" + h + "px ; background:#C9F");
+	svg.setAttribute("style","width:100%; height:" + h + "px;");
 	mapui = new MapUI(w,h,svg);
 	//mapui.addNode();
 	mapui.drawAll(svg);
+	
+	actionitem = new ActionItem(((h - 123)*0.5 - 5));
+	var writenotes = el("recommendcontact");
+	writenotes.setAttribute('style',"position:absolute; width:210px; height:" + (hw)  + "px; top:"+(hw + 30)+"px; left:180px; opacity:0; z-index:4;");
+	var notelists = el("notelist");
+	notelists.setAttribute('style','height:' + (hw)  + 'px;width:210px;overflow:hidden;position:absolute;top:35px;left:180px; z-index:3;opacity:0');
 	liprof = new LIProfile();
+	selectedNode =0;
 	onEF();
+		
 }
 
 function onSC(e){
@@ -81,30 +89,39 @@ function onSC(e){
 }
 
 function onMD(e){
-	var x = mapui.SetDragged	(mouseX(e), mouseY(e));
-	if (x != 0){
+	selectedNode = mapui.SetDragged	(mouseX(e), mouseY(e));
+	if (selectedNode != 0){
+		//show list of past notes
+		addNoteList();
+	
+		//show adding notes about person
 		var wrapdiv = el('recommendcontact');
 		var textTitle = document.getElementById('contacttitle');
 		var textArea = el('contacttextarea');
-		wrapdiv.setAttribute('style','position:absolute; top:40px; left:180px; opacity:0.8; z-index = 10;');
-		textArea.setAttribute('style','max-height:100px; max-width:200px; z-index:10');
+		wrapdiv.setAttribute('style','position:absolute; width:210px; height:115px; top:'+(mapui.height-87)+'px;left:180px; opacity:1; z-index:4;');
 		textArea.focus();
-		textTitle.textContent = "Notes about " + x.profile.name;
-		liprof.setConnections(x.profile);
+		textTitle.textContent = "Notes about " + selectedNode.profile.name;
+		//display the linkedin info
+		liprof.setConnections(selectedNode.profile);
 		liprof.drawAll();
+		if (selectedNode !== mapui.topFocus)
+			actionitem.draw();
 	} else {
+		var listdiv = el('pastnotemenu');
+		while (listdiv.childNodes.length > 0)
+			listdiv.removeChild(listdiv.childNodes[0]);
+		el('notelist').setAttribute('style','height:190px;width:210px;overflow:hidden;position:absolute;top:35px;left:180px; z-index:4; opacity:0');
 		var wrapdiv = el('recommendcontact');
 		var textTitle = document.getElementById('contacttitle');
 		var textArea = el('contacttextarea');
-		wrapdiv.setAttribute('style','position:absolute; top:40px; left:180px; opacity:0; z-index = 1;');
-		textArea.setAttribute('style','max-height:100px; max-width:200px; z-index:1');
+		wrapdiv.setAttribute('style','position:absolute; width:210px; height:190px; top:230px; left:180px; opacity:0; z-index:4; background:#3CF');
 		textArea.focus();
 		textTitle.textContent = "";
 		liprof.removeAll();
-	}
-	
-	
+		actionitem.remove();
+	}	
 }
+
 function onMM(e){mapui.MoveDragged	(mouseX(e), mouseY(e));}
 function onMU(e){
 	mapui.StopDragging (mouseX(e), mouseY(e));
@@ -213,4 +230,80 @@ function onDragEvent(event){
 			break;
 		}
 	
+}
+
+function addNotes(){
+	if (selectedNode !== 0){
+		var textArea = document.getElementById('contacttextarea');
+		selectedNode.profile.appendNotes(textArea.value);
+		addNoteList();
+	}
+}
+
+function addNoteList(){
+	var listdiv = el('pastnotemenu');
+		while (listdiv.childNodes.length > 0)
+			listdiv.removeChild(listdiv.childNodes[0]);
+	el('notelist').setAttribute('style','height:' + ((mapui.height - 123)*0.5 - 5)  + 'px;width:210px;overflow:hidden;position:absolute;top:' + ((mapui.height - 123)*0.5 + 35)  + 'px;left:180px; z-index:3;opacity:1;background:#c3c7ff');
+	for (var i = 0;i < selectedNode.profile.notes.length;i++){
+		var listele = document.createElement('li');
+		var paraele = document.createElement('p');
+		paraele.textContent = selectedNode.profile.notes[i];
+		listele.appendChild(paraele);
+		listdiv.appendChild(listele);
+	}
+	
+		//jquerystuff ///////////////
+		//Background color, mouseover and mouseout
+	//Background color, mouseover and mouseout
+	var colorOver = '#31b8da';
+	var colorOut = '#1f1f1f';
+
+	//Padding, mouseover
+	var padLeft = '20px';
+	var padRight = '20px';
+	
+	//Default Padding
+	var defpadLeft = $('#pastnotemenu li p').css('paddingLeft');
+	var defpadRight = $('#pastnotemenu li p').css('paddingRight');
+		
+	//Animate the LI on mouse over, mouse out
+	$('#pastnotemenu li').mouseover(function (){
+		
+		//mouse over LI and look for A element for transition
+		$(this).find('p')
+		.animate( { paddingLeft: padLeft, paddingRight: padRight}, { queue:false, duration:100 } )
+		.animate( { backgroundColor: colorOver }, { queue:false, duration:200 });
+
+	}).mouseout(function () {
+	
+		//mouse oout LI and look for A element and discard the mouse over transition
+		$(this).find('p')
+		.animate( { paddingLeft: defpadLeft, paddingRight: defpadRight}, { queue:false, duration:100 } )
+		.animate( { backgroundColor: colorOut }, { queue:false, duration:200 });
+	});	
+	
+	//Scroll the menu on mouse move above the #sidebar layer
+	$('#notelist').mousemove(function(e) {
+
+		//Sidebar Offset, Top value
+		var s_top = parseInt($('#notelist').offset().top);		
+		
+		//Sidebar Offset, Bottom value
+		var s_bottom = parseInt($('#notelist').height() + s_top);
+	
+		//Roughly calculate the height of the menu by multiply height of a single LI with the total of LIs
+		var lengthofList = $('#pastnotemenu li').length;
+		var menueleheight = $('#pastnotemenu li').height();
+		var mheight = parseInt( menueleheight * lengthofList);
+			
+		//Calculate the top value
+		//This equation is not the perfect, but it 's very close
+		var mouseY = e.pageY - s_top;	
+		var top_value = Math.round(( (s_top - mouseY) /100) * mheight *0.5);
+		
+		//Animate the #menu by chaging the top value
+		$('#pastnotemenu').animate({top: top_value}, { queue:false, duration:500});
+	});
+	/////////////////////////
 }

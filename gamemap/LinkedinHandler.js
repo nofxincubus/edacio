@@ -47,20 +47,21 @@ function setMe(connections) {
 	profileList =[];
 	for (id in connections) {
 		var pic = "tempme.png";
-		var name = connections[id].firstName + " " + connections[id].lastName;
-		if(connections[id].hasOwnProperty('pictureUrl')){
-			pic = connections[id].pictureUrl;
+		if (connections[id].firstName !== "private"){
+			var name = connections[id].firstName + " " + connections[id].lastName;
+			if(connections[id].hasOwnProperty('pictureUrl')){
+				pic = connections[id].pictureUrl;
+			}
+			var curStat = "";
+			var loc = "";
+			if (connections[id].currentShare)
+				curStat = connections[id].currentShare.comment;
+			if (connections[id].location)
+				loc = connections[id].location.name
+			var cprof = new connectionProfile(connections[id].id,pic,name,connections[id].headline,
+			loc,curStat,connections[id].publicProfileUrl);
+			profileList.push(cprof);
 		}
-		var curStat = "";
-		var loc = "";
-		if (connections[id].currentShare)
-			curStat = connections[id].currentShare.comment;
-		if (connections[id].location)
-			loc = connections[id].location.name
-		var cprof = new connectionProfile(connections[id].id,pic,name,connections[id].headline,
-		loc,curStat,connections[id].publicProfileUrl);
-		profileList.push(cprof);
-		
 		i++;
 	}
 	mapui.resetTopNodes(profileList[0]);

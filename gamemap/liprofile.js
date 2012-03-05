@@ -44,8 +44,7 @@ LIProfile.prototype.testBuild = function(){
 }
 
 LIProfile.prototype.buildDiv = function(){
-	
-	this.profTag.setAttribute('src',this.pictureURL);
+	this.profTag.src = this.pictureURL;
 	this.nameTag.textContent = this.name;
 	this.locationTag.textContent = this.location;
 	this.titleTag.textContent = this.title;
@@ -54,11 +53,27 @@ LIProfile.prototype.buildDiv = function(){
 }
 
 LIProfile.prototype.reposition = function(){
-	this.profTag.setAttribute('style','position:absolute;top:3px;left:3px;width:60px;height:60px;');
-	this.nameTag.setAttribute('style','position:absolute;top:0px;left:75px;');
-	this.titleTag.setAttribute('style','position:absolute;top:12px;left:75px;');
-	this.locationTag.setAttribute('style','position:absolute;top:50px;left:3px;');
-	this.currentStatusTag.setAttribute('style','position:absolute;top:70px;left:3px;');
+	this.profTag.style.position = "absolute";
+	this.profTag.style.top = "3px";
+	this.profTag.style.left= "3px";
+	this.profTag.style.width = "60px";
+	this.profTag.style.height = "60px";
+	
+	this.nameTag.style.position = "absolute";
+	this.nameTag.style.top = "0px";
+	this.nameTag.style.left= "75px";
+	
+	this.titleTag.style.position = "absolute";
+	this.titleTag.style.top = "12px";
+	this.titleTag.style.left= "75px";
+	
+	this.locationTag.style.position = "absolute";
+	this.locationTag.style.top = "50px";
+	this.locationTag.style.left= "3px";
+
+	this.currentStatusTag.style.position = "absolute";
+	this.currentStatusTag.style.top = "70px";
+	this.currentStatusTag.style.left= "3px";
 }
 
 LIProfile.prototype.drawAll = function(){

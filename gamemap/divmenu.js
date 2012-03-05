@@ -14,17 +14,17 @@ function DivMenu(w, h, x, y ) {
 	
 	this.frameDiv = document.createElement('div');
 	this.frameDiv.setAttribute('style','position:absolute; top:' + this.x + "px; left:" + this.y + 'px; background:beige; width:' + w + 'px; height:' + (h) + 'px;' );
-	
+
 	this.up = document.createElement('img');
 	this.up.setAttribute('src','up.png');
-	var xup = w*0.5 +4;
+	var xup = w*0.5 - y + 5;
 	var yup = x -25;
 	this.up.setAttribute('style','position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:3;');
 	this.up.setAttribute('onclick','subMenuIndex()');
 	
 	this.down = document.createElement('img');
 	this.down.setAttribute('src','down.png');
-	xup = w*0.5+4;
+	xup = w*0.5 - y + 5;
 	yup = x + h -3;
 	this.down.setAttribute('style','position:absolute; top:' + yup + "px; left:" +xup + 'px; z-index:3;');
 	this.down.setAttribute('onclick','addMenuIndex()');

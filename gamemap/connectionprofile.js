@@ -13,6 +13,8 @@ function connectionProfile(id, picURL, name, title, location, currentStatus, pub
 	this.publicURL = publicURL;
 	//add Notes and shit
 	this.notes = [];
+	//this.currentChallenge
+	this.pastChallenges = [];
 }
 
 connectionProfile.prototype.appendNotes = function(notes){
