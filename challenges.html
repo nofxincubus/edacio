@@ -7,18 +7,27 @@
     <script type="text/javascript">
     Challenges = new challenges();
     </script>
-    <link rel="stylesheet" type="text/css" href="challengesStyle.css" />
+   <!-- <link rel="stylesheet" type="text/css" href="challengesStyle.css" /> -->
 	
     </head>
 
-    <body>
-    	<div class="miniChallenges">
-        	<div Id="challengeList" class="challengeList"> 
-            <!-- challenges show here -->
-			</div>
+    <body style="background-color:skyblue" onload="setupChallengeStyle();Challenges.createChallenges(Challenges.challengeList);">
+    	<div id="miniChallenges" style="background-color:lightgrey;">
+        	<div  id="challengeList" class="challengeList" style="">
+         	  	<!--<div id="challengeListItems" style="width:300px;height:60px;">
+                    <!-- replaced with item list via js
+                    <img src="awardsNo.png"/>
+                    <h4><b  style="position:relative;top:-60px;left:50px;">Get Started!</b></h4>
+                    
+                    <h5><font id="view"  style="position:relative;top:-105px;left:150px;text-align:right;">View:</font><font  id="organize" style="position:relative;top:-105px;left:180px;text-align:right;">Organize:</font></h5>
+                    <h5><font id="greet" style="position:relative;top:-115px;left:145px;text-align:right;">Greet:</font><font id="update" style="position:relative;top:-115px;left:190px;">Update:</font></h5>
+                    <h4><font id="viewValue"  style="position:relative;top:-183px;left:195px;text-align:right;">0</font><font id="organizeValue"  style="position:relative;top:-183px;left:275px;text-align:right;">1</font></h4>
+                    <h4><font id="greetValue"  style="position:relative;top:-196px;left:195px;text-align:right;">2</font><font id="updateValue"  style="position:relative;top:-196px;left:275px;text-align:right;">3</font></h4>			
+            	</div>-->
+            </div>
         </div> <!-- End miniprofile div -->
         
         <!-- test buttons -->
-		<button type="button" onclick="Challenges.generateText()">Test Challenges</button>
+		<button type="button" onclick="">Test Challenges</button>
     </body>
 </html>
