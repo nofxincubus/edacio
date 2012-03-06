@@ -93,8 +93,10 @@ function ActionItem(height) {
 
 ActionItem.prototype.draw = function(){
 	this.div.style.opacity = 1;
+	this.div.style.zIndex = "3";
 }
 
 ActionItem.prototype.remove = function(){
 	this.div.style.opacity = 0;
+	this.div.style.zIndex = "-1";
 }

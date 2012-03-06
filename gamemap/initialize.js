@@ -140,12 +140,12 @@ function onMD(e){
 		var listdiv = el('pastnotemenu');
 		while (listdiv.childNodes.length > 0)
 			listdiv.removeChild(listdiv.childNodes[0]);
-		el('notelist').setAttribute('style','height:190px;width:210px;overflow:hidden;position:absolute;top:35px;left:180px; z-index:4; opacity:0');
+		el('notelist').setAttribute('style','height:190px;width:210px;overflow:hidden;position:absolute;top:35px;left:180px; z-index:-1; opacity:0');
 		var wrapdiv = el('recommendcontact');
 		var textTitle = document.getElementById('contacttitle');
 		var textArea = el('contacttextarea');
 		textArea.value = "";
-		wrapdiv.setAttribute('style','position:absolute; width:210px; height:190px; top:230px; left:180px; opacity:0; z-index:4; background:#3CF');
+		wrapdiv.setAttribute('style','position:absolute; width:210px; height:190px; top:230px; left:180px; opacity:0; z-index:-1; background:#3CF');
 		textArea.focus();
 		textTitle.textContent = "";
 		liprof.removeAll();
@@ -267,7 +267,14 @@ function addNotes(){
 	if (selectedNode !== 0){
 		var textArea = document.getElementById('contacttextarea');
 		if (textArea.value.length > 1 || textArea.value != " " || textArea.value != "  "){
-			selectedNode.profile.appendNotes(textArea.value);
+			var curdate = new Date();
+			var month = curdate.getMonth() + 1;
+			var day = curdate.getDate();
+			var year = curdate.getFullYear();
+			var hour = curdate.getHours();
+			var minutes = curdate.getMinutes();
+			var string = textArea.value +"  " + hour + ":" + minutes + " " + month + "/" + day + "/" + year;
+			selectedNode.profile.appendNotes(string);
 			addNoteList();
 		}
 		textArea.value = "";
@@ -282,11 +289,11 @@ function addNoteList(){
 	notelists.style.height =  ((mapui.height - 123)*0.5 - 5) + "px";
 	notelists.style.top = ((mapui.height - 123)*0.5 + 35) + "px";
 	notelists.style.opacity= 1;
-
+	notelists.style.zIndex = 3;
 	//Shadow is ugly with this one
-	/*notelists.style.mozBoxShadow = "3px 3px 4px #808080"
+	notelists.style.mozBoxShadow = "3px 3px 4px #808080"
 	notelists.style.boxShadow = "3px 3px 4px #808080"
-	notelists.style.webkitBoxShadow = "3px 3px 4px #808080"*/
+	notelists.style.webkitBoxShadow = "3px 3px 4px #808080"
 
 	notelists.style.background = "#36C";
 	for (var i = 0;i < selectedNode.profile.notes.length;i++){

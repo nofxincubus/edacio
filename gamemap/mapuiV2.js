@@ -330,7 +330,8 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 				if (menuIconIndex < 6){
 					var nodeName = prompt("Please type in the name of the node", this.menu.profileList[menuIconIndex].name);
 					if (nodeName!=null && nodeName!="")	{
-						foci = new Focus(this.menu.profileList[menuIconIndex],this.currentFocus.children[i]);
+						var newProf = new connectionProfile(0,this.menu.profileList[menuIconIndex].picURL,nodeName,"","", "","");
+						foci = new Focus(newProf,this.currentFocus.children[i]);
 					}
 					else 
 						foci = 0;
@@ -351,7 +352,8 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 				if (menuIconIndex < 6){
 					var nodeName = prompt("Please type in the name of the node", this.menu.profileList[menuIconIndex].name);
 					if (nodeName!=null && nodeName!="")	{
-						foci = new Focus(this.menu.profileList[menuIconIndex],this.currentFocus);
+						var newProf = new connectionProfile(0,this.menu.profileList[menuIconIndex].picURL,nodeName,"","", "","");
+						foci = new Focus(newProf,this.currentFocus);
 					}
 					else 
 						foci = 0;
