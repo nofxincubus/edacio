@@ -30,6 +30,7 @@ function ActionItem(height) {
 	
 	this.email = document.createElement('image');
 	this.email.setAttribute('src',"email.png");
+	this.email.setAttribute('onclick','emailEvent()');
 	this.email.style.position = "absolute";
 	this.email.style.width = this.iconSize + "px";
 	this.email.style.height = this.iconSize + "px";
@@ -39,6 +40,7 @@ function ActionItem(height) {
 
 	this.call = document.createElement('image');
 	this.call.setAttribute('src',"phonecall.png");
+	this.call.setAttribute('onclick','callEvent()');
 	this.call.style.position = "absolute";
 	this.call.style.width = this.iconSize + "px";
 	this.call.style.height = this.iconSize + "px";
@@ -48,6 +50,7 @@ function ActionItem(height) {
 
 	this.txt = document.createElement('image');
 	this.txt.setAttribute('src',"textmsg.png");
+	this.txt.setAttribute('onclick','textEvent()');
 	this.txt.style.position = "absolute";
 	this.txt.style.width = this.iconSize + "px";
 	this.txt.style.height = this.iconSize + "px";
@@ -57,6 +60,7 @@ function ActionItem(height) {
 
 	this.lunch = document.createElement('image');
 	this.lunch.setAttribute('src',"lunch.png");
+	this.lunch.setAttribute('onclick','lunchEvent()');
 	this.lunch.style.position = "absolute";
 	this.lunch.style.width = this.iconSize + "px";
 	this.lunch.style.height = this.iconSize + "px";
@@ -65,6 +69,7 @@ function ActionItem(height) {
 	this.lunch.style.top = topoffset*2+ this.iconSize + "px";
 	
 	this.coffee = document.createElement('image');
+	this.coffee.setAttribute('onclick','coffeeEvent()');
 	this.coffee.setAttribute('src',"coffee.png");
 	this.coffee.style.position = "absolute";
 	this.coffee.style.width = this.iconSize + "px";
@@ -75,6 +80,7 @@ function ActionItem(height) {
 	
 	this.meeting = document.createElement('image');
 	this.meeting.setAttribute('src',"meeting.png");
+	this.meeting.setAttribute('onclick','meetingEvent()');
 	this.meeting.style.position = "absolute";
 	this.meeting.style.width = this.iconSize + "px";
 	this.meeting.style.height = this.iconSize + "px";

@@ -1,5 +1,17 @@
-#notelist{height:400px;overflow:hidden;position:relative;background-color:#eee;}
-#pastnotemenu{width:100%;list-style:none;padding:0;margin:0;top:0;position:relative;height:100%;width:300px;}
-#pastnotemenu li{padding:10px 0;text-align:right;display:block;cursor:hand;cursor:pointer;}
-#pastnotemenu li p{background:url() repeat #1f1f1f;color:#ddd;font-family:helvetica,arial,verdana;font-size:9px;font-weight:900;display:inline;padding:20px 8px 5px 20px;text-decoration:none;}
-#pastnotemenu li span{font-family:georgia,arial;font-size:9px;color:#464646;}
+<div id = "eventmaker">
+<h2 id = "title" align="center">Event Title</h2>
+<div >
+<h3 style="position:absolute;left:60px;top:30px">From:</h3>
+<input type="text" id="from" style="position:absolute;left:30px;top:70px;width:102px">
+</div><!-- End demo -->
+<div class="demo">
+<h3 style="position:absolute;left:205px;top:30px">To:</h3>
+<input type="text" id="to"  style="position:absolute;left:165px;top:70px;width:102px">
+</div><!-- End demo -->
+<h3 style="position:absolute;left:120px;top:90px;">Where :</h3>
+ <input type="text" id="location" style="position:absolute;left:70px;top:130px;width:160px">
+<h3 style="position:absolute;left:120px;top:145px;">Details :</h3>
+<textarea id="detail" style=" max-height:70px;max-width:240px;position:absolute;left:30px;top:190px;width:240px;height:70px"> </textarea>
+<button type="button" id = "submit" class="btn" style="position:absolute;right:30px;bottom:20px;">Submit</button>
+<button type="button" id = "cancel" class="btn" style="position:absolute;left:30px;bottom:20px;">Cancel</button>
+</div>

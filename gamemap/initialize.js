@@ -358,3 +358,74 @@ function addNoteList(){
 	});
 	/////////////////////////
 }
+
+function onEventSubmit(){
+	var timeStr = app.getDateString();
+	var openlink = "http://www.google.com/calendar/event?action=TEMPLATE&text=" + app.title +"&dates=" + timeStr + "&details=" + app.detailInput.value + "&location=" + app.whereInput.value + "&trp=true";
+	window.open(openlink,'Create Event','width=600,height=600');
+	app.removeAll();
+	el('catcher').style.zIndex = 2;
+	el('catcher').style.background = "#000";
+	el('catcher').style.opacity = 0;
+}
+
+function onEventCancel(){
+	app.removeAll();
+	el('catcher').style.zIndex = 2;
+	el('catcher').style.background = "#000";
+	el('catcher').style.opacity = 0;
+}
+
+function coffeeEvent(){
+	if (selectedNode !== 0){
+		el('catcher').style.zIndex = 5;
+		el('catcher').style.background = "#000";
+		el('catcher').style.opacity = 0.7;
+		app = new Appointment("Coffee", selectedNode, true);
+	}
+}
+
+function lunchEvent(){
+	if (selectedNode !== 0){
+		el('catcher').style.zIndex = 5;
+		el('catcher').style.background = "#000";
+		el('catcher').style.opacity = 0.7;
+		app = new Appointment("Lunch", selectedNode, true);
+	}
+}
+
+function textEvent(){
+	if (selectedNode !== 0){
+		el('catcher').style.zIndex = 5;
+		el('catcher').style.background = "#000";
+		el('catcher').style.opacity = 0.7;
+		app = new Appointment("Text Message", selectedNode, true);
+	}
+}
+
+function callEvent(){
+	if (selectedNode !== 0){
+		el('catcher').style.zIndex = 5;
+		el('catcher').style.background = "#000";
+		el('catcher').style.opacity = 0.7;
+	app = new Appointment("Phone Call", selectedNode, true);
+	}
+}
+
+function emailEvent(){
+	if (selectedNode !== 0){
+		el('catcher').style.zIndex = 5;
+		el('catcher').style.background = "#000";
+		el('catcher').style.opacity = 0.7;
+	app = new Appointment("Email", selectedNode, true);
+	}
+}
+
+function meetingEvent(){
+	if (selectedNode !== 0){
+		el('catcher').style.zIndex = 5;
+		el('catcher').style.background = "#000";
+		el('catcher').style.opacity = 0.7;
+	app = new Appointment("Meeting", selectedNode, true);
+	}
+}
