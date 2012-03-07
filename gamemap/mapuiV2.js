@@ -11,10 +11,10 @@ function MapUI(w, h,csvg){
 	this.damping = 0.95;
 	this.updown = 1;
 	this.layerlevel = 0;
-	this.sizeConstraint = 0.35;
+	this.sizeConstraint = 0.45;
 	this.circleRadius = h*this.sizeConstraint;
 	this.centerx = w/2 - 10;
-	this.centery = this.circleRadius + 50;
+	this.centery = this.circleRadius + 20;
 	this.stable = true;
 	//this.width = (window.innerWidth-20)*0.5;	
 	//this.height = 300;
@@ -26,7 +26,7 @@ function MapUI(w, h,csvg){
 	this.lines =[];
 	this.doCircle = false;
 	var xx = 70;
-	this.menu = new DivMenu(150,this.circleRadius*2.1,xx,16);
+	this.menu = new DivMenu(150,this.circleRadius*1.8,xx,16);
 };
 
 MapUI.prototype.increaseSize = function(){
@@ -60,7 +60,7 @@ MapUI.prototype.changeCircle = function(){
 
 MapUI.prototype.loadTopNodes = function(){
 	//Linkedin Load for your own shit but temporarily
-	var x = new connectionProfile(0,"tempme.png","Zahid Hasan","Mr. Incredible","Ann Arbor, MI", "Working like Crazy","");
+	var x = new connectionProfile(0,"tempme.png","Your Name","Mr. Incredible","Ann Arbor, MI", "Working like Crazy","");
 	this.topFocus = new Focus(x,0);
 	this.currentFocus = this.topFocus;
 	this.selectedNode = this.currentFocus;
@@ -68,7 +68,12 @@ MapUI.prototype.loadTopNodes = function(){
 }
 MapUI.prototype.resetTopNodes = function(profile){
 	//Linkedin Load for your own shit but temporarily
-	this.topFocus = new Focus(profile,0);
+	var newFoc = new Focus(profile,0);
+	newFoc.children = this.topFocus.children;
+	newFoc.profile.notes = this.topFocus.notes;
+	newFoc.profile.permanantTag = this.topFocus.permanantTag;
+	newFoc.profile.pastChallenges = this.topFocus.pastChallenges;
+	this.topFocus = newFoc;
 	this.currentFocus = this.topFocus;
 	this.selectedNode = this.currentFocus;
 	this.selectedNode.isSelected();
@@ -109,8 +114,10 @@ MapUI.prototype.drawAll = function(svg) {
 		this.svg.appendChild(this.currentFocus.parent.getPoint());
 	}
 	var i = 0;
+	this.currentFocus.dragOut();
 	this.svg.appendChild(this.currentFocus.getPoint());
 	while (i < this.currentFocus.children.length){
+		this.currentFocus.children[i].dragOver();
 		this.svg.appendChild(this.currentFocus.children[i].getPoint());
 		i++;
 	}
@@ -151,7 +158,9 @@ MapUI.prototype.reposition = function() {
 	
 	if (this.currentFocus.parent != 0)
 	{
-		this.currentFocus.parent.setXY(this.centerx + this.circleRadius+100, this.centery);
+		//var parentX = this.centerx - this.circleRadius+60;
+		var parentX = this.centerx + this.circleRadius + 100;
+		this.currentFocus.parent.setXY(parentX, this.centery);
 		var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
 		line.setAttribute("stroke", "#9966FF");
 		line.setAttribute("fill", "none");
@@ -159,7 +168,7 @@ MapUI.prototype.reposition = function() {
 		line.setAttribute('opacity',"1");
 		line.setAttribute('x1',this.centerx);
 		line.setAttribute('y1',this.centery);
-		line.setAttribute('x2',this.centerx + this.circleRadius+100);
+		line.setAttribute('x2',parentX);
 		line.setAttribute('y2',this.centery);
 		this.parentLine = line;
 	}
@@ -169,14 +178,20 @@ MapUI.prototype.reposition = function() {
 	var innercount = this.currentFocus.children.length;
 	var innerAngle = 360/innercount;
 	var innerIncrement = innerAngle * mpi;
-	
+	var innerS = this.innerStart;
 	for (var i = 0; i < this.currentFocus.children.length;i ++){
 		var cr;
 		cr = this.circleRadius;
-		this.innerStart += innerIncrement;
-		var xp = this.centerx + Math.sin(this.innerStart) * cr;
-		var yp = this.centery + Math.cos(this.innerStart) * cr;
-		this.currentFocus.children[i].setXY(xp,yp);		
+		innerS += innerIncrement;
+		var xp;
+		/*
+		if (this.selectedNode === 0)
+			xp = this.centerx + 1.2*Math.sin(innerS) * cr;
+		else
+			xp = this.centerx + 1.2*Math.sin(innerS)*Math.sin(innerS) * cr;*/
+		xp = this.centerx + 0.8*Math.sin(innerS) * cr;
+		var yp = this.centery + 0.8*Math.cos(innerS) * cr;
+		this.currentFocus.children[i].setXY(xp,yp);
 		var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
 		line.setAttribute("stroke", "#9966FF");
 		line.setAttribute("fill", "none");
@@ -242,7 +257,18 @@ MapUI.prototype.spinIterate=function(){
 	else {
 	this.dv = this.dv * this.damping;
 	
-	this.innerStart += this.dv;
+	
+	if (this.innerStart < 0)
+		this.innerStart +=2*Math.PI;
+	else if (this.innerStart > 2*Math.PI)
+		this.innerStart -= 2*Math.PI;
+	else{
+		this.innerStart += this.dv;
+		/*
+		for (var i = 0;i < this.currentFocus.children.length;i++)
+			this.currentFocus.children[i].innerStart = this.innerStart;
+			*/
+	}
 		
 	if (Math.abs(this.dv) < 0.1*Math.PI/180)
 		this.stable = true;
@@ -254,21 +280,21 @@ MapUI.prototype.spinIterate=function(){
 
 MapUI.prototype.topNodeTest = function(a,b) {
 	for (var i = 0;i < this.currentFocus.children.length;i++)
-		if (this.currentFocus.children[i].distance(a,b) < this.currentFocus.width*1.5)
+		if (this.currentFocus.children[i].distance(a,b) < this.currentFocus.width*1.2)
 			return i;
 	return -1;
 }
 
 MapUI.prototype.parentTest = function(a,b) {
 	if (this.currentFocus.parent != 0){
-		if (this.currentFocus.parent.distance(a,b) < this.currentFocus.width*1.5) {
+		if (this.currentFocus.parent.distance(a,b) < this.currentFocus.width*1.2) {
 			return true;
 		}
 	}
 	return false;
 }
 MapUI.prototype.currentTest = function(a,b) {
-		if (this.currentFocus.distance(a,b) < this.currentFocus.width*1.5) {
+		if (this.currentFocus.distance(a,b) < this.currentFocus.width*1.2) {
 			return true;
 		}
 	return false;
@@ -283,22 +309,26 @@ MapUI.prototype.SetDragged=function(b,a){
 	if (this.topNodeTest(b,a) != -1) {
 		if ( this.currentFocus.children[this.topNodeTest(b,a)].children.length > 0){
 			this.currentFocus = this.currentFocus.children[this.topNodeTest(b,a)];
-			this.selectedNode.deSelect();
+			if (this.selectedNode !== 0)
+				this.selectedNode.deSelect();
 			this.selectedNode = this.currentFocus;
 			this.selectedNode.isSelected();
 		}
 		else {
-			this.selectedNode.deSelect();
+			if (this.selectedNode !== 0)
+				this.selectedNode.deSelect();
 			this.selectedNode = this.currentFocus.children[this.topNodeTest(b,a)];
 			this.selectedNode.isSelected();
 		}
 	} else if (this.parentTest(b,a)){
 		this.currentFocus = this.currentFocus.parent;
-		this.selectedNode.deSelect();
+		if (this.selectedNode != 0)
+				this.selectedNode.deSelect();
 		this.selectedNode = this.currentFocus;
 		this.selectedNode.isSelected();
 	} else if (this.currentTest(b,a)){
-		this.selectedNode.deSelect();
+		if (this.selectedNode != 0)
+				this.selectedNode.deSelect();
 		this.selectedNode = this.currentFocus;
 		this.selectedNode.isSelected();
 	}
@@ -306,8 +336,10 @@ MapUI.prototype.SetDragged=function(b,a){
 	this.dragged = true;
 	this.startDragX = b;
 	this.startDragY = a;
-	this.selectedNode.deSelect();
-	return 0;
+	if (this.selectedNode != 0){
+		this.selectedNode.deSelect();
+		this.selectedNode = 0;
+		}
 	}
 	this.drawAll(this.svg);
 	return this.selectedNode;
@@ -324,7 +356,7 @@ MapUI.prototype.MoveDragged=function(b,a){
 MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 	var inserted = false;
 		for (var i = 0;i < this.currentFocus.children.length;i++){
-			if (this.currentFocus.children[i].distance(b,a) < this.currentFocus.width*1.5){
+			if (this.currentFocus.children[i].distance(b,a) < this.currentFocus.width*1.2){
 				var menuIconIndex = Math.abs(selected) + Math.abs(firstindex);
 				var foci = 0;
 				if (menuIconIndex < 6){
@@ -346,7 +378,7 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 			}
 		}
 		var dis = this.currentFocus.distance(b,a);
-		if (dis < this.currentFocus.width*1.5) {
+		if (dis < this.currentFocus.width*1.2) {
 			var menuIconIndex = Math.abs(selected) + Math.abs(firstindex);
 				var foci = 0;
 				if (menuIconIndex < 6){
@@ -363,7 +395,7 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 			if (foci != 0){
 				this.currentFocus.children.push(foci);
 				this.inserted = true;
-				this.drawAll(this.svg);
+				
 			}
 		}
 }

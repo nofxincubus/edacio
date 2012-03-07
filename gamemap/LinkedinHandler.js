@@ -60,6 +60,7 @@ function setMe(connections) {
 				loc = connections[id].location.name
 			var cprof = new connectionProfile(connections[id].id,pic,name,connections[id].headline,
 			loc,curStat,connections[id].publicProfileUrl);
+			cprof.setMe();
 			profileList.push(cprof);
 		}
 		i++;

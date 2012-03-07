@@ -33,8 +33,8 @@ function initialize(){
 		runFancy = false;
 	svg = el('svgc');
 	runFancy = false;
-	svg.addEventListener("mousedown",	onMD, false);
-	svg.addEventListener("mousemove",	onMM, false);
+	document.addEventListener("mousedown",	onMD, false);
+	document.addEventListener("mousemove",	onMM, false);
 	
 	var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 	
@@ -46,11 +46,11 @@ function initialize(){
 	else if (document.addEventListener) //WC3 browsers
 		document.addEventListener(mousewheelevt, onSC, false);
 	
-	svg.addEventListener("mouseup",		onMU, false);
+	document.addEventListener("mouseup",		onMU, false);
 		
-	svg.addEventListener("touchstart",	onMD, false);
-	svg.addEventListener("touchend",	onMU, false);
-	svg.addEventListener("touchmove",	onMM, false);
+	document.addEventListener("touchstart",	onMD, false);
+	document.addEventListener("touchend",	onMU, false);
+	document.addEventListener("touchmove",	onMM, false);
 	
 	h = window.innerHeight*0.7;
 	w = window.innerWidth - 20;
@@ -59,7 +59,7 @@ function initialize(){
 	svg.setAttribute("style","width:100%; height:" + h + "px;");
 	mapui = new MapUI(w,h,svg);
 	//mapui.addNode();
-	mapui.drawAll(svg);
+	
 	
 	actionitem = new ActionItem(((h - 123)*0.5 - 5));
 	
@@ -84,6 +84,7 @@ function initialize(){
 	notelists.style.zIndex = 3;
 	liprof = new LIProfile();
 	selectedNode =0;
+	mapui.drawAll(svg);
 	onEF();
 		
 }
@@ -243,12 +244,13 @@ function drop(event){
 	var findex = mapui.menu.firstindex;
 	var index = parseInt(event.dataTransfer.getData("Text"));
 	mapui.dropNode(mouseX(event), mouseY(event), index, findex);
+	mapui.drawAll(svg);
 	event.preventDefault();
 	//do shit to drop here
 }
 function allowDrop(event)
 {
-event.preventDefault();
+	event.preventDefault();
 }
 
 

@@ -6,6 +6,7 @@
 function Focus (profile, parent){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
 	this.profile = profile;
+	this.timeSince = this.profile.getTimeSince();
 	if (parent != 0) {
 		this.width = parent.width;
 		this.height = parent.height;
@@ -13,32 +14,35 @@ function Focus (profile, parent){
 		this.width = 50;
 		this.height = 50;
 	}
-	
+	this.innerStart = Math.PI;
 	this.x = 0;
 	this.y = 0;
 	this.group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+	this.dragovergroup = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+	
+	this.dragovergroup.setAttribute('opacity',0);
+	this.group.appendChild(this.dragovergroup);
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.point.setAttributeNS(this.xlinkns, 'xlink:href', this.profile.picURL);
 	this.group.setAttribute("style", "cursor:pointer;");
 	this.point.setAttribute("width", this.width);
 	this.point.setAttribute("height", this.height);
     this.circ = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-	this.circ.setAttribute("stroke", "#9966FF");
-	this.circ.setAttribute("fill", "#9966FF");
+	this.circ.setAttribute("stroke", "none");
+	this.circ.setAttribute("fill", "none");
 	this.circ.setAttribute("stroke-width", "3");
-	this.circ.setAttribute('opacity',"0");
-	this.circ.setAttribute('r', this.width*1.5);
+	this.circ.setAttribute('opacity',"1");
+	this.circ.setAttribute('r', this.width*1.2);
 	this.circOver = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circOver.setAttribute("stroke", "#3333FF");
 	this.circOver.setAttribute("fill", "#3333FF");
 	this.circOver.setAttribute("stroke-width", "3");
 	this.circOver.setAttribute('opacity',"0");
-	this.circOver.setAttribute('r', this.width*1.5);
-	this.circOver.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.5');");
+	this.circOver.setAttribute('r', this.width*1.2);
+	this.circOver.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.8');");
 	this.circOver.setAttribute('onmouseout',"evt.target.setAttribute('opacity','0');");
-	
 	this.nameText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-	this.nameText.setAttribute('fill', '#6c4c81');
+	this.nameText.setAttribute('fill', '#000');
 	this.nameText.setAttribute('text-anchor', 'middle');
 	this.nameText.setAttribute('font-size', '13');
 	this.nameText.textContent = this.profile.name;
@@ -95,6 +99,7 @@ Focus.prototype.setXY = function(x,y){
 	this.circ.setAttribute('cy', this.y);
 	this.circOver.setAttribute('cx', this.x);
 	this.circOver.setAttribute('cy', this.y);
+	this.dragOverInitialize();
 }
 
 Focus.prototype.setName = function(name){
@@ -134,6 +139,55 @@ Focus.prototype.addGlowAnimate = function(x){
 	x.appendChild(this.glonimate);
 }
 
+//dragover
+Focus.prototype.dragOverInitialize = function(){
+	while (this.dragovergroup.childNodes.length > 0)
+		this.dragovergroup.removeChild(this.dragovergroup.childNodes[0]);
+	
+	var mpi = Math.PI/180;
+	//fill the circle
+	var innercount = this.children.length;
+	var innerAngle = 360/innercount;
+	var innerIncrement = innerAngle * mpi;
+	for (var i = 0; i < this.children.length;i ++){
+		var cr;
+		cr = this.width*0.95;
+		this.innerStart += innerIncrement;
+		var xp = this.x + Math.sin(this.innerStart) * cr;
+		var yp = this.y + Math.cos(this.innerStart) * cr;
+		var childd = document.createElementNS("http://www.w3.org/2000/svg", 'image');
+		childd.setAttributeNS(this.xlinkns, 'xlink:href', this.children[i].profile.picURL);
+		childd.setAttribute('width',18);
+		childd.setAttribute('height',18);
+		childd.setAttribute('x',xp-9);
+		childd.setAttribute('y',yp-9);
+		childd.setAttribute('opacity','inherit');
+		/*
+		var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+		line.setAttribute("stroke", "#9966FF");
+		line.setAttribute("fill", "none");
+		line.setAttribute("stroke-width", "3");
+		line.setAttribute('opacity',"1");
+		line.setAttribute("z-index",0);
+		line.setAttribute('x1',this.x);
+		line.setAttribute('y1',this.y);
+		line.setAttribute('x2',xp);
+		line.setAttribute('y2',yp);
+		this.dragovergroup.appendChild(line);*/
+		this.dragovergroup.appendChild(childd);
+	}
+	this.dragovergroup.setAttribute('opacity',0);
+}
+
+//dragover
+Focus.prototype.dragOver = function(){
+	this.dragovergroup.setAttribute('opacity',1);
+}
+
+//dragover
+Focus.prototype.dragOut = function(){
+	this.dragovergroup.setAttribute('opacity',0);
+}
 
 
 
@@ -162,7 +216,7 @@ Focus.prototype.isSelected = function(){
 	if (runFancy){
 		this.addJiggleAnimate(this.point);
 	} else {
-		this.circ.setAttribute('opacity',"0.3");
+		this.circ.setAttribute('fill',"#9966FF");
 	}
 }
 
@@ -170,8 +224,14 @@ Focus.prototype.deSelect = function(){
 	if (runFancy){
 		this.removeAnimate(this.point);
 	} else {
-		this.circ.setAttribute('opacity',"0");
+		this.circ.setAttribute('fill',"none");
 	}
 }
 
-
+Focus.prototype.reSize = function(b,a){
+	var maxmult = 1.5;
+	var minmult = 0.5;
+	var multiplier = ((a*0.5)/this.distance(b,a));
+	this.point.setAttribute("width", this.width*multiplier);
+	this.point.setAttribute("height", this.height*multiplier);
+}

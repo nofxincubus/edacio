@@ -1,0 +1,32 @@
+GameView
+LinkedINMenu
+Focus
+- Name
+- picture
+- LinkedIn id
+- Past Notes
+
+LinkedIn Profile
+- name
+- headline
+- current-share
+- sum
+
+Schedule Actions
+- set Email reminder
+- set phonecall reminder
+- set text msg reminder
+- set coffee
+- set lunch
+- set meeting
+
+Need :
+- Individual Todolist
+- Relationship Metric based on time
+- Notification
+- 
+
+---Metric
+- 1. Stay Close
+  2. Keep Track
+  3. Keep in touch
