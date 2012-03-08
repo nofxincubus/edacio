@@ -25,7 +25,7 @@ function initialize(){
 	document.body.setAttribute("height",window.innerHeight);
 	//el('footer1').setAttribute("style",'background:#6CF; height:' + window.innerHeight*0.25);
 	mouseIncrease = window.innerHeight*0.05;
-	myProfile = new profile();
+	//myProfile = new profile();
 	
 	if (getInternetExplorerVersion() === -1)
 		runFancy = true;
@@ -106,6 +106,12 @@ function onSC(e){
 }
 
 function onMD(e){
+	var xM = mouseX(e);
+	var yM = mouseY(e);
+	var ymHeight = mapui.height;
+	if (mapui.selectedNode != 0 && xM < 390 && xM > 180  && yM > 33 && yM < ymHeight){
+		
+	} else {
 	selectedNode = mapui.SetDragged	(mouseX(e), mouseY(e));
 	if (selectedNode != 0){
 		
@@ -151,7 +157,8 @@ function onMD(e){
 		textTitle.textContent = "";
 		liprof.removeAll();
 		actionitem.remove();
-	}	
+	}
+	}
 }
 
 function onMM(e){mapui.MoveDragged	(mouseX(e), mouseY(e));}
@@ -362,72 +369,111 @@ function addNoteList(){
 }
 
 function onEventSubmit(){
-	var timeStr = app.getDateString();
-	var openlink = "http://www.google.com/calendar/event?action=TEMPLATE&text=" + app.title +"&dates=" + timeStr + "&details=" + app.detailInput.value + "&location=" + app.whereInput.value + "&trp=true";
-	window.open(openlink,'Create Event','width=600,height=600');
+	
 	app.removeAll();
+	/*
 	el('catcher').style.zIndex = 2;
 	el('catcher').style.background = "#000";
 	el('catcher').style.opacity = 0;
+	*/
 }
 
 function onEventCancel(){
 	app.removeAll();
+	/*
 	el('catcher').style.zIndex = 2;
 	el('catcher').style.background = "#000";
 	el('catcher').style.opacity = 0;
+	*/
 }
 
 function coffeeEvent(){
 	if (selectedNode !== 0){
+		/*
 		el('catcher').style.zIndex = 5;
 		el('catcher').style.background = "#000";
 		el('catcher').style.opacity = 0.7;
+		*/
 		app = new Appointment("Coffee", selectedNode, true);
+		selectedNode.updateTime();
+		mapui.drawAll(svg);
 	}
 }
 
 function lunchEvent(){
 	if (selectedNode !== 0){
+		/*
 		el('catcher').style.zIndex = 5;
 		el('catcher').style.background = "#000";
 		el('catcher').style.opacity = 0.7;
+		*/
 		app = new Appointment("Lunch", selectedNode, true);
+		selectedNode.updateTime();
+		mapui.drawAll(svg);
 	}
 }
 
 function textEvent(){
 	if (selectedNode !== 0){
+		/*
 		el('catcher').style.zIndex = 5;
 		el('catcher').style.background = "#000";
 		el('catcher').style.opacity = 0.7;
+		*/
 		app = new Appointment("Text Message", selectedNode, true);
+		selectedNode.updateTime();
+		mapui.drawAll(svg);
 	}
 }
 
 function callEvent(){
 	if (selectedNode !== 0){
+		/*
 		el('catcher').style.zIndex = 5;
 		el('catcher').style.background = "#000";
 		el('catcher').style.opacity = 0.7;
-	app = new Appointment("Phone Call", selectedNode, true);
+		*/
+		app = new Appointment("Phone Call", selectedNode, true);
+		selectedNode.updateTime();
+		mapui.drawAll(svg);
 	}
 }
 
 function emailEvent(){
 	if (selectedNode !== 0){
+		/*
 		el('catcher').style.zIndex = 5;
 		el('catcher').style.background = "#000";
 		el('catcher').style.opacity = 0.7;
+		*/
 	app = new Appointment("Email", selectedNode, true);
+	selectedNode.updateTime();
+		mapui.drawAll(svg);
 	}
 }
 
 function meetingEvent(){
 	if (selectedNode !== 0){
+		/*
 		el('catcher').style.zIndex = 5;
 		el('catcher').style.background = "#000";
 		el('catcher').style.opacity = 0.7;
+		*/
 	app = new Appointment("Meeting", selectedNode, true);
+	selectedNode.updateTime();
+		mapui.drawAll(svg);
 	}
+}
+
+function addCommas(nStr)
+{
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
 }

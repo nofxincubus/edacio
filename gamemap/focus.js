@@ -6,7 +6,6 @@
 function Focus (profile, parent){
 	this.xlinkns = "http://www.w3.org/1999/xlink";
 	this.profile = profile;
-	this.timeSince = this.profile.getTimeSince();
 	if (parent != 0) {
 		this.width = parent.width;
 		this.height = parent.height;
@@ -22,25 +21,35 @@ function Focus (profile, parent){
 	
 	this.dragovergroup.setAttribute('opacity',0);
 	this.group.appendChild(this.dragovergroup);
+	this.group.setAttribute("style", "cursor:pointer;");
+	
 	this.point = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 	this.point.setAttributeNS(this.xlinkns, 'xlink:href', this.profile.picURL);
-	this.group.setAttribute("style", "cursor:pointer;");
 	this.point.setAttribute("width", this.width);
 	this.point.setAttribute("height", this.height);
+	
+	this.notification = document.createElementNS("http://www.w3.org/2000/svg", 'image');
+	//if children
+	this.notification.setAttribute("width", this.width*0.3);
+	this.notification.setAttribute("height", this.height*0.3);
+	//this.notification.setAttribute("opacity",0);
+	
     this.circ = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circ.setAttribute("stroke", "none");
 	this.circ.setAttribute("fill", "none");
 	this.circ.setAttribute("stroke-width", "3");
 	this.circ.setAttribute('opacity',"1");
 	this.circ.setAttribute('r', this.width*1.2);
+
 	this.circOver = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circOver.setAttribute("stroke", "#3333FF");
 	this.circOver.setAttribute("fill", "#3333FF");
 	this.circOver.setAttribute("stroke-width", "3");
 	this.circOver.setAttribute('opacity',"0");
 	this.circOver.setAttribute('r', this.width*1.2);
-	this.circOver.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.8');");
+	this.circOver.setAttribute('onmouseover', "evt.target.setAttribute('opacity', '0.4');");
 	this.circOver.setAttribute('onmouseout',"evt.target.setAttribute('opacity','0');");
+
 	this.nameText = document.createElementNS("http://www.w3.org/2000/svg", 'text');
 	this.nameText.setAttribute('fill', '#000');
 	this.nameText.setAttribute('text-anchor', 'middle');
@@ -49,10 +58,13 @@ function Focus (profile, parent){
 	
 
 	this.circAnimate = false;
+
 	this.group.appendChild(this.circ);
 	this.group.appendChild(this.point);
 	this.group.appendChild(this.nameText);
 	this.group.appendChild(this.circOver);
+	this.group.appendChild(this.notification);
+	
 	this.group.setAttribute('style','z-index:0');
 	this.circOver.setAttribute('style','z-index:0');
 	this.circ.setAttribute('style','z-index:0');
@@ -81,6 +93,7 @@ Focus.prototype.decreaseSize = function(){
 	this.height -= 1;
 	this.point.setAttribute("width", this.width);
 	this.point.setAttribute("height", this.height);
+	
 	this.circOver.setAttribute('r', this.width*1.5);
 	this.circ.setAttribute('r', this.width*1.5);
 	for (var i = 0; i < this.children.length;i++){
@@ -93,12 +106,46 @@ Focus.prototype.setXY = function(x,y){
 	this.y = y;
 	this.point.setAttribute('x', this.x-this.width*0.5);
 	this.point.setAttribute('y', this.y-this.height*0.5);
+	this.notification.setAttribute("x", this.x+this.width*0.30);
+	this.notification.setAttribute("y", this.y+this.height*0.30);
 	this.nameText.setAttribute('x', this.x);
 	this.nameText.setAttribute('y', this.y + this.height*0.5 + 15);
 	this.circ.setAttribute('cx', this.x);
 	this.circ.setAttribute('cy', this.y);
 	this.circOver.setAttribute('cx', this.x);
 	this.circOver.setAttribute('cy', this.y);
+	if (!this.profile.me){
+		if (this.children.length === 0)
+			this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notification.png");
+		else {
+			var checkChildren = false;
+			for (var i = 0;i < this.children.length;i++){
+				if (this.children[i].profile.getNotify())
+					checkChildren = true;
+			}
+			if (checkChildren = true)
+				this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notification.png");
+			else
+				this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notifyparent.png");
+		}
+		
+		if (this.profile.getNotify())
+		{
+			for (var i = 0;i < this.group.childNodes.length;i++)
+			if (this.group.childNodes[i] === this.notification){
+				this.group.removeChild(this.group.childNodes[i]);
+				break;
+			}
+			this.group.appendChild(this.notification);
+		}
+		else{
+			for (var i = 0;i < this.group.childNodes.length;i++)
+			if (this.group.childNodes[i] === this.notification){
+				this.group.removeChild(this.group.childNodes[i]);
+				break;
+			}
+		}
+	}
 	this.dragOverInitialize();
 }
 
@@ -234,4 +281,9 @@ Focus.prototype.reSize = function(b,a){
 	var multiplier = ((a*0.5)/this.distance(b,a));
 	this.point.setAttribute("width", this.width*multiplier);
 	this.point.setAttribute("height", this.height*multiplier);
+}
+
+Focus.prototype.updateTime = function(){
+	this.profile.updateTime();
+	this.notification.setAttribute("opacity", 0);
 }

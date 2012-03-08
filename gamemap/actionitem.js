@@ -6,6 +6,7 @@
 
 function ActionItem(height) {
 	this.div = document.getElementById('actionableitem');
+	this.div.style.zIndex = 2;
 	this.width = 210;
 	this.height = height;
 	if (this.width/3 < this.height*0.5)

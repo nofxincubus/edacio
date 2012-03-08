@@ -61,6 +61,7 @@ MapUI.prototype.changeCircle = function(){
 MapUI.prototype.loadTopNodes = function(){
 	//Linkedin Load for your own shit but temporarily
 	var x = new connectionProfile(0,"tempme.png","Your Name","Mr. Incredible","Ann Arbor, MI", "Working like Crazy","");
+	x.setMe();
 	this.topFocus = new Focus(x,0);
 	this.currentFocus = this.topFocus;
 	this.selectedNode = this.currentFocus;
@@ -68,6 +69,7 @@ MapUI.prototype.loadTopNodes = function(){
 }
 MapUI.prototype.resetTopNodes = function(profile){
 	//Linkedin Load for your own shit but temporarily
+	profile.setMe();
 	var newFoc = new Focus(profile,0);
 	newFoc.children = this.topFocus.children;
 	newFoc.profile.notes = this.topFocus.notes;
@@ -96,7 +98,7 @@ MapUI.prototype.initialize = function(){
 
 //Draw the MAP UI
 MapUI.prototype.drawAll = function(svg) {
-	this.removeAll(this.svg);
+	this.removeAll(svg);
 	
 	this.reposition();
 

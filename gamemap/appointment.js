@@ -4,6 +4,15 @@
 // Use it all you want just put on your site that you are using my stuff :)
 
 function Appointment(title, top, childbool){
+	this.title = title;
+	this.setDetail(top, childbool);
+	var fromTime = top.profile.getNextAppointment();
+	var toTime = new Date(fromTime.getTime() + 60*60*1000);
+	var timeStr = this.getDateString(fromTime,toTime);
+	var openlink = "http://www.google.com/calendar/event?action=TEMPLATE&text=" + this.title +"&dates=" + timeStr + "&details=" + this.detailInput + "&location=" + top.profile.location + "&trp=true";
+	window.open(openlink,'Create Event','width=600,height=600');
+	
+	/*
 	this.wrapper = document.createElement('div');
 	this.wrapper.id = "eventmaker";
 	this.wrapper.style.zIndex = 6;
@@ -95,13 +104,11 @@ function Appointment(title, top, childbool){
 	this.wrapper.appendChild(this.detailInput);
 	this.wrapper.appendChild(this.submitButton);
 	this.wrapper.appendChild(this.cancelButton);
-	
 	this.setDetail(top, childbool);
-	
-	document.body.appendChild(this.wrapper);
-	
 	$('#from').datetimepicker();
 	$('#to').datetimepicker();
+	document.body.appendChild(this.wrapper);
+	*/
 }
 
 Appointment.prototype.removeAll = function(){
@@ -112,8 +119,7 @@ Appointment.prototype.removeAll = function(){
 Appointment.prototype.setDetail = function(top, childBool){
 	var strDetail = "Make " + this.title + " appointment with ";
 	if (childBool){
-		if (top.profile.id != 0)
-			strDetail +=  top.profile.name + ", ";
+			strDetail +=  top.profile.name + " : ";
 		for (var i = 0;i < top.children.length;i++){
 			if (i === top.children.length-1)
 				strDetail += "and " + top.children[i].profile.name + ".";	
@@ -123,13 +129,13 @@ Appointment.prototype.setDetail = function(top, childBool){
 	} else {
 		strDetail += top.profile.name;
 	}
-	this.detailInput.value = strDetail;
+	this.detailInput = strDetail;
 }
 
-Appointment.prototype.getDateString = function(){
+Appointment.prototype.getDateString = function(fromStr,toStr){
 	x = [];
-	x[0] = $('#from').val();
-	x[1] = $('#to').val();
+	x[0] = fromStr;
+	x[1] = toStr;
 	var timeStr = "";
 	//put in error checker
 	for (var i = 0;i < 2;i++){
