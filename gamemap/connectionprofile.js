@@ -12,11 +12,15 @@ function connectionProfile(id, picURL, name, title, location, currentStatus, pub
 	this.currentStatus = currentStatus;
 	this.publicURL = publicURL;
 	this.me = false;
-	this.score = 0;
+	////////////////////////
+	//if me is true
+	this.xp = 0;
 	this.credits =0;
 	this.awards =0;
+	this.links = 0;
 	this.alerts=0;
 	this.lastConnected = 0;
+	////////////////////////
 	// 1. Stay Close
 	 // 2. Keep Track
 	//  3. Keep in touch
@@ -38,6 +42,7 @@ connectionProfile.prototype.appendPermenantNotes = function(notes){
 
 connectionProfile.prototype.setMe = function(){
 	this.me = true;
+	this.updateProfile();
 }
 
 connectionProfile.prototype.getNextAppointment = function(){
@@ -59,9 +64,9 @@ connectionProfile.prototype.getNotify = function(){
 	var today = new Date();
 	var timeDiff;
 	if (this.lastConnected === 0)
-		timeDiff = (today.getTime() - this.lastConnected)/(today.getTime());
+		timeDiff = 999999999999;
 	else
-		timeDiff = (today.getTime() - this.lastConnected.getTime())/(today.getTime());
+		timeDiff = Math.round((today.getTime() - this.lastConnected.getTime())/(today.getTime()));
 	var comparison;
 	if (this.type === 1)
 		comparison = 7*24*60*60*1000*0.5;
@@ -69,7 +74,7 @@ connectionProfile.prototype.getNotify = function(){
 		comparison = 7*24*60*60*1000;
 	else 
 		comparison = 7*24*60*60*1000*4;
-	if (timeDiff >= comparison)
+	if (timeDiff <= comparison)
 		return false;
 	else
 		return true;
@@ -82,31 +87,46 @@ connectionProfile.prototype.updateTime = function(){
 
 connectionProfile.prototype.addScore = function(delta){
  this.score += delta;
- //return this.score;
+ this.updateProfile();
 }
 connectionProfile.prototype.clearScore = function()
 {
  this.score = 0;
  addCommas(this.score);
- //return this.score;
+ this.updateProfile();
 }
 // Add/clear credits
 connectionProfile.prototype.addCredits= function(delta){
  this.credits += delta;
- //return this.score+delta;
+ this.updateProfile();
 }
 connectionProfile.prototype.clearCredits = function()
 {
  this.credits = 0;
- //return this.score+delta;
+this.updateProfile();
 }
 //Add/clear rewards
 connectionProfile.prototype.addAwards = function(delta){
  this.awards += delta;
- //return this.score+delta;
+ this.updateProfile();
 }
 connectionProfile.prototype.clearAwards = function()
 {
  this.awards= 0;
- //return this.score+delta;
+ this.updateProfile();
+}
+
+connectionProfile.prototype.updateProfile = function(){
+	document.getElementById('profileimage').src = this.picURL;
+	document.getElementById('profiletitle').innerHTML = this.title;
+	if (this.alerts === 0){
+		document.getElementById('alertCounter').style.opacity = 0;
+	} else{
+		document.getElementById('alertCounter').style.opacity = 1;
+	document.getElementById('alertCounterText').innerHTML = parseInt(this.alerts);
+	}
+	document.getElementById('credits').innerHTML = parseInt(this.credits);
+	document.getElementById('awards').innerHTML = parseInt(this.awards);
+	document.getElementById('links').innerHTML = parseInt(this.links);
+	document.getElementById('points').innerHTML = parseInt(this.xp);
 }

@@ -6,7 +6,7 @@
 function setupChallengeStyle()
 {
 	var x = document.getElementById('miniChallenges');
-	x.setAttribute('style',"float:right;width:300px;height:420px;background-color:lightgrey;-moz-border-radius: 15px;border-radius: 15px;");
+	x.setAttribute('style',"position:absolute;right:30px;top:200px;width:300px;height:420px;background-color:lightgrey;-moz-border-radius: 15px;border-radius: 15px;");
 	//document.body.setAttribute('style',"background-color:SkyBlue;");
 	//document.getElementsByClassName(.setAttribute('style',"background:red;width:;");
 

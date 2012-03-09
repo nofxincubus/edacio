@@ -29,10 +29,11 @@ function Focus (profile, parent){
 	this.point.setAttribute("height", this.height);
 	
 	this.notification = document.createElementNS("http://www.w3.org/2000/svg", 'image');
+	this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notification.png");
 	//if children
 	this.notification.setAttribute("width", this.width*0.3);
 	this.notification.setAttribute("height", this.height*0.3);
-	//this.notification.setAttribute("opacity",0);
+	this.notification.setAttribute("opacity",0);
 	
     this.circ = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 	this.circ.setAttribute("stroke", "none");
@@ -114,37 +115,9 @@ Focus.prototype.setXY = function(x,y){
 	this.circ.setAttribute('cy', this.y);
 	this.circOver.setAttribute('cx', this.x);
 	this.circOver.setAttribute('cy', this.y);
-	if (!this.profile.me){
-		if (this.children.length === 0)
-			this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notification.png");
-		else {
-			var checkChildren = false;
-			for (var i = 0;i < this.children.length;i++){
-				if (this.children[i].profile.getNotify())
-					checkChildren = true;
-			}
-			if (checkChildren = true)
-				this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notification.png");
-			else
-				this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notifyparent.png");
-		}
-		
-		if (this.profile.getNotify())
-		{
-			for (var i = 0;i < this.group.childNodes.length;i++)
-			if (this.group.childNodes[i] === this.notification){
-				this.group.removeChild(this.group.childNodes[i]);
-				break;
-			}
-			this.group.appendChild(this.notification);
-		}
-		else{
-			for (var i = 0;i < this.group.childNodes.length;i++)
-			if (this.group.childNodes[i] === this.notification){
-				this.group.removeChild(this.group.childNodes[i]);
-				break;
-			}
-		}
+	if (this.profile.me){
+		this.profile.alerts = this.getAlerts();
+		this.profile.updateProfile();
 	}
 	this.dragOverInitialize();
 }
@@ -196,12 +169,13 @@ Focus.prototype.dragOverInitialize = function(){
 	var innercount = this.children.length;
 	var innerAngle = 360/innercount;
 	var innerIncrement = innerAngle * mpi;
+	var innerS = this.innerStart;
 	for (var i = 0; i < this.children.length;i ++){
 		var cr;
 		cr = this.width*0.95;
-		this.innerStart += innerIncrement;
-		var xp = this.x + Math.sin(this.innerStart) * cr;
-		var yp = this.y + Math.cos(this.innerStart) * cr;
+		innerS += innerIncrement;
+		var xp = this.x + 1.3*Math.sin(innerS) * cr;
+		var yp = this.y + 0.7*Math.cos(innerS) * cr;
 		var childd = document.createElementNS("http://www.w3.org/2000/svg", 'image');
 		childd.setAttributeNS(this.xlinkns, 'xlink:href', this.children[i].profile.picURL);
 		childd.setAttribute('width',18);
@@ -276,6 +250,7 @@ Focus.prototype.deSelect = function(){
 }
 
 Focus.prototype.reSize = function(b,a){
+	
 	var maxmult = 1.5;
 	var minmult = 0.5;
 	var multiplier = ((a*0.5)/this.distance(b,a));
@@ -285,5 +260,28 @@ Focus.prototype.reSize = function(b,a){
 
 Focus.prototype.updateTime = function(){
 	this.profile.updateTime();
-	this.notification.setAttribute("opacity", 0);
+	this.getAlerts();
+}
+
+Focus.prototype.getAlerts = function(){
+	var total = 0;
+	if (!this.profile.me){
+		for (var i = 0; i < this.children.length;i++)
+			total = total + this.children[i].getAlerts();
+		
+		if (total > 0)
+			this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notification.png");
+		else
+			this.notification.setAttributeNS(this.xlinkns, 'xlink:href', "notifyparent.png");
+		if (this.profile.getNotify()){
+			total = total + 1;
+			this.notification.setAttribute("opacity", 1);
+		}else
+			this.notification.setAttribute("opacity", 0);
+		
+	} else{
+		for (var i = 0; i < this.children.length;i++)
+			total = total + this.children[i].getAlerts();
+	}
+	return total;
 }

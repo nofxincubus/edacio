@@ -84,7 +84,6 @@ function initialize(){
 	notelists.style.zIndex = 3;
 	liprof = new LIProfile();
 	selectedNode =0;
-	mapui.drawAll(svg);
 	onEF();
 		
 }

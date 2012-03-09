@@ -266,10 +266,8 @@ MapUI.prototype.spinIterate=function(){
 		this.innerStart -= 2*Math.PI;
 	else{
 		this.innerStart += this.dv;
-		/*
 		for (var i = 0;i < this.currentFocus.children.length;i++)
-			this.currentFocus.children[i].innerStart = this.innerStart;
-			*/
+			this.currentFocus.children[i].innerStart = 2*this.innerStart;
 	}
 		
 	if (Math.abs(this.dv) < 0.1*Math.PI/180)
