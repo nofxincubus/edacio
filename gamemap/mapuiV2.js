@@ -73,12 +73,12 @@ MapUI.prototype.resetTopNodes = function(profile){
 	var newFoc = new Focus(profile,0);
 	if (this.topFocus.children.length > 0)
 		newFoc.children = this.topFocus.children;
-	if (this.topFocus.notes.length > 0)
-		newFoc.profile.notes = this.topFocus.notes;
-	if (this.topFocus.permanantTag.length > 0)
-		newFoc.profile.permanantTag = this.topFocus.permanantTag;
-	if (this.topFocus.pastChallenges.length > 0)
-	newFoc.profile.pastChallenges = this.topFocus.pastChallenges;
+	if (this.topFocus.profile.notes.length > 0)
+		newFoc.profile.notes = this.topFocus.profile.notes;
+	if (this.topFocus.profile.permanantTag.length > 0)
+		newFoc.profile.permanantTag = this.topFocus.profile.permanantTag;
+	if (this.topFocus.profile.pastChallenges.length > 0)
+	newFoc.profile.pastChallenges = this.topFocus.profile.pastChallenges;
 	this.topFocus = newFoc;
 	this.currentFocus = this.topFocus;
 	this.selectedNode = this.currentFocus;
