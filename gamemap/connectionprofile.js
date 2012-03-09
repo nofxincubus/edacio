@@ -20,6 +20,7 @@ function connectionProfile(id, picURL, name, title, location, currentStatus, pub
 	this.links = 0;
 	this.alerts=0;
 	this.lastConnected = 0;
+	this.lastViewed = 0;
 	////////////////////////
 	// 1. Stay Close
 	 // 2. Keep Track
@@ -34,6 +35,22 @@ function connectionProfile(id, picURL, name, title, location, currentStatus, pub
 
 connectionProfile.prototype.appendNotes = function(notes){
 	this.notes.push(notes);
+}
+
+connectionProfile.prototype.checkLastView = function(){
+	var today = new Date();
+	if (this.lastViewed === 0){
+		this.lastViewed = new Date();
+		return true;
+	}
+	else 
+		timeDiff = Math.round(today.getTime() - this.lastViewed.getTime());
+	var comparison = 60*60*1000;
+	if (timeDiff >= comparison)
+		return true;
+	 else
+		return false
+	this.updateProfile();
 }
 
 connectionProfile.prototype.appendPermenantNotes = function(notes){
@@ -66,7 +83,7 @@ connectionProfile.prototype.getNotify = function(){
 	if (this.lastConnected === 0)
 		timeDiff = 999999999999;
 	else
-		timeDiff = Math.round((today.getTime() - this.lastConnected.getTime())/(today.getTime()));
+		timeDiff = Math.round((today.getTime() - this.lastConnected.getTime()));
 	var comparison;
 	if (this.type === 1)
 		comparison = 7*24*60*60*1000*0.5;
@@ -86,7 +103,7 @@ connectionProfile.prototype.updateTime = function(){
 
 
 connectionProfile.prototype.addScore = function(delta){
- this.score += delta;
+ this.xp += delta;
  this.updateProfile();
 }
 connectionProfile.prototype.clearScore = function()

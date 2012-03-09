@@ -372,6 +372,7 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 				}
 				if (foci != 0){
 					this.currentFocus.children[i].children.push(foci);
+					this.topFocus.profile.addScore(20);
 					inserted = true;
 				}
 				
@@ -394,6 +395,7 @@ MapUI.prototype.dropNode = function(b,a, selected, firstindex){
 				}
 			if (foci != 0){
 				this.currentFocus.children.push(foci);
+				this.topFocus.profile.addScore(20);	
 				this.inserted = true;
 				
 			}

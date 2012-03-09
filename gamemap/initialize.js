@@ -85,6 +85,7 @@ function initialize(){
 	liprof = new LIProfile();
 	selectedNode =0;
 	onEF();
+	mapui.drawAll(svg);
 		
 }
 
@@ -113,10 +114,11 @@ function onMD(e){
 	} else {
 	selectedNode = mapui.SetDragged	(mouseX(e), mouseY(e));
 	if (selectedNode != 0){
-		
+		if (selectedNode.profile.checkLastView() && !selectedNode.profile.me)
+			mapui.topFocus.profile.addScore(10);
 		//show list of past notes
 		addNoteList();
-	
+		
 		//show adding notes about person
 		var wrapdiv = el('recommendcontact');
 		var textTitle = document.getElementById('contacttitle');
@@ -283,6 +285,7 @@ function addNotes(){
 			var minutes = curdate.getMinutes();
 			var string = textArea.value +"  " + hour + ":" + minutes + " " + month + "/" + day + "/" + year;
 			selectedNode.profile.appendNotes(string);
+			mapui.topFocus.profile.addScore(5);
 			addNoteList();
 		}
 		textArea.value = "";
@@ -395,6 +398,7 @@ function coffeeEvent(){
 		*/
 		app = new Appointment("Coffee", selectedNode, true);
 		selectedNode.updateTime();
+		mapui.topFocus.profile.addScore(1000);
 		mapui.drawAll(svg);
 	}
 }
@@ -408,6 +412,7 @@ function lunchEvent(){
 		*/
 		app = new Appointment("Lunch", selectedNode, true);
 		selectedNode.updateTime();
+		mapui.topFocus.profile.addScore(2000);
 		mapui.drawAll(svg);
 	}
 }
@@ -421,6 +426,7 @@ function textEvent(){
 		*/
 		app = new Appointment("Text Message", selectedNode, true);
 		selectedNode.updateTime();
+		mapui.topFocus.profile.addScore(100);
 		mapui.drawAll(svg);
 	}
 }
@@ -434,6 +440,7 @@ function callEvent(){
 		*/
 		app = new Appointment("Phone Call", selectedNode, true);
 		selectedNode.updateTime();
+		mapui.topFocus.profile.addScore(500);
 		mapui.drawAll(svg);
 	}
 }
@@ -447,6 +454,7 @@ function emailEvent(){
 		*/
 	app = new Appointment("Email", selectedNode, true);
 	selectedNode.updateTime();
+	mapui.topFocus.profile.addScore(50);
 		mapui.drawAll(svg);
 	}
 }
@@ -460,6 +468,7 @@ function meetingEvent(){
 		*/
 	app = new Appointment("Meeting", selectedNode, true);
 	selectedNode.updateTime();
+	mapui.topFocus.profile.addScore(3000);
 		mapui.drawAll(svg);
 	}
 }
