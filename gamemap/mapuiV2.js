@@ -71,9 +71,13 @@ MapUI.prototype.resetTopNodes = function(profile){
 	//Linkedin Load for your own shit but temporarily
 	profile.setMe();
 	var newFoc = new Focus(profile,0);
-	newFoc.children = this.topFocus.children;
-	newFoc.profile.notes = this.topFocus.notes;
-	newFoc.profile.permanantTag = this.topFocus.permanantTag;
+	if (this.topFocus.children.length > 0)
+		newFoc.children = this.topFocus.children;
+	if (this.topFocus.notes.length > 0)
+		newFoc.profile.notes = this.topFocus.notes;
+	if (this.topFocus.permanantTag.length > 0)
+		newFoc.profile.permanantTag = this.topFocus.permanantTag;
+	if (this.topFocus.pastChallenges.length > 0)
 	newFoc.profile.pastChallenges = this.topFocus.pastChallenges;
 	this.topFocus = newFoc;
 	this.currentFocus = this.topFocus;
