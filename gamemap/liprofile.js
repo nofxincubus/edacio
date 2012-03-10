@@ -7,11 +7,11 @@
 function LIProfile() {
 	//this.initialize();
 	//this.testBuild();
-	this.profTag = document.createElement('image');
-	this.nameTag = document.createElement('h3');
-	this.locationTag = document.createElement('h4');
-	this.titleTag = document.createElement('h4');
-	this.currentStatusTag = document.createElement('p');
+	this.profTag = document.getElementById('linkImage');
+	this.nameTag = document.getElementById('linkName');
+	this.locationTag = document.getElementById('linkLocation');
+	this.titleTag = document.getElementById('linkTitle');
+	this.currentStatusTag = document.getElementById('linkStatus');
 	this.wrapdiv = document.getElementById('contactprofile');
 	this.reposition();
 }
@@ -30,7 +30,8 @@ LIProfile.prototype.setConnections = function(profile) {
 }
 
 LIProfile.prototype.testBuild = function(){
-	this.wrapdiv = document.getElementById('contactprofile');
+	var wrapdiv = document.getElementById('contactprofile');
+	wrapdiv.style.width
 	this.profTag = document.createElement('image');
 	this.profTag.setAttribute('src',"tempme.png");
 	this.nameTag = document.createElement('h3');
@@ -54,26 +55,28 @@ LIProfile.prototype.buildDiv = function(){
 
 LIProfile.prototype.reposition = function(){
 	this.profTag.style.position = "absolute";
-	this.profTag.style.top = "3px";
-	this.profTag.style.left= "3px";
+	this.profTag.style.top = "5px";
+	this.profTag.style.left = "5px";
 	this.profTag.style.width = "60px";
 	this.profTag.style.height = "60px";
 	
 	this.nameTag.style.position = "absolute";
 	this.nameTag.style.top = "0px";
-	this.nameTag.style.left= "75px";
+	this.nameTag.style.left= "70px";
 	
 	this.titleTag.style.position = "absolute";
-	this.titleTag.style.top = "12px";
-	this.titleTag.style.left= "75px";
+	this.titleTag.style.top = "20px";
+	this.titleTag.style.left= "70px";
+	this.titleTag.style.fontSize = "11px";
 	
 	this.locationTag.style.position = "absolute";
 	this.locationTag.style.top = "50px";
-	this.locationTag.style.left= "3px";
+	this.locationTag.style.left= "5px";
 
 	this.currentStatusTag.style.position = "absolute";
-	this.currentStatusTag.style.top = "70px";
-	this.currentStatusTag.style.left= "3px";
+	this.currentStatusTag.style.top = "75px";
+	this.currentStatusTag.style.left= "5px";
+	this.currentStatusTag.style.fontSize = "8px";
 }
 
 LIProfile.prototype.drawAll = function(){

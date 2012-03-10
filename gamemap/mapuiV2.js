@@ -26,7 +26,8 @@ function MapUI(w, h,csvg){
 	this.lines =[];
 	this.doCircle = false;
 	var xx = 70;
-	this.menu = new DivMenu(150,this.circleRadius*1.8,xx,16);
+	var innerheight = window.innerHeight*0.8;
+	this.menu = new DivMenu(150,innerheight,xx,16);
 };
 
 MapUI.prototype.increaseSize = function(){
@@ -60,7 +61,7 @@ MapUI.prototype.changeCircle = function(){
 
 MapUI.prototype.loadTopNodes = function(){
 	//Linkedin Load for your own shit but temporarily
-	var x = new connectionProfile(0,"tempme.png","Your Name","Mr. Incredible","Ann Arbor, MI", "Working like Crazy","");
+	var x = new connectionProfile(0,"tempme.png","Your Name","Mr. Incredible","Ann Arbor, MI", "Working like Crazy and doing other shizzles and hizzles and bizzles","");
 	x.setMe();
 	this.topFocus = new Focus(x,0);
 	this.currentFocus = this.topFocus;

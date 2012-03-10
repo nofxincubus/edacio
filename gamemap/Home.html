@@ -16,6 +16,7 @@
         <script type="text/javascript" src="focus.js"></script>
         <script type="text/javascript" src="LinkedinHandler.js"></script>
         <script type="text/javascript" src="divmenu.js"></script>
+        <script type="text/javascript" src="feeddivs.js"></script>
         <script type="text/javascript" src="Challenges.js"></script>
 		<script type="text/javascript" src="actionitem.js"></script>
         <script type="text/javascript" src="liprofile.js"></script>
@@ -43,7 +44,7 @@
         <![endif]-->
 </head>
 
-<body onLoad="initialize()" ondragover="allowDrop(event)" ondrop="drop(event)" onClick="onMD(event)">
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="initialize()" ondragover="allowDrop(event)" ondrop="drop(event)" onClick="onMD(event)">
 <!--<div id='catcher' ondragover="allowDrop(event)" ondrop="drop(event)" onClick="onMD(event)" style="width:100%; height:570px; top:30px; position:absolute; z-index:2; "> </div>-->
 <header >
  <img src="logo.png" style="position:relative; height:inherit;"></img>
@@ -78,13 +79,21 @@
 		<svg id="svgc" style="width:100%; height:570px; background:#C9F; z-index:0"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		</svg>
 		<footer>
-        <div id="contactprofile" style="background:#36C; position:relative; float:left; z-index:2; top:5px; left:5px; height:140px; width:350px; -moz-box-shadow: 3px 3px 4px #CCC;-webkit-box-shadow: 3px 3px 4px #CCC;box-shadow: 3px 3px 4px #CCC;-moz-border-radius: 10px;border-radius: 10px;">
+        <div id="contactprofile" class="bottomright">
+        <img id="linkImage" src="tempme.png"/>
+        <h3 id="linkName" style="width:165px"></h3>
+        <h3 id="linkTitle" style="width:165px"></h3>
+        <h3 id="linkLocation"></h3>
+        <h3 id="linkStatus"></h3>
 		</div>
-        <div id="publicopinion" style="position:relative; float:left; z-index:2; top:5px; left:10px; height:140px; width:200px;">
-				Public say
+        <div id="publicopinion" class="bottomstuff">
+				Twitter
 		</div>
-        <div id="challenges" style="position:relative; float:left; z-index:2; top:5px; left:15px; height:140px; width:400px;">
-				list of challenges
+        <div id="facebookstuff" class="bottomstuff">
+				Facebook
+		</div>
+        <div id="otherstuff" class="bottomstuff">
+				Others
 		</div>
         </footer>
 	

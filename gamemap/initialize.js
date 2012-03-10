@@ -52,14 +52,14 @@ function initialize(){
 	document.addEventListener("touchend",	onMU, false);
 	document.addEventListener("touchmove",	onMM, false);
 	
-	h = window.innerHeight*0.7;
+	h = window.innerHeight - 200;
 	w = window.innerWidth - 20;
 	hw=w/2;
-	hh=h/2;
+	hh = h - 300;
 	svg.setAttribute("style","width:100%; height:" + h + "px;");
 	mapui = new MapUI(w,h,svg);
 	//mapui.addNode();
-	
+	setfeed = new Feeddivs();
 	
 	actionitem = new ActionItem(((h - 123)*0.5 - 5));
 	
@@ -306,7 +306,7 @@ function addNoteList(){
 	notelists.style.boxShadow = "3px 3px 4px #808080"
 	notelists.style.webkitBoxShadow = "3px 3px 4px #808080"
 
-	notelists.style.background = "#36C";
+	notelists.style.background = '#CCF';
 	for (var i = 0;i < selectedNode.profile.notes.length;i++){
 		var listele = document.createElement('li');
 		var paraele = document.createElement('p');
