@@ -16,6 +16,7 @@
         <script type="text/javascript" src="focus.js"></script>
         <script type="text/javascript" src="LinkedinHandler.js"></script>
         <script type="text/javascript" src="divmenu.js"></script>
+        <script type="text/javascript" src="joshuamenu.js"></script>
         <script type="text/javascript" src="feeddivs.js"></script>
         <script type="text/javascript" src="Challenges.js"></script>
 		<script type="text/javascript" src="actionitem.js"></script>
@@ -46,22 +47,28 @@
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="initialize()" ondragover="allowDrop(event)" ondrop="drop(event)" onClick="onMD(event)">
 <!--<div id='catcher' ondragover="allowDrop(event)" ondrop="drop(event)" onClick="onMD(event)" style="width:100%; height:570px; top:30px; position:absolute; z-index:2; "> </div>-->
-<header >
- <img src="logo.png" style="position:relative; height:inherit;"></img>
+<img src="logo2.png" style="height:45px;position:absolute;top:5px;left:5px; z-index:6"></img>
+<header>
+ <img src="logo2.png" style="height:inherit;opacity:0"></img>
+ <img src="logo2.png" style="height:inherit;opacity:0"></img>
+ <img src="logo2.png" style="height:inherit;opacity:0"></img>
  <script type="IN/Login" data-onAuth="onLinkedInLoad"></script>
 </header>
+<div id="menulist">
+ <ul id="menulistul">
+ </ul>
+</div>
 <div id='profile'>
-    <img id='profileimage' alt="Profile" src="zahid.jpg"></img>
+    <img id='profileimage' alt="Profile" src="tempme.png"></img>
     <h3 id="profilename">Your Name</h1>
-    <p id="profiletitle">Your Awesome Job and your Awesome Company</p>
     <div id="alertCounter">
         <p id="alertCounterText">10<p>
     </div>
     
-    <h3><img id="creditpic" src="credits.png" alt="Credits"/><b id="credits">Over 9000</b></h3>
-    <h3><img id="awardpic" src="awards.png" alt="Awards"/><b id="awards">9000</b></h3>
-    <h3><img id="linkpic" src="link.png" alt="Links"/><b id="links">9000</b></h3>
-    <h3><img id="pointpic" src="earth.png" alt="Points"/><b id="points">Over 9000</b></h3> 
+    <h3><img id="creditpic" src="credits.png" alt="Credits"/><b id="credits">0</b></h3>
+    <h3><img id="awardpic" src="awards.png" alt="Awards"/><b id="awards">0</b></h3>
+    <h3><img id="linkpic" src="link.png" alt="Links"/><b id="links">0</b></h3>
+    <h3><img id="pointpic" src="earth.png" alt="Points"/><b id="points">0</b></h3> 
 </div>
 
       <div id="actionableitem" style="-moz-box-shadow: 3px 3px 4px #CCC;-webkit-box-shadow: 3px 3px 4px #CCC;box-shadow: 3px 3px 4px #CCC;">
@@ -71,21 +78,26 @@
             </ul>
         </div>
 		<div id="recommendcontact" style="-moz-box-shadow: 3px 3px 4px #CCC;-webkit-box-shadow: 3px 3px 4px #CCC;box-shadow: 3px 3px 4px #CCC;">
-        	<h3 id="contacttitle" style="position:relative; top:0px; left:3px; z-index:inherit;background:">something</h3>
+        	<h3 id="contacttitle" style="position:relative; top:0px; left:3px; z-index:inherit;background:"></h3>
    			<input id ="contacttextarea" style="left:3px;width:200px;position:relative;"></input>
             <button class ="btn" style="position:absolute;right:0px;bottom:5px" onClick="addNotes()">Add</button>
         </div>
 
-		<svg id="svgc" style="width:100%; height:570px; background:#C9F; z-index:0"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<svg id="svgc" style="width:100%; height:570px; background:#FFF; z-index:0"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		</svg>
-		<footer>
+        <div id="plugview" class="plugconnection">
+        	<h4 id = "plugdesc"></h4>
+        </div>
         <div id="contactprofile" class="bottomright">
         <img id="linkImage" src="tempme.png"/>
-        <h3 id="linkName" style="width:165px"></h3>
-        <h3 id="linkTitle" style="width:165px"></h3>
+        <h3 id="linkName" ></h3>
+        <h3 id="linkTitle" ></h3>
         <h3 id="linkLocation"></h3>
         <h3 id="linkStatus"></h3>
 		</div>
+<!--
+		<footer>
+        
         <div id="publicopinion" class="bottomstuff">
 				Twitter
 		</div>
@@ -96,6 +108,6 @@
 				Others
 		</div>
         </footer>
-	
+		-->
 </body>
 </html>

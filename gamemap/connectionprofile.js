@@ -135,7 +135,7 @@ connectionProfile.prototype.clearAwards = function()
 
 connectionProfile.prototype.updateProfile = function(){
 	document.getElementById('profileimage').src = this.picURL;
-	document.getElementById('profiletitle').innerHTML = this.title;
+	document.getElementById('profilename').innerHTML = this.name;
 	if (this.alerts === 0){
 		document.getElementById('alertCounter').style.opacity = 0;
 	} else{

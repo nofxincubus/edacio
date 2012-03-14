@@ -43,8 +43,8 @@ function Focus (profile, parent){
 	this.circ.setAttribute('r', this.width*1.2);
 
 	this.circOver = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-	this.circOver.setAttribute("stroke", "#3333FF");
-	this.circOver.setAttribute("fill", "#3333FF");
+	this.circOver.setAttribute("stroke", "#919191");
+	this.circOver.setAttribute("fill", "#919191");
 	this.circOver.setAttribute("stroke-width", "3");
 	this.circOver.setAttribute('opacity',"0");
 	this.circOver.setAttribute('r', this.width*1.2);
@@ -237,7 +237,7 @@ Focus.prototype.isSelected = function(){
 	if (runFancy){
 		this.addJiggleAnimate(this.point);
 	} else {
-		this.circ.setAttribute('fill',"#9966FF");
+		this.circ.setAttribute('fill',"#919191");
 	}
 }
 

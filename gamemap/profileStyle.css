@@ -3,50 +3,40 @@
 
 #profile{
 	width:250px;
-	height:160px;
+	height:61px;
 	position:absolute;
-	background:#c3c7ff;
-	right:15px;
-	top:40px;
-	-moz-box-shadow: 3px 3px 4px #CCC;
-	-webkit-box-shadow: 3px 3px 4px #CCC;
-	box-shadow: 3px 3px 4px #CCC;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	background:url(profileback.png);
+	background-size:contain;
+	background-repeat:no-repeat;
+	right:-1px;
+	top:0px;
+	z-index:2;
 }
 
 #profileimage{
 	position:absolute;
-	top:10px;
-	left:10px;
-	width:70px;
-	height:70px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	top:2px;
+	left:1px;
+	width:58px;
+	height:58px;
+	border:medium;
+	border-color:#FFF;
 }
 
 #profilename{
 	position:absolute;
 	top:0px;
-	left:90px;
-}
-
-#profiletitle{
-	position:absolute;
-	top:18px;
-	left:90px;
-	max-width:150px;
-	font:Arial, Helvetica, sans-serif;
-	font-size:13px;
+	left:65px;
+	color:#FFF;
 }
 
 #alertCounter{
 	background:#F00;
-	width:20px;
-	height:20px;
+	width:14px;
+	height:14px;
 	position:absolute;
-	left:63px;
-	top:63px;
+	left:47px;
+	top:47px;
 	text-align:center;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -54,27 +44,28 @@
 #alertCounterText{
 	position:absolute;
 	left:3px;
-	top:-10px;
+	top:-9px;
 	color:#FFF;
 	font:Arial, Helvetica, sans-serif;
-	font-size:13px;
+	font-size:9px;
 }
 
 
 #pointpic{
-	width:30px;
-	height:30px;
+	width:20px;
+	height:20px;
 	position:absolute;
-	left:10px;
-	top:90px;
+	left:62px;
+	bottom:5px;
 }
 
 #points{
 	position:absolute;
-	left:50px;
-	top:90px;
+	left:85px;
+	bottom:5px;
 	font:Arial, Helvetica, sans-serif;
-	font-size:24px;
+	font-size:12px;
+	color:#FFF;
 }
 
 
@@ -82,46 +73,49 @@
 	width:20px;
 	height:20px;
 	position:absolute;
-	left:10px;
-	bottom:10px;
+	left:120px;
+	bottom:3px;
 }
 
 #credits{
 	position:absolute;
-	left:30px;
-	bottom:10px;
+	left:140px;
+	bottom:5px;
 	font:Arial, Helvetica, sans-serif;
-	font-size:13px;
+	font-size:10px;
+	color:#FFF;
 }
 
 #awardpic{
-	width:20px;
-	height:20px;
+	width:15px;
+	height:15px;
 	position:absolute;
-	left:120px;
-	bottom:10px;
+	left:170px;
+	bottom:5px;
 }
 
 #awards{
 	position:absolute;
-	left:140px;
-	bottom:10px;
+	left:190px;
+	bottom:5px;
 	font:Arial, Helvetica, sans-serif;
-	font-size:13px;
+	font-size:10px;
+	color:#FFF;
 }
 
 #linkpic{
 	width:20px;
 	height:20px;
 	position:absolute;
-	left:190px;
-	bottom:10px;
+	left:205px;
+	bottom:5px;
 }
 
 #links{
 	position:absolute;
-	left:210px;
-	bottom:10px;
+	left:225px;
+	bottom:5px;
 	font:Arial, Helvetica, sans-serif;
-	font-size:13px;
+	font-size:10px;
+	color:#FFF;
 }
