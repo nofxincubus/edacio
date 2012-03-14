@@ -137,15 +137,7 @@ function onMD(e){
 		//display the linkedin info	
 		if (selectedNode !== mapui.topFocus){
 			
-			plugdiv.style.opacity = 1;
-			if (selectedNode.profile.getNotify())
-				plugdiv.style.background = "url(unplugged.png)";
-			else 
-				plugdiv.style.background = "url(plugged.png)";
-			if (selectedNode.profile.lastConnected === 0)
-				document.getElementById("plugdesc").textContent = "Never!"
-			else
-				document.getElementById("plugdesc").textContent = selectedNode.profile.lastConnected;
+			plugging();
 			liprof.setConnections(selectedNode.profile);
 			liprof.drawAll();
 			actionitem.draw();
@@ -520,8 +512,11 @@ function plugging() {
 				plugdiv.style.background = "url(plugged.png)";
 			if (selectedNode.profile.lastConnected === 0)
 				document.getElementById("plugdesc").textContent = "Never!"
-			else
-				document.getElementById("plugdesc").textContent = selectedNode.profile.lastConnected;
+			else{
+				var today = new Date();
+				var dayz = parseInt((today.UTC-selectedNode.profile.lastConnected.getTime())/86400000);
+				document.getElementById("plugdesc").textContent = dayz + " days since you connected.";
+			}
 	}
 	else{
 		plugdiv.style.opacity = 0;
